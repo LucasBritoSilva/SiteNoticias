@@ -7,7 +7,7 @@ import pytest
 
 import main
 import site_builder
-from gemini import GeminiResumidor, RespostaInvalida
+from gemini import GeminiClient, GeminiCotaErro, GeminiErro, GeminiResumidor, RespostaInvalida
 from coleta import Artigo
 from resumos import Resumo
 from site_builder import Item
@@ -185,3 +185,68 @@ def test_com_tentativas_para_no_primeiro_sucesso():
     esperas = []
     assert main.com_tentativas(tarefa, dormir=esperas.append) is True
     assert estado["n"] == 2 and esperas == [900]
+
+
+# ------------------------------------------------------------ erro de cota x temporário na execução
+
+def test_cota_para_a_execucao_sem_retentativa_e_sem_esperar(caplog):
+    esperas, chamadas = [], []
+
+    def tarefa():
+        chamadas.append(1)
+        raise GeminiCotaErro("HTTP 429: quota exceeded")
+
+    with caplog.at_level("ERROR"):
+        assert main.com_tentativas(tarefa, dormir=esperas.append) is False
+    assert len(chamadas) == 1 and esperas == []
+    assert "ERRO DE COTA" in caplog.text and "sem novas tentativas" in caplog.text
+
+
+def test_erro_temporario_continua_com_3_tentativas_e_o_log_diz_o_tipo(caplog):
+    esperas = []
+
+    def tarefa():
+        raise GeminiErro("Gemini indisponível após 3 tentativas (HTTP 503)")
+
+    with caplog.at_level("ERROR"):
+        assert main.com_tentativas(tarefa, dormir=esperas.append) is False
+    assert esperas == [900, 900]
+    assert "TEMPORÁRIO" in caplog.text and "COTA" not in caplog.text
+
+
+def test_temporario_seguido_de_cota_para_na_cota():
+    estado = {"n": 0}
+    esperas = []
+
+    def tarefa():
+        estado["n"] += 1
+        raise GeminiErro("503") if estado["n"] == 1 else GeminiCotaErro("429 cota")
+
+    assert main.com_tentativas(tarefa, dormir=esperas.append) is False
+    assert estado["n"] == 2 and esperas == [900]
+
+
+def test_cota_no_pipeline_real_mantem_docs_e_cache(raiz):
+    class Sessao429:
+        chamadas = 0
+
+        def post(self, *a, **k):
+            Sessao429.chamadas += 1
+            corpo = {"error": {"message": "You exceeded your current quota", "details": [
+                {"violations": [{"quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier"}]}]}}
+
+            class R:
+                status_code, text = 429, json.dumps(corpo)
+
+                def json(self):
+                    return corpo
+            return R()
+
+    cliente = GeminiClient(chave="chave-de-teste", sessao=Sessao429(), intervalo_minimo=0, esperas=(0, 0))
+    resumidor = GeminiResumidor(cliente)
+    esperas = []
+    ok = main.com_tentativas(lambda: main.executar(raiz, resumidor, agora=AGORA), dormir=esperas.append)
+    assert ok is False and esperas == []
+    assert Sessao429.chamadas == 1                                        # nenhuma retentativa
+    assert (raiz / "docs" / "index.html").read_text() == "VERSAO ANTERIOR"  # docs/ mantido
+    assert not (raiz / "dados").exists()                                  # cache não foi criado

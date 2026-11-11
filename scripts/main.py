@@ -13,12 +13,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
+import requests
+
 import cache
 import coleta
 import paginas
 import resumos
 import site_builder
-from gemini import GeminiResumidor
+from gemini import GeminiCotaErro, GeminiErro, GeminiResumidor, RespostaInvalida
 from resumos import Resumo
 from site_builder import Item
 
@@ -90,19 +92,36 @@ def executar(raiz: Path, resumidor: resumos.Resumidor, sessao=None, agora: datet
     return len(itens)
 
 
+def tipo_do_erro(exc: BaseException) -> str:
+    """Rótulo usado no log para deixar claro o que parou a execução."""
+    if isinstance(exc, GeminiCotaErro):
+        return "COTA ESGOTADA"
+    if isinstance(exc, RespostaInvalida):
+        return "RESPOSTA INVÁLIDA"
+    if isinstance(exc, (GeminiErro, requests.RequestException)):
+        return "TEMPORÁRIO (rede/instabilidade/limite por minuto)"
+    return "OUTRO"
+
+
 def com_tentativas(
     tarefa: Callable[[], object],
     tentativas: int = TENTATIVAS,
     espera: float = ESPERA_ENTRE_TENTATIVAS,
     dormir: Callable[[float], None] = time.sleep,
 ) -> bool:
-    """Executa `tarefa` até `tentativas` vezes, esperando `espera` s entre elas."""
+    """Executa `tarefa` até `tentativas` vezes, esperando `espera` s entre elas.
+
+    Erro de cota não é repetido nem entra na contagem: a execução para na hora.
+    """
     for n in range(1, tentativas + 1):
         try:
             tarefa()
             return True
-        except Exception:  # noqa: BLE001 - qualquer falha dispara nova tentativa
-            log.exception("Tentativa %d/%d falhou", n, tentativas)
+        except GeminiCotaErro as exc:
+            log.error("EXECUÇÃO INTERROMPIDA POR ERRO DE COTA (sem novas tentativas): %s", exc)
+            return False
+        except Exception as exc:  # noqa: BLE001 - qualquer outra falha dispara nova tentativa
+            log.exception("Tentativa %d/%d falhou. Tipo de erro: %s", n, tentativas, tipo_do_erro(exc))
             if n < tentativas:
                 log.info("Aguardando %.0f min para tentar de novo...", espera / 60)
                 dormir(espera)
@@ -119,7 +138,7 @@ def main() -> int:
         return 1
     ok = com_tentativas(lambda: executar(RAIZ, resumidor))
     if not ok:
-        log.error("Todas as tentativas falharam; docs/ não foi alterado.")
+        log.error("Execução encerrada sem atualizar o site: docs/ e dados/ foram mantidos como estavam.")
         return 1
     return 0
 

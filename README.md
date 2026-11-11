@@ -60,3 +60,14 @@ Além de disponibilizar notícias de forma organizada, o projeto demonstra como 
 - **Consequência:** uma notícia continua na página enquanto houver uma fonte dela no feed das últimas 24 h, então
   duas execuções seguidas podem produzir a mesma página (com a data de atualização nova). Isso é o que economiza
   chamadas.
+
+### Erros do Gemini
+
+- **Erro de cota** (HTTP 429 com cota diária, `quota`, `billing` ou `daily limit`): a execução **para na hora**, sem
+  novas tentativas e sem entrar na contagem das 3 tentativas. `docs/` e `dados/` ficam como estavam. O log diz
+  `EXECUÇÃO INTERROMPIDA POR ERRO DE COTA`.
+- **Erros temporários** (HTTP 429 por minuto, HTTP 503/500/502/504 e falha de rede): 2 repetições curtas (5 s e 20 s)
+  dentro da chamada; se persistirem, a regra de 3 tentativas com 15 minutos entre elas continua valendo. O log
+  mostra `Tipo de erro: TEMPORÁRIO ...`.
+- Como o 429 de cota e o de limite por minuto trazem texto parecido, a distinção usa primeiro o campo `quotaId` da
+  resposta (`...PerDay...` = cota; `...PerMinute...` = temporário) e só depois a mensagem.

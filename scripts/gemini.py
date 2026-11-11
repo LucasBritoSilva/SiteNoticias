@@ -27,6 +27,10 @@ class GeminiErro(RuntimeError):
     """Falha de comunicação com a API (rede, cota, chave inválida...)."""
 
 
+class GeminiCotaErro(GeminiErro):
+    """Cota/limite diário/faturamento esgotado (HTTP 429): repetir não adianta, então não se repete."""
+
+
 class RespostaInvalida(ValueError):
     """A resposta chegou, mas não é o JSON esperado."""
 
@@ -75,6 +79,10 @@ class GeminiClient:
                 if resp.status_code == 200:
                     return extrair_texto(resp.json())
                 erro = f"HTTP {resp.status_code}: {resp.text[:300]}"
+                if resp.status_code == 429:
+                    if tipo_de_429(resp) == "cota":
+                        raise GeminiCotaErro(f"Cota do Gemini esgotada ({erro})")
+                    erro += " [limite por minuto: temporário]"
                 if resp.status_code not in STATUS_TRANSITORIOS:
                     raise GeminiErro(f"Gemini recusou a requisição ({erro})")
             if i < tentativas - 1:
@@ -86,6 +94,38 @@ class GeminiClient:
         falta = self.intervalo_minimo - (time.monotonic() - self._ultima)
         if self._ultima and falta > 0:
             time.sleep(falta)
+
+
+def tipo_de_429(resp) -> str:
+    """Diferencia um 429 de cota ("cota": não repetir) de um de taxa por minuto ("taxa": repetir).
+
+    1) Os detalhes estruturados da API (`quotaId`) mandam: "PerDay" = cota; "PerMinute" = taxa.
+    2) Sem detalhes, vale a mensagem: "daily", "billing" ou "quota" = cota; "per minute" = taxa.
+    3) Sem pistas, é tratado como taxa (temporário): a repetição curta é inofensiva.
+    """
+    try:
+        corpo = resp.json()
+    except Exception:  # noqa: BLE001 - corpo que não é JSON
+        corpo = None
+    erro = corpo.get("error") if isinstance(corpo, dict) else None
+    erro = erro if isinstance(erro, dict) else {}
+    violacoes: list[str] = []
+    for d in erro.get("details") or []:
+        if isinstance(d, dict):
+            for v in d.get("violations") or []:
+                if isinstance(v, dict):
+                    violacoes.append(f"{v.get('quotaId', '')} {v.get('quotaMetric', '')}".lower())
+    ids = " ".join(violacoes).replace("_", "")
+    if "perday" in ids or "daily" in ids:
+        return "cota"
+    if "perminute" in ids:
+        return "taxa"
+    mensagem = (str(erro.get("message") or "") or str(getattr(resp, "text", ""))).lower()
+    if "per minute" in mensagem or "perminute" in mensagem:
+        return "taxa"
+    if any(p in mensagem for p in ("daily", "billing", "per day", "quota")):
+        return "cota"
+    return "taxa"
 
 
 def extrair_texto(resposta: dict) -> str:

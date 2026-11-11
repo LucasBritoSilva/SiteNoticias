@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import pytest
+import requests
 
 import coleta
 import gemini
@@ -217,3 +218,68 @@ def test_cliente_exige_chave(monkeypatch):
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     with pytest.raises(GeminiErro):
         GeminiClient()
+
+
+# ------------------------------------------------------------ erros de cota x erros temporários
+
+def corpo_429(quota_id=None, mensagem="You exceeded your current quota, please check your plan and billing details."):
+    erro = {"code": 429, "message": mensagem, "status": "RESOURCE_EXHAUSTED"}
+    if quota_id:
+        erro["details"] = [{"@type": "type.googleapis.com/google.rpc.QuotaFailure",
+                            "violations": [{"quotaMetric": "generativelanguage.googleapis.com/generate_content_requests",
+                                            "quotaId": quota_id}]}]
+    return {"error": erro}
+
+
+def test_429_de_cota_diaria_nao_e_repetido():
+    s = SessaoFalsa(RespostaHTTP(429, corpo_429("GenerateRequestsPerDayPerProjectPerModel-FreeTier")), ok("{}"))
+    with pytest.raises(gemini.GeminiCotaErro):
+        cliente(s).gerar("x")
+    assert len(s.chamadas) == 1                       # parou na primeira, sem retentativa
+
+
+@pytest.mark.parametrize("corpo", [
+    corpo_429(mensagem="Daily limit reached"),
+    corpo_429(mensagem="Billing is not enabled for this project"),
+    corpo_429(mensagem="You exceeded your current quota"),
+    corpo_429("GenerateContentInputTokensPerModelPerDay-FreeTier"),
+])
+def test_429_com_mensagem_de_cota_nao_e_repetido(corpo):
+    s = SessaoFalsa(RespostaHTTP(429, corpo), ok("{}"))
+    with pytest.raises(gemini.GeminiCotaErro):
+        cliente(s).gerar("x")
+    assert len(s.chamadas) == 1
+
+
+def test_cota_e_um_tipo_de_erro_do_gemini():
+    assert issubclass(gemini.GeminiCotaErro, GeminiErro)
+
+
+def test_429_por_minuto_e_repetido_com_espera_curta():
+    s = SessaoFalsa(RespostaHTTP(429, corpo_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier")),
+                    RespostaHTTP(429, corpo_429(mensagem="Rate limit: too many requests per minute")), ok('{"a":1}'))
+    assert cliente(s).gerar("x") == '{"a":1}'
+    assert len(s.chamadas) == 3
+
+
+def test_429_generico_sem_pista_de_cota_e_tratado_como_temporario():
+    s = SessaoFalsa(RespostaHTTP(429, {"error": {"message": "Too many requests"}}), ok("{}"))
+    assert cliente(s).gerar("x") == "{}"
+    assert len(s.chamadas) == 2
+
+
+def test_503_e_erro_de_rede_continuam_sendo_repetidos():
+    class Cai:
+        def __init__(self):
+            self.n = 0
+
+        def post(self, *a, **k):
+            self.n += 1
+            if self.n == 1:
+                raise requests.ConnectionError("rede caiu")
+            if self.n == 2:
+                return RespostaHTTP(503, {})
+            return ok("{}")
+
+    s = Cai()
+    assert cliente(s).gerar("x") == "{}" and s.n == 3
