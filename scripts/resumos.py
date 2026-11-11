@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 MAX_ARTIGOS_NO_PROMPT = 150
 MAX_FONTES_POR_GRUPO = 3
 MIN_FONTES_POR_GRUPO = 2
-TOTAL_GRUPOS = 12
+TOTAL_GRUPOS = 9
 
 
 class Cliente(Protocol):

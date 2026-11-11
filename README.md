@@ -8,7 +8,7 @@ cada grupo e publica um site estático em `docs/` (GitHub Pages).
 
 ```
 nichos.json ─► RSS do Google Notícias (últimas 24 h) ─► remove duplicadas
-            ─► Gemini agrupa por fato (2–3 fontes) ─► top 12 grupos
+            ─► Gemini agrupa por fato (2–3 fontes) ─► top 9 grupos
             ─► lê a página original (texto e og:image) ─► Gemini escreve o resumo (JSON validado)
             ─► baixa a imagem (ou usa a genérica) ─► gera docs/ ─► commit na main
 ```
@@ -19,7 +19,7 @@ nichos.json ─► RSS do Google Notícias (últimas 24 h) ─► remove duplica
 | `scripts/main.py` | Ponto de entrada; 3 tentativas com 15 min de intervalo. |
 | `scripts/coleta.py` | Leitura dos feeds, filtro de 24 h e deduplicação. |
 | `scripts/gemini.py` | Cliente da API REST do Gemini (só `requests`). |
-| `scripts/resumos.py` | Agrupamento, seleção dos 12 grupos, resumo e validação do JSON. |
+| `scripts/resumos.py` | Agrupamento, seleção dos 9 grupos, resumo e validação do JSON. |
 | `scripts/paginas.py` | URL original da matéria, `robots.txt`, `og:image` e download de imagens. |
 | `scripts/site_builder.py` | Geração do HTML e troca segura do conteúdo de `docs/`. |
 | `docs/` | Site publicado. Gerados: `index.html`, `resumos/`, `img/*`. Fixos: `style.css`, `editar.html`, `editar.js`, `img/generica.svg`. |
@@ -128,13 +128,13 @@ nenhuma chamada real ao Gemini foi testada.
   `SiteNoticiasBot`, responde 401/403 ou não pode ser lido, a página e a imagem não são coletadas e vale a imagem
   genérica. Imagens: só JPEG, PNG, WebP e GIF, até 5 MB.
 - **Agrupamento e seleção em uma chamada:** o Gemini devolve os grupos já com uma nota de relevância (1–10) para
-  os nichos; o código escolhe os 12 melhores. No máximo 150 manchetes entram no prompt (alternando entre nichos,
+  os nichos; o código escolhe os 9 melhores. No máximo 150 manchetes entram no prompt (alternando entre nichos,
   das mais recentes para as mais antigas).
 - **Regras dos grupos:** cada notícia entra em um só grupo, veículos repetidos no mesmo grupo são ignorados e o
   máximo é 3 fontes. Grupos com menos de 2 fontes são descartados.
-- **Faltaram grupos?** Se houver menos de 12 grupos com 2+ fontes, a lista é completada com notícias avulsas
+- **Faltaram grupos?** Se houver menos de 9 grupos com 2+ fontes, a lista é completada com notícias avulsas
   (uma fonte só, de veículos diferentes, mais recentes primeiro). Nada é inventado. Alternativa mais simples seria
-  mostrar menos de 12 cartões; escolhi completar para a página não ficar vazia.
+  mostrar menos de 9 cartões; escolhi completar para a página não ficar vazia.
 - **Validação do JSON:** agrupamento e resumo são validados (tipos, tamanhos, ids existentes, URLs de fonte que
   realmente foram coletadas). Resposta inválida → uma nova tentativa. Se continuar inválida, o grupo é pulado e
   entra o próximo candidato (há 5 candidatos de reserva). Os nomes e URLs das fontes exibidos vêm dos dados
@@ -146,7 +146,7 @@ nenhuma chamada real ao Gemini foi testada.
   a variável `GEMINI_MODEL`. A chave vai no cabeçalho `x-goog-api-key`, nunca na URL.
 - **Publicar só se algo mudou:** o workflow só faz commit se `docs/` mudou. O commit é feito pelo
   `github-actions[bot]`.
-- **Falha parcial:** o site é publicado se pelo menos 1 resumo válido foi gerado (menos de 12 cartões é
+- **Falha parcial:** o site é publicado se pelo menos 1 resumo válido foi gerado (menos de 9 cartões é
   aceitável, por exemplo num dia de poucas notícias); com zero resumos, a tentativa falha e `docs/` fica como está.
 - **Horário exibido:** fixo em UTC-4 (Cuiabá), sem depender de banco de fuso horário.
 - **Arquivos fixos em `docs/`:** `style.css`, `editar.html`, `editar.js` e `img/generica.svg` são editados à mão; o

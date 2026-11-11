@@ -1,6 +1,6 @@
 """Ponto de entrada do pipeline: python scripts/main.py
 
-Fluxo: nichos -> RSS -> deduplicação -> grupos (Gemini) -> top 12 -> resumos (Gemini)
+Fluxo: nichos -> RSS -> deduplicação -> grupos (Gemini) -> top 9 -> resumos (Gemini)
 -> imagens -> site em pasta temporária -> troca de docs/ somente se tudo deu certo.
 """
 from __future__ import annotations
