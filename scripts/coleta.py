@@ -28,6 +28,10 @@ class Artigo:
     fonte_url: str
     publicado: str  # ISO 8601 em UTC
     nicho: str
+    # Preenchidos depois, só para os artigos escolhidos (ver paginas.py):
+    url: str = ""  # URL original da matéria (o link do RSS é um redirecionador do Google)
+    trecho: str = ""  # descrição/primeiros parágrafos da matéria, usados no resumo
+    imagem_url: str = ""  # og:image da matéria
 
     def to_dict(self) -> dict:
         return asdict(self)
