@@ -131,13 +131,13 @@ def raiz(tmp_path, monkeypatch):
     return tmp_path
 
 
-def test_pipeline_completo_gera_site_com_10_cartoes(raiz):
+def test_pipeline_completo_gera_site_com_12_cartoes(raiz):
     ids = [[i, i + 1] for i in range(0, 24, 2)]  # 12 grupos de 2 fontes
     n = main.executar(raiz, GeminiSimulado(ids), agora=AGORA)
-    assert n == 10
+    assert n == 12
     index = (raiz / "docs" / "index.html").read_text(encoding="utf-8")
-    assert index.count('class="cartao"') == 10
-    assert len(list((raiz / "docs" / "resumos").glob("*.html"))) == 10
+    assert index.count('class="cartao"') == 12
+    assert len(list((raiz / "docs" / "resumos").glob("*.html"))) == 12
     assert not (raiz / ".staging").exists()
     site_builder.verificar_site(raiz / "docs", raiz / "docs")
     # todo link externo de fonte nas páginas de resumo é uma URL coletada
@@ -147,7 +147,7 @@ def test_pipeline_completo_gera_site_com_10_cartoes(raiz):
 
 def test_pipeline_completa_com_noticias_avulsas_quando_faltam_grupos(raiz):
     n = main.executar(raiz, GeminiSimulado([[0, 1]]), agora=AGORA)
-    assert n == 10  # 1 grupo + 9 avulsas (de veículos diferentes)
+    assert n == 12  # 1 grupo + 11 avulsas (de veículos diferentes)
 
 
 def test_falha_nao_sobrescreve_docs(raiz):
