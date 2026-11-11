@@ -1,0 +1,69 @@
+name: Atualizar notícias
+
+on:
+  schedule:
+    # Cuiabá é UTC-4 (sem horário de verão); o GitHub Actions usa UTC.
+    - cron: "0 19 * * *"   # 15:00 em Cuiabá
+    - cron: "0 7 * * *"    # 03:00 em Cuiabá
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Uma execução por vez; a seguinte espera a atual terminar (nada é cancelado no meio).
+concurrency:
+  group: atualizar-site
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    # 3 tentativas do pipeline com 15 min de intervalo cabem folgadamente em 90 min.
+    timeout-minutes: 90
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar o Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      # O próprio script tenta até 3 vezes, esperando 15 min entre as tentativas.
+      # Ele só altera docs/ se uma tentativa terminar com sucesso; se todas falharem,
+      # o passo falha, o próximo passo não roda e a versão anterior do site continua no ar.
+      - name: Gerar o site
+        run: python scripts/main.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+
+      - name: Enviar alterações para a main
+        run: |
+          set -u
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A docs
+          if git diff --cached --quiet; then
+            echo "Nada mudou em docs/; nada a enviar."
+            exit 0
+          fi
+          git commit -m "Atualiza notícias ($(date -u +'%Y-%m-%d %H:%M') UTC)"
+          # A edição de nichos pela página também faz commits na main. Se a branch andou
+          # enquanto rodávamos, reaplica o nosso commit por cima (sem sobrescrever nada)
+          # e tenta de novo. Um conflito de verdade faz o passo falhar.
+          for tentativa in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "Enviado na tentativa $tentativa."
+              exit 0
+            fi
+            echo "Envio falhou (tentativa $tentativa); aguardando para repetir..."
+            git rebase --abort 2>/dev/null || true
+            sleep $((tentativa * 10))
+          done
+          echo "Não foi possível enviar as alterações." >&2
+          exit 1

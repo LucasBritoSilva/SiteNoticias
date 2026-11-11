@@ -1,0 +1,27 @@
+"""Confere o essencial do workflow lendo o texto (sem PyYAML, que não é dependência do projeto).
+
+A execução real depende do GitHub Actions e não é coberta aqui.
+"""
+from pathlib import Path
+
+TEXTO = (Path(__file__).parent.parent / ".github" / "workflows" / "atualizar-site.yml").read_text(encoding="utf-8")
+
+
+def test_horarios_em_utc():
+    assert 'cron: "0 19 * * *"' in TEXTO  # 15:00 em Cuiabá (UTC-4)
+    assert 'cron: "0 7 * * *"' in TEXTO   # 03:00 em Cuiabá (UTC-4)
+
+
+def test_gatilho_manual_e_concorrencia():
+    assert "workflow_dispatch:" in TEXTO
+    assert "concurrency:" in TEXTO and "cancel-in-progress: false" in TEXTO
+
+
+def test_segredo_vem_de_secrets_e_nao_esta_no_arquivo():
+    assert "${{ secrets.GEMINI_API_KEY }}" in TEXTO
+    assert "AIza" not in TEXTO
+
+
+def test_push_so_depois_de_gerar_e_com_nova_tentativa():
+    assert TEXTO.index("python scripts/main.py") < TEXTO.index("git push")
+    assert "git pull --rebase" in TEXTO and "--force" not in TEXTO
