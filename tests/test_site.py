@@ -93,8 +93,8 @@ def test_publicar_recusa_site_com_link_quebrado_e_nao_toca_em_docs(docs, tmp_pat
 class GeminiSimulado:
     """Cliente simulado do Gemini: uma resposta única com os grupos pedidos. Conta as chamadas."""
 
-    def __init__(self, ids_por_grupo, quebrar=False):
-        self.ids, self.quebrar, self.prompts = ids_por_grupo, quebrar, []
+    def __init__(self, ids_por_grupo, quebrar=False, prefixo="do grupo"):
+        self.ids, self.quebrar, self.prefixo, self.prompts = ids_por_grupo, quebrar, prefixo, []
 
     def gerar(self, prompt):
         self.prompts.append(prompt)
@@ -102,7 +102,7 @@ class GeminiSimulado:
             return "nada de json"
         return json.dumps({"grupos": [
             {"nicho": "ia", "relevancia": max(0, 10 - n), "ids": ids,
-             "titulo": f"Resumo simulado do grupo {n}",
+             "titulo": f"Resumo simulado {self.prefixo} {n}",
              "resumo": "Texto simulado do resumo, longo o bastante para passar na validação do pipeline."}
             for n, ids in enumerate(self.ids)
         ]})

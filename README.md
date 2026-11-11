@@ -46,3 +46,17 @@ Além de disponibilizar notícias de forma organizada, o projeto demonstra como 
   escolhidas pelo Gemini nessa mesma chamada; o código confere que os ids existem e que não repetem o veículo.
 - Tudo que é específico do Gemini fica em `scripts/gemini.py` (`GeminiResumidor.resumir_grupos`). O pipeline só
   depende desse método, então trocar de provedor é implementar outra classe com a mesma assinatura.
+
+### Cache de resumos (`dados/resumos_gerados.json`)
+
+- Cada grupo resumido é guardado com um identificador, as fontes (nome, URL original e link do RSS), o resultado
+  e a data. O arquivo é versionado pelo workflow junto com `docs/`; ele só tem textos de notícias e URLs
+  (o código recusa gravar algo que pareça chave ou token, e um teste confere isso).
+- Antes de chamar o Gemini, as notícias cujas fontes já apareceram num resumo gerado nas últimas 48 horas são
+  retiradas do envio, e os resumos guardados que ainda têm alguma fonte no feed das últimas 24 horas são
+  reaproveitados. O Gemini só recebe as notícias novas e só é chamado para preencher as vagas que faltam
+  (e se houver ao menos 2 notícias novas). Se tudo estiver reaproveitado, **não há chamada nenhuma**.
+- O cache só é atualizado depois que o site foi publicado com sucesso.
+- **Consequência:** uma notícia continua na página enquanto houver uma fonte dela no feed das últimas 24 h, então
+  duas execuções seguidas podem produzir a mesma página (com a data de atualização nova). Isso é o que economiza
+  chamadas.

@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
+import cache
 import coleta
 import paginas
 import resumos
@@ -24,6 +25,7 @@ from site_builder import Item
 RAIZ = Path(__file__).resolve().parent.parent
 TENTATIVAS = 3
 ESPERA_ENTRE_TENTATIVAS = 15 * 60  # segundos
+MIN_NOVOS_PARA_CHAMAR = 2  # com menos de 2 notícias novas não vale gastar uma chamada
 
 log = logging.getLogger("pipeline")
 
@@ -33,6 +35,7 @@ def executar(raiz: Path, resumidor: resumos.Resumidor, sessao=None, agora: datet
     agora = agora or datetime.now(timezone.utc)
     docs = raiz / "docs"
     staging = raiz / ".staging"
+    arquivo_cache = raiz / "dados" / "resumos_gerados.json"
     if staging.exists():
         shutil.rmtree(staging)
 
@@ -42,15 +45,32 @@ def executar(raiz: Path, resumidor: resumos.Resumidor, sessao=None, agora: datet
     if len(artigos) < 2:
         raise RuntimeError("Notícias insuficientes nas últimas 24 horas.")
 
-    # Uma única chamada ao provedor: agrupa, escolhe e resume.
-    grupos = resumidor.resumir_grupos(artigos, nichos, resumos.TOTAL_GRUPOS)
-    if not grupos:
-        raise RuntimeError("Nenhum grupo válido foi gerado.")
+    # 1) O que já foi resumido nas últimas 48 h não vai de novo ao Gemini.
+    entradas = cache.carregar(arquivo_cache, agora)
+    reaproveitadas, novos_artigos = cache.planejar(entradas, artigos, resumos.TOTAL_GRUPOS)
+    faltam = resumos.TOTAL_GRUPOS - len(reaproveitadas)
 
+    # 2) Só se faltarem grupos e houver notícias novas, uma única chamada ao provedor.
+    novos: list[resumos.Grupo] = []
+    chamadas = 0
+    if faltam > 0 and len(novos_artigos) >= MIN_NOVOS_PARA_CHAMAR:
+        chamadas = 1
+        novos = resumidor.resumir_grupos(novos_artigos, nichos, faltam)
+    log.info(
+        "Cache: %d entradas válidas, %d reaproveitadas, %d notícias novas, %d grupos novos; "
+        "chamadas ao Gemini nesta execução: %d",
+        len(entradas), len(reaproveitadas), len(novos_artigos), len(novos), chamadas,
+    )
     robots = paginas.Robots(sessao)
+    for grupo in novos:
+        paginas.enriquecer_artigos(grupo.artigos, robots, sessao)  # URL original e og:image
+    grupos = [cache.grupo_de_entrada(e) for e in reaproveitadas] + novos
+    if not grupos:
+        raise RuntimeError("Nenhum grupo para publicar.")
+    grupos.sort(key=lambda g: (len(g.artigos) < 2, -g.relevancia))  # 2+ fontes primeiro, por relevância
+
     itens: list[Item] = []
     for posicao, grupo in enumerate(grupos, 1):
-        paginas.enriquecer_artigos(grupo.artigos, robots, sessao)  # URL original e og:image
         resumo = Resumo(
             titulo=grupo.titulo,
             resumo=grupo.resumo,
@@ -64,6 +84,8 @@ def executar(raiz: Path, resumidor: resumos.Resumidor, sessao=None, agora: datet
     site_builder.gerar_site(itens, nichos, staging, agora)
     site_builder.publicar(staging, docs)
     shutil.rmtree(staging, ignore_errors=True)
+    # O cache só é atualizado depois que o site foi publicado.
+    cache.salvar(arquivo_cache, entradas + [cache.entrada_de_grupo(g, agora) for g in novos], agora)
     log.info("Site publicado em %s com %d notícias.", docs, len(itens))
     return len(itens)
 

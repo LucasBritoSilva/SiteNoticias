@@ -25,3 +25,7 @@ def test_segredo_vem_de_secrets_e_nao_esta_no_arquivo():
 def test_push_so_depois_de_gerar_e_com_nova_tentativa():
     assert TEXTO.index("python scripts/main.py") < TEXTO.index("git push")
     assert "git pull --rebase" in TEXTO and "--force" not in TEXTO
+
+
+def test_workflow_versiona_o_cache_dos_resumos():
+    assert "git add -A dados" in TEXTO
