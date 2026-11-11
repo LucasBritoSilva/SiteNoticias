@@ -12,7 +12,7 @@ O projeto possui um processo automatizado de atualização das notícias:
 2. **Processamento com IA:** a inteligência artificial **Google Gemini** analisa as notícias coletadas.
 3. **Organização do conteúdo:** notícias relacionadas ao mesmo acontecimento são agrupadas, evitando conteúdos repetidos.
 4. **Geração de resumos:** a IA produz resumos das notícias com base nas fontes encontradas.
-5. **Atualização automática:** o GitHub Actions executa o processo duas vezes ao dia, mantendo o portal atualizado sem intervenção manual.
+5. **Atualização automática:** o GitHub Actions executa o processo quatro vezes ao dia, mantendo o portal atualizado sem intervenção manual.
 
 ## Tecnologias utilizadas
 
@@ -71,3 +71,17 @@ Além de disponibilizar notícias de forma organizada, o projeto demonstra como 
   mostra `Tipo de erro: TEMPORÁRIO ...`.
 - Como o 429 de cota e o de limite por minuto trazem texto parecido, a distinção usa primeiro o campo `quotaId` da
   resposta (`...PerDay...` = cota; `...PerMinute...` = temporário) e só depois a mensagem.
+
+### Horários de execução
+
+Cuiabá é UTC-4 o ano todo (sem horário de verão); o GitHub Actions usa UTC. Também dá para rodar na hora pelo
+gatilho manual (`workflow_dispatch`).
+
+| Cuiabá | UTC | cron |
+|---|---|---|
+| 06:50 | 10:50 | `50 10 * * *` |
+| 12:50 | 16:50 | `50 16 * * *` |
+| 17:50 | 21:50 | `50 21 * * *` |
+| 22:30 | 02:30 (dia seguinte) | `30 2 * * *` |
+
+O GitHub pode atrasar execuções agendadas em alguns minutos nos horários de pico.
