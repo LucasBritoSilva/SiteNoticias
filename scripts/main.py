@@ -53,19 +53,25 @@ def executar(raiz: Path, resumidor: resumos.Resumidor, sessao=None, agora: datet
     faltam = resumos.TOTAL_GRUPOS - len(reaproveitadas)
 
     # 2) Só se faltarem grupos e houver notícias novas, uma única chamada ao provedor.
+    #    Antes dela, lê o texto de um conjunto limitado de matérias para o resumo poder ser elaborado.
+    robots = paginas.Robots(sessao)
     novos: list[resumos.Grupo] = []
     chamadas = 0
     if faltam > 0 and len(novos_artigos) >= MIN_NOVOS_PARA_CHAMAR:
+        pool = resumos.selecionar_pool(novos_artigos, min(resumos.TAMANHO_POOL, max(12, faltam * 4)))
+        paginas.enriquecer_artigos(pool, robots, sessao)  # URL original, texto e og:image
+        com_texto = [a for a in pool if a.trecho]
+        if len(com_texto) < MIN_NOVOS_PARA_CHAMAR:
+            log.warning("Só %d matérias tiveram o texto lido; usando as manchetes.", len(com_texto))
+            com_texto = pool
+        log.info("Texto lido de %d das %d matérias escolhidas", sum(1 for a in pool if a.trecho), len(pool))
         chamadas = 1
-        novos = resumidor.resumir_grupos(novos_artigos, nichos, faltam)
+        novos = resumidor.resumir_grupos(com_texto, nichos, faltam)
     log.info(
         "Cache: %d entradas válidas, %d reaproveitadas, %d notícias novas, %d grupos novos; "
         "chamadas ao Gemini nesta execução: %d",
         len(entradas), len(reaproveitadas), len(novos_artigos), len(novos), chamadas,
     )
-    robots = paginas.Robots(sessao)
-    for grupo in novos:
-        paginas.enriquecer_artigos(grupo.artigos, robots, sessao)  # URL original e og:image
     grupos = [cache.grupo_de_entrada(e) for e in reaproveitadas] + novos
     if not grupos:
         raise RuntimeError("Nenhum grupo para publicar.")

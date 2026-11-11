@@ -8,12 +8,15 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Protocol
 
-from coleta import Artigo
+from coleta import Artigo, normalizar_titulo
 
 MAX_ARTIGOS_NO_PROMPT = 150
 MAX_FONTES_POR_GRUPO = 3
 MIN_FONTES_POR_GRUPO = 2
 TOTAL_GRUPOS = 9
+TAMANHO_POOL = 36  # máximo de matérias cujo texto é lido antes da chamada
+LIMIAR_SIMILARIDADE = 0.3
+MAX_POR_ASSUNTO_NO_POOL = 3
 
 
 @dataclass
@@ -58,6 +61,49 @@ def limitar_artigos(artigos: list[Artigo], limite: int = MAX_ARTIGOS_NO_PROMPT) 
             if len(escolhidos) >= limite:
                 break
     return escolhidos
+
+
+def _palavras(titulo: str) -> set[str]:
+    return {p for p in normalizar_titulo(titulo).split() if len(p) >= 4}
+
+
+def _parecidos(a: set[str], b: set[str]) -> bool:
+    return bool(a | b) and len(a & b) / len(a | b) >= LIMIAR_SIMILARIDADE
+
+
+def selecionar_pool(artigos: list[Artigo], tamanho: int = TAMANHO_POOL) -> list[Artigo]:
+    """Escolhe quais matérias terão o texto lido e enviado ao Gemini.
+
+    Ler o texto de todas seria lento, então priorizamos as que têm títulos parecidos com os de
+    outros veículos (provável mesmo fato, ou seja, bons grupos), alternando entre os nichos e
+    limitando a poucas matérias por assunto. Não decide nada sobre os grupos: o Gemini continua
+    sendo quem agrupa.
+    """
+    palavras = [_palavras(a.titulo) for a in artigos]
+    pontos = [
+        sum(1 for j, b in enumerate(artigos)
+            if j != i and b.fonte != a.fonte and _parecidos(palavras[i], palavras[j]))
+        for i, a in enumerate(artigos)
+    ]
+    por_nicho: dict[str, list[int]] = {}
+    for i in sorted(range(len(artigos)), key=lambda i: artigos[i].publicado, reverse=True):
+        por_nicho.setdefault(artigos[i].nicho, []).append(i)
+    filas = [sorted(f, key=lambda i: -pontos[i]) for f in por_nicho.values()]  # estável: recentes primeiro
+
+    escolhidos: list[int] = []
+    while filas and len(escolhidos) < tamanho:
+        for fila in list(filas):
+            while fila:
+                i = fila.pop(0)
+                repetidas = sum(1 for k in escolhidos if _parecidos(palavras[i], palavras[k]))
+                if repetidas < MAX_POR_ASSUNTO_NO_POOL:
+                    escolhidos.append(i)
+                    break
+            if not fila:
+                filas.remove(fila)
+            if len(escolhidos) >= tamanho:
+                break
+    return [artigos[i] for i in escolhidos]
 
 
 def montar_grupos(brutos: list[dict], candidatos: list[Artigo], total: int = TOTAL_GRUPOS) -> list[Grupo]:

@@ -13,6 +13,7 @@ from resumos import Resumo
 from site_builder import Item
 
 AGORA = datetime(2026, 11, 11, 7, 0, tzinfo=timezone.utc)
+RESUMO_LONGO = ("Frase simulada do resumo, unindo as informações das fontes do grupo com contexto e detalhes. " * 8).strip()
 FIXTURES = Path(__file__).parent / "fixtures"
 
 
@@ -103,7 +104,7 @@ class GeminiSimulado:
         return json.dumps({"grupos": [
             {"nicho": "ia", "relevancia": max(0, 10 - n), "ids": ids,
              "titulo": f"Resumo simulado {self.prefixo} {n}",
-             "resumo": "Texto simulado do resumo, longo o bastante para passar na validação do pipeline."}
+             "resumo": RESUMO_LONGO}
             for n, ids in enumerate(self.ids)
         ]})
 
@@ -250,3 +251,32 @@ def test_cota_no_pipeline_real_mantem_docs_e_cache(raiz):
     assert Sessao429.chamadas == 1                                        # nenhuma retentativa
     assert (raiz / "docs" / "index.html").read_text() == "VERSAO ANTERIOR"  # docs/ mantido
     assert not (raiz / "dados").exists()                                  # cache não foi criado
+
+
+# ------------------------------------------------------------ texto lido antes da chamada única
+
+def test_texto_das_materias_e_lido_antes_da_chamada_unica_e_vai_no_prompt(raiz):
+    n, cliente = pipeline(raiz, [[i, i + 1] for i in range(0, 18, 2)])
+    assert n == 9 and len(cliente.prompts) == 1
+    assert "Texto: trecho" in cliente.prompts[0]                 # o texto lido foi enviado junto
+
+
+def test_materias_sem_texto_ficam_de_fora_quando_ha_outras_com_texto(raiz, monkeypatch):
+    def enriquecer(artigos, robots, sessao=None):
+        for i, a in enumerate(artigos):
+            a.url = f"https://exemplo.com/{i}"
+            a.trecho = "texto lido" if i % 2 == 0 else ""
+    monkeypatch.setattr(main.paginas, "enriquecer_artigos", enriquecer)
+    _, cliente = pipeline(raiz, [[0, 1], [2, 3], [4, 5]])
+    p = cliente.prompts[0]
+    assert "indisponível" not in p and p.count("Texto: texto lido") >= 2
+
+
+def test_sem_nenhum_texto_usa_as_manchetes_e_ainda_publica(raiz, monkeypatch):
+    def enriquecer(artigos, robots, sessao=None):
+        for i, a in enumerate(artigos):
+            a.url = f"https://exemplo.com/{i}"
+    monkeypatch.setattr(main.paginas, "enriquecer_artigos", enriquecer)
+    n, cliente = pipeline(raiz, [[0, 1], [2, 3]])
+    assert n == 2 and len(cliente.prompts) == 1
+    assert "indisponível" in cliente.prompts[0]

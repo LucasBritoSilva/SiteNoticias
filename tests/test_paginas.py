@@ -140,3 +140,17 @@ def test_enriquecer_usa_link_do_google_quando_nao_resolve():
     a = Artigo("t", "https://news.google.com/rss/articles/ZZZ", "A", "", "", "n")
     paginas.enriquecer_artigos([a], Robots(Sessao({})), Sessao({}))
     assert a.url == a.link and a.imagem_url == ""
+
+
+def test_enriquecer_junta_descricao_e_texto_e_le_varias_em_paralelo(monkeypatch):
+    monkeypatch.setattr(paginas, "resolver_url_google", lambda link, sessao=None: "https://ok.com/" + link[-1])
+    mapa = {"https://ok.com/robots.txt": Resp(404)}
+    for n in "abcdef":
+        mapa[f"https://ok.com/{n}"] = Resp(200, HTML)
+    s = Sessao(mapa)
+    arts = [Artigo("t", f"https://news.google.com/rss/articles/{n}", "A", "", "", "n") for n in "abcdef"]
+    paginas.enriquecer_artigos(arts, Robots(s), s)
+    for a in arts:
+        assert a.url.startswith("https://ok.com/")
+        assert a.trecho.startswith("Descrição da matéria Este é um parágrafo longo")
+        assert a.imagem_url == "https://ok.com/fotos/capa.jpg"

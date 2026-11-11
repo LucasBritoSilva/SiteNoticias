@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import quote, urljoin, urlsplit
@@ -25,6 +26,8 @@ USER_AGENT = f"{AGENTE}/1.0"
 TIMEOUT = 15
 MAX_HTML = 2_000_000
 MAX_IMAGEM = 5_000_000
+MAX_TRECHO = 2500
+TRABALHADORES = 6  # leituras de página em paralelo
 TIPOS_IMAGEM = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif"}
 BATCHEXECUTE = "https://news.google.com/_/DotsSplashUi/data/batchexecute"
 NAVEGADOR = (
@@ -151,9 +154,9 @@ def extrair_pagina(html: bytes | str, url_base: str) -> Pagina:
         texto = " ".join(p.get_text(" ", strip=True).split())
         if len(texto) >= 60:
             paragrafos.append(texto)
-        if sum(len(x) for x in paragrafos) >= 1500:
+        if sum(len(x) for x in paragrafos) >= MAX_TRECHO:
             break
-    trecho = " ".join(paragrafos)[:1500]
+    trecho = " ".join(paragrafos)[:MAX_TRECHO]
     return Pagina(imagem_url=imagem, descricao=descricao, trecho=trecho)
 
 
@@ -204,14 +207,21 @@ def baixar_imagem(
 # ---------------------------------------------------------------- por grupo
 
 def enriquecer_artigos(artigos: list[Artigo], robots: Robots, sessao: requests.Session | None = None) -> None:
-    """Preenche url, trecho e imagem_url de cada artigo (altera os objetos)."""
-    for a in artigos:
+    """Preenche url, trecho e imagem_url de cada artigo (altera os objetos). Lê em paralelo."""
+
+    def um(a: Artigo) -> None:
         a.url = resolver_url_google(a.link, sessao) or a.link
         if "news.google.com" in urlsplit(a.url).netloc:
-            continue  # não conseguimos chegar à matéria original
+            return  # não conseguimos chegar à matéria original
         pagina = obter_pagina(a.url, robots, sessao)
-        a.trecho = pagina.trecho or pagina.descricao
+        texto = pagina.trecho
+        if pagina.descricao and pagina.descricao not in texto:
+            texto = f"{pagina.descricao} {texto}"
+        a.trecho = texto.strip()[:MAX_TRECHO]
         a.imagem_url = pagina.imagem_url
+
+    with ThreadPoolExecutor(max_workers=TRABALHADORES) as pool:
+        list(pool.map(um, artigos))
 
 
 def imagem_do_grupo(

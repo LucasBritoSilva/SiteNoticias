@@ -16,6 +16,7 @@ from coleta import Artigo
 from gemini import GeminiClient, GeminiErro, RespostaInvalida
 
 FIXTURES = Path(__file__).parent / "fixtures"
+RESUMO_LONGO = ("Frase simulada do resumo, unindo as informações das fontes do grupo com contexto e detalhes. " * 8).strip()
 
 
 def art(i, fonte=None, nicho="ia", hora=10):
@@ -46,7 +47,7 @@ def item(ids, rel=5, nicho="ia", titulo=None, resumo=None):
     return {
         "ids": ids, "nicho": nicho, "relevancia": rel,
         "titulo": titulo or f"Título explicativo do grupo {n}",
-        "resumo": resumo or "Resumo que une as informações das manchetes do grupo, longo o bastante para validar.",
+        "resumo": resumo or RESUMO_LONGO,
     }
 
 
@@ -72,9 +73,9 @@ def test_prompt_traz_manchetes_pedido_de_resumo_e_regra_de_nao_inventar():
     r, cliente = resumidor({"grupos": [item([0, 1])]})
     r.resumir_grupos(arts, ["ia", "economia"], total=9)
     p = cliente.prompts[0]
-    assert "0 | Veiculo0 | Fato 0" in p and "1 | Veiculo1 | Fato 1" in p
+    assert "[0] Veiculo0 | Fato 0" in p and "[1] Veiculo1 | Fato 1" in p
     assert '["ia", "economia"]' in p and "11 grupos" in p       # 9 + reserva de 2
-    assert "SOMENTE o que as manchetes" in p and "nunca invente ids" in p
+    assert "SOMENTE o que está nos textos" in p and "nunca invente ids" in p
 
 
 def test_regras_dos_grupos_na_resposta_unica():
@@ -283,3 +284,73 @@ def test_503_e_erro_de_rede_continuam_sendo_repetidos():
 
     s = Cai()
     assert cliente(s).gerar("x") == "{}" and s.n == 3
+
+
+# ------------------------------------------------------------ resumos elaborados (texto das matérias)
+
+def test_prompt_envia_o_texto_das_materias_e_pede_resumo_elaborado():
+    a, b = art(0), art(1)
+    a.trecho = "Texto completo da primeira matéria com detalhes."
+    r, cliente = resumidor({"grupos": [item([0, 1])]})
+    r.resumir_grupos([a, b], ["ia"], total=3)
+    p = cliente.prompts[0]
+    assert "Texto: Texto completo da primeira matéria com detalhes." in p
+    assert "indisponível" in p                                  # a segunda não teve o texto lido
+    assert "3 a 5 parágrafos" in p and "evite frases vagas, genéricas" in p
+    assert "divergência" in p and "Se faltar detalhe, escreva menos em vez de inventar" in p
+
+
+def test_resumo_curto_e_recusado_quando_ha_texto_das_materias():
+    a, b = art(0), art(1)
+    a.trecho = b.trecho = "texto da matéria"
+    curto = item([0, 1], resumo="Resumo de apenas duas frases curtas, genérico demais para publicar. " * 2)
+    longo = item([0, 1], resumo=RESUMO_LONGO)
+    r, _ = resumidor({"grupos": [curto]}, {"grupos": [curto]})
+    with pytest.raises(RespostaInvalida):                       # curto nas duas tentativas
+        r.resumir_grupos([a, b], ["ia"], 3)
+    r2, _ = resumidor({"grupos": [curto, longo]})
+    assert [g.resumo for g in r2.resumir_grupos([a, b], ["ia"], 3)] == [RESUMO_LONGO]
+
+
+def test_so_com_manchetes_o_minimo_e_menor():
+    curto = item([0, 1], resumo="Resumo curto, mas aceitável porque nenhuma matéria teve o texto lido.")
+    r, _ = resumidor({"grupos": [curto]})
+    assert len(r.resumir_grupos([art(0), art(1)], ["ia"], 3)) == 1
+
+
+def art_t(i, titulo, fonte, nicho="ia", hora=10):
+    return Artigo(titulo=titulo, link=f"https://news.google.com/rss/articles/{i}", fonte=fonte, fonte_url="",
+                  publicado=f"2026-11-11T{hora:02d}:00:00+00:00", nicho=nicho)
+
+
+def test_pool_prioriza_assuntos_com_varios_veiculos_e_limita_por_assunto():
+    mec = [art_t(i, "MEC aprova regras para uso de inteligência artificial nas escolas", f"V{i}") for i in range(6)]
+    assuntos = ["Petrobras anuncia dividendos extraordinários", "Santos contrata zagueiro uruguaio",
+                "Cientistas descobrem novo exoplaneta habitável", "Prefeitura reabre ponte interditada",
+                "Vacina contra dengue ganha aprovação federal"]
+    soltas = [art_t(10 + i, t, f"W{i}", hora=11) for i, t in enumerate(assuntos)]
+    pool = resumos.selecionar_pool(soltas + mec, tamanho=5)
+    assert len(pool) == 5
+    assert sum(1 for a in pool if a.titulo.startswith("MEC")) == resumos.MAX_POR_ASSUNTO_NO_POOL   # 3 de 6
+    # tamanho maior que o disponível devolve tudo o que couber, sem repetir
+    tudo = resumos.selecionar_pool(soltas + mec, tamanho=50)
+    assert len(tudo) == len({a.link for a in tudo}) == 5 + resumos.MAX_POR_ASSUNTO_NO_POOL
+
+
+def test_pool_alterna_entre_nichos():
+    ta = ["Bolsa fecha estável", "Chuvas atingem Sul", "Eleição municipal começa", "Dólar recua semana",
+          "Petróleo dispara Oriente", "Safra recorde soja", "Inflação desacelera outubro", "Greve metroviários termina"]
+    tb = ["Corinthians vence clássico", "Final libertadores sorteada", "Tenista brasileiro avança", "Fórmula-1 estreia pista",
+          "Seleção convoca goleiro", "Maratona reúne corredores", "Vôlei conquista ouro", "Natação bate recorde"]
+    a = [art_t(i, t, f"A{i}", nicho="a") for i, t in enumerate(ta)]
+    b = [art_t(20 + i, t, f"B{i}", nicho="b") for i, t in enumerate(tb)]
+    pool = resumos.selecionar_pool(a + b, tamanho=6)
+    assert sorted(x.nicho for x in pool) == ["a"] * 3 + ["b"] * 3
+
+
+def test_pool_com_dados_reais_do_exemplo():
+    dados = json.loads((FIXTURES / "exemplo_coleta.json").read_text(encoding="utf-8"))
+    arts = [Artigo(**x) for x in dados["artigos"]]
+    pool = resumos.selecionar_pool(arts, tamanho=12)
+    assert len(pool) == 12
+    assert sum("MEC" in x.titulo for x in pool) <= resumos.MAX_POR_ASSUNTO_NO_POOL + 1
