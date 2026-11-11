@@ -47,7 +47,7 @@ def executar(raiz: Path, resumidor: resumos.Resumidor, sessao=None, agora: datet
     if len(artigos) < 2:
         raise RuntimeError("Notícias insuficientes nas últimas 24 horas.")
 
-    # 1) O que já foi resumido nas últimas 48 h não vai de novo ao Gemini.
+    # 1) O que já foi resumido nas últimas 24 h não vai de novo ao Gemini.
     entradas = cache.carregar(arquivo_cache, agora)
     reaproveitadas, novos_artigos = cache.planejar(entradas, artigos, resumos.TOTAL_GRUPOS)
     faltam = resumos.TOTAL_GRUPOS - len(reaproveitadas)

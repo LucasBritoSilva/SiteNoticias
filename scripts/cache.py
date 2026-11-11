@@ -1,7 +1,7 @@
 """Cache dos resumos já gerados (dados/resumos_gerados.json).
 
 Serve para não pagar de novo por uma notícia que já foi resumida: as fontes de um grupo
-resumido nas últimas 48 horas não são reenviadas ao Gemini, e o resumo guardado é reaproveitado
+resumido nas últimas 24 horas não são reenviadas ao Gemini, e o resumo guardado é reaproveitado
 enquanto alguma das fontes ainda estiver no feed das últimas 24 horas.
 """
 from __future__ import annotations
@@ -19,7 +19,7 @@ from resumos import Grupo
 
 log = logging.getLogger(__name__)
 
-VALIDADE_HORAS = 48
+VALIDADE_HORAS = 24
 VERSAO = 1
 # Só por segurança: o arquivo é commitado, então nada que pareça chave pode ir parar nele.
 PADROES_DE_SEGREDO = [

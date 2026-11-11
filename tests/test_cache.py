@@ -1,4 +1,4 @@
-"""Cache de resumos: reaproveitamento, validade de 48 h e conteúdo seguro. Gemini sempre SIMULADO."""
+"""Cache de resumos: reaproveitamento, validade de 24 h e conteúdo seguro. Gemini sempre SIMULADO."""
 import json
 from datetime import timedelta
 
@@ -71,9 +71,9 @@ def test_so_os_grupos_novos_vao_ao_gemini(raiz):
     assert len(cache.carregar(arquivo(raiz), AGORA + timedelta(hours=1))) == 9   # 5 antigos + 4 novos
 
 
-def test_entradas_com_mais_de_48h_nao_sao_reaproveitadas(raiz):
+def test_entradas_com_mais_de_24h_nao_sao_reaproveitadas(raiz):
     executar(raiz, PARES)
-    n, cliente = executar(raiz, PARES, agora=AGORA + timedelta(hours=49), prefixo="refeito")
+    n, cliente = executar(raiz, PARES, agora=AGORA + timedelta(hours=25), prefixo="refeito")
     assert len(cliente.prompts) == 1 and n == 9
     assert "Resumo simulado refeito" in (raiz / "docs" / "index.html").read_text(encoding="utf-8")
 
@@ -132,11 +132,11 @@ def test_planejar_separa_reaproveitadas_e_novos():
     assert len(cache.planejar([e1, e2], arts, total=1)[0]) == 1
 
 
-def test_validade_de_48h_na_leitura(tmp_path):
+def test_validade_de_24h_na_leitura(tmp_path):
     caminho = tmp_path / "c.json"
-    velho = cache.entrada_de_grupo(grupo_exemplo(0, 1), AGORA - timedelta(hours=49))
-    novo = cache.entrada_de_grupo(grupo_exemplo(2, 3), AGORA - timedelta(hours=47))
-    cache.salvar(caminho, [velho, novo], AGORA - timedelta(hours=47))
+    velho = cache.entrada_de_grupo(grupo_exemplo(0, 1), AGORA - timedelta(hours=25))
+    novo = cache.entrada_de_grupo(grupo_exemplo(2, 3), AGORA - timedelta(hours=23))
+    cache.salvar(caminho, [velho, novo], AGORA - timedelta(hours=23))
     assert [e.id for e in cache.carregar(caminho, AGORA)] == [novo.id]
     assert cache.carregar(tmp_path / "nao-existe.json", AGORA) == []
 
