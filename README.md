@@ -30,3 +30,19 @@ Além de disponibilizar notícias de forma organizada, o projeto demonstra como 
 ## Acesse o projeto
 
 - **Site:** https://lucasbritosilva.github.io/SiteNoticias/
+
+## Notas técnicas
+
+### Chamadas ao Gemini
+
+- Cada execução faz **uma única chamada** ao Gemini, que agrupa as manchetes, escolhe os grupos mais
+  relevantes e já devolve o título e o resumo de cada um (JSON validado; se vier inválido, há uma nova tentativa).
+  Antes eram 1 chamada para agrupar mais 1 por cartão.
+- Não foi preciso dividir em duas chamadas: a entrada (até 150 manchetes, só título e veículo) e a saída
+  (cerca de 11 resumos curtos) ficam muito abaixo dos limites do modelo.
+- **Consequência:** como a chamada acontece antes de abrir as páginas das matérias, o resumo é escrito só a partir
+  das manchetes, e não mais de um trecho do texto. Os resumos tendem a ser mais curtos e genéricos.
+- As notícias avulsas (uma fonte só) que completam a lista, quando faltam grupos de 2 a 3 fontes, agora também são
+  escolhidas pelo Gemini nessa mesma chamada; o código confere que os ids existem e que não repetem o veículo.
+- Tudo que é específico do Gemini fica em `scripts/gemini.py` (`GeminiResumidor.resumir_grupos`). O pipeline só
+  depende desse método, então trocar de provedor é implementar outra classe com a mesma assinatura.

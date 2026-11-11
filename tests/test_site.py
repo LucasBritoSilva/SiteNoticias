@@ -6,9 +6,8 @@ from pathlib import Path
 import pytest
 
 import main
-import paginas
-import resumos
 import site_builder
+from gemini import GeminiResumidor, RespostaInvalida
 from coleta import Artigo
 from resumos import Resumo
 from site_builder import Item
@@ -92,22 +91,26 @@ def test_publicar_recusa_site_com_link_quebrado_e_nao_toca_em_docs(docs, tmp_pat
 # ------------------------------------------------------------ pipeline completo (tudo simulado)
 
 class GeminiSimulado:
-    def __init__(self, ids_por_grupo, quebrar_resumos=False):
-        self.ids, self.quebrar = ids_por_grupo, quebrar_resumos
+    """Cliente simulado do Gemini: uma resposta única com os grupos pedidos. Conta as chamadas."""
+
+    def __init__(self, ids_por_grupo, quebrar=False):
+        self.ids, self.quebrar, self.prompts = ids_por_grupo, quebrar, []
 
     def gerar(self, prompt):
-        if "Manchetes:" in prompt:
-            return json.dumps({"grupos": [
-                {"tema": f"g{n}", "nicho": "ia", "relevancia": 10 - n, "ids": ids} for n, ids in enumerate(self.ids)
-            ]})
+        self.prompts.append(prompt)
         if self.quebrar:
             return "nada de json"
-        fontes = json.loads(prompt.split("Fontes:\n", 1)[1])
-        return json.dumps({
-            "titulo": f"Resumo simulado de {fontes[0]['titulo']}",
-            "resumo": "Texto simulado do resumo, longo o bastante para passar na validação do pipeline.",
-            "fontes": [{"nome": f["nome"], "url": f["url"]} for f in fontes],
-        })
+        return json.dumps({"grupos": [
+            {"nicho": "ia", "relevancia": max(0, 10 - n), "ids": ids,
+             "titulo": f"Resumo simulado do grupo {n}",
+             "resumo": "Texto simulado do resumo, longo o bastante para passar na validação do pipeline."}
+            for n, ids in enumerate(self.ids)
+        ]})
+
+
+def pipeline(raiz, ids, **kw):
+    cliente = GeminiSimulado(ids, **kw)
+    return main.executar(raiz, GeminiResumidor(cliente), agora=AGORA), cliente
 
 
 @pytest.fixture
@@ -131,10 +134,11 @@ def raiz(tmp_path, monkeypatch):
     return tmp_path
 
 
-def test_pipeline_completo_gera_site_com_9_cartoes(raiz):
+def test_pipeline_completo_gera_site_com_9_cartoes_com_uma_unica_chamada(raiz):
     ids = [[i, i + 1] for i in range(0, 24, 2)]  # 12 grupos de 2 fontes: mais que o limite, então corta em 9
-    n = main.executar(raiz, GeminiSimulado(ids), agora=AGORA)
+    n, cliente = pipeline(raiz, ids)
     assert n == 9
+    assert len(cliente.prompts) == 1                      # agrupar + resumir tudo em uma chamada
     index = (raiz / "docs" / "index.html").read_text(encoding="utf-8")
     assert index.count('class="cartao"') == 9
     assert len(list((raiz / "docs" / "resumos").glob("*.html"))) == 9
@@ -142,17 +146,20 @@ def test_pipeline_completo_gera_site_com_9_cartoes(raiz):
     site_builder.verificar_site(raiz / "docs", raiz / "docs")
     # todo link externo de fonte nas páginas de resumo é uma URL coletada
     for p in (raiz / "docs" / "resumos").glob("*.html"):
-        assert re.findall(r'href="(https://exemplo\.com/\d+)"', p.read_text(encoding="utf-8"))
+        assert re.findall(r'href="(https://exemplo[.]com/[0-9]+)"', p.read_text(encoding="utf-8"))
 
 
 def test_pipeline_completa_com_noticias_avulsas_quando_faltam_grupos(raiz):
-    n = main.executar(raiz, GeminiSimulado([[0, 1]]), agora=AGORA)
-    assert n == 9  # 1 grupo + 8 avulsas (de veículos diferentes)
+    ids = [[0, 1]] + [[i] for i in range(2, 25)]          # 1 grupo + avulsas (o código evita veículo repetido)
+    n, cliente = pipeline(raiz, ids)
+    assert n == 9 and len(cliente.prompts) == 1
+    index = (raiz / "docs" / "index.html").read_text(encoding="utf-8")
+    assert "Resumo simulado do grupo 0" in index         # o grupo de 2 fontes vem primeiro
 
 
 def test_falha_nao_sobrescreve_docs(raiz):
-    with pytest.raises(RuntimeError):
-        main.executar(raiz, GeminiSimulado([[0, 1]], quebrar_resumos=True), agora=AGORA)
+    with pytest.raises(RespostaInvalida):
+        pipeline(raiz, [[0, 1]], quebrar=True)
     assert (raiz / "docs" / "index.html").read_text() == "VERSAO ANTERIOR"
 
 

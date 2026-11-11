@@ -1,4 +1,4 @@
-"""Testes do cliente Gemini e dos resumos.
+"""Testes da chamada única ao Gemini, das regras dos grupos e do cliente REST.
 
 NÃO há GEMINI_API_KEY neste ambiente de desenvolvimento: todas as respostas do Gemini aqui
 são SIMULADAS (cliente falso e sessão HTTP falsa). Nenhuma chamada real à API foi testada.
@@ -40,104 +40,124 @@ class Falso:
         return r if isinstance(r, str) else json.dumps(r)
 
 
-RESUMO_OK = {
-    "titulo": "MEC define regras para uso de inteligência artificial nas escolas",
-    "resumo": "O Ministério da Educação publicou diretrizes para o uso de inteligência artificial em escolas.",
-    "fontes": [{"nome": "Veiculo1", "url": "https://site1.com/materia-1"},
-               {"nome": "Veiculo2", "url": "https://site2.com/materia-2"}],
-}
+def item(ids, rel=5, nicho="ia", titulo=None, resumo=None):
+    n = ids[0]
+    return {
+        "ids": ids, "nicho": nicho, "relevancia": rel,
+        "titulo": titulo or f"Título explicativo do grupo {n}",
+        "resumo": resumo or "Resumo que une as informações das manchetes do grupo, longo o bastante para validar.",
+    }
 
 
-# ------------------------------------------------------------ agrupamento
+def resumidor(*respostas):
+    cliente = Falso(*respostas)
+    return gemini.GeminiResumidor(cliente), cliente
 
-def test_agrupar_aplica_regras_de_fontes():
+
+# ------------------------------------------------------------ chamada única
+
+def test_uma_unica_chamada_agrupa_escolhe_e_resume():
+    arts = [art(i) for i in range(8)]
+    r, cliente = resumidor({"grupos": [item([0, 1], 9), item([2, 3], 7), item([4, 5], 5)]})
+    grupos = r.resumir_grupos(arts, ["ia"], total=3)
+    assert len(cliente.prompts) == 1
+    assert [g.titulo for g in grupos] == [
+        "Título explicativo do grupo 0", "Título explicativo do grupo 2", "Título explicativo do grupo 4"]
+    assert all(g.resumo and 2 <= len(g.artigos) <= 3 for g in grupos)
+
+
+def test_prompt_traz_manchetes_pedido_de_resumo_e_regra_de_nao_inventar():
+    arts = [art(0), art(1)]
+    r, cliente = resumidor({"grupos": [item([0, 1])]})
+    r.resumir_grupos(arts, ["ia", "economia"], total=9)
+    p = cliente.prompts[0]
+    assert "0 | Veiculo0 | Fato 0" in p and "1 | Veiculo1 | Fato 1" in p
+    assert '["ia", "economia"]' in p and "11 grupos" in p       # 9 + reserva de 2
+    assert "SOMENTE o que as manchetes" in p and "nunca invente ids" in p
+
+
+def test_regras_dos_grupos_na_resposta_unica():
     arts = [art(i) for i in range(6)] + [art(6, fonte="Veiculo0")]
     resposta = {"grupos": [
-        {"tema": "A", "nicho": "ia", "relevancia": 9, "ids": [0, 1, 2, 3]},   # 4 ids -> corta em 3
-        {"tema": "B", "nicho": "ia", "relevancia": 7, "ids": [2, 4]},         # 2 já usado -> sobra 1 -> descarta
-        {"tema": "C", "nicho": "ia", "relevancia": 5, "ids": [4, 5]},
-        {"tema": "D", "nicho": "ia", "relevancia": 4, "ids": [6, 0]},         # mesmo veículo e id usado
-        {"tema": "E", "nicho": "ia", "relevancia": 3, "ids": [99, 1]},        # id inexistente -> ignorado
+        item([0, 1, 2, 3], 9),        # 4 ids -> corta em 3
+        item([2, 4], 7),              # 2 já usado -> sobra 1 -> descarta
+        item([4, 5], 5),
+        item([6, 0], 4),              # mesmo veículo e id usado -> descarta
+        item([99, 1], 3),             # id inexistente -> grupo inválido
     ]}
-    grupos = resumos.agrupar(Falso(resposta), arts, ["ia"])
-    assert [g.tema for g in grupos] == ["A", "C"]
-    assert len(grupos[0].artigos) == 3
-    assert all(2 <= len(g.artigos) <= 3 for g in grupos)
+    r, _ = resumidor(resposta)
+    grupos = r.resumir_grupos(arts, ["ia"], total=9)
+    assert [len(g.artigos) for g in grupos] == [3, 2]
+    assert [a.titulo for a in grupos[1].artigos] == ["Fato 4", "Fato 5"]
 
 
-def test_agrupamento_invalido_tenta_de_novo_uma_vez():
+def test_avulsas_so_completam_quando_faltam_grupos_e_sem_repetir_veiculo():
+    arts = [art(i) for i in range(8)] + [art(8, fonte="Veiculo5")]
+    resposta = {"grupos": [item([0, 1], 3), item([2], 9), item([3], 8), item([5], 7), item([8], 6)]}
+    r, _ = resumidor(resposta)
+    grupos = r.resumir_grupos(arts, ["ia"], total=4)
+    # o grupo de 2 fontes vem primeiro, mesmo com relevância menor; depois avulsas por relevância
+    assert [len(g.artigos) for g in grupos] == [2, 1, 1, 1]
+    assert [g.artigos[0].titulo for g in grupos[1:]] == ["Fato 2", "Fato 3", "Fato 5"]  # Fato 8 repete o veículo 5
+    # com grupos suficientes, avulsas nem entram
+    r2, _ = resumidor({"grupos": [item([0, 1], 3), item([2, 3], 2), item([4], 9)]})
+    assert [len(g.artigos) for g in r2.resumir_grupos(arts, ["ia"], total=2)] == [2, 2]
+
+
+def test_nada_e_inventado_ids_precisam_existir():
+    arts = [art(0), art(1)]
+    r, _ = resumidor({"grupos": [item([0, 1])]}, {"grupos": [item([0, 7])]}, {"grupos": [item([0, 7])]})
+    assert len(r.resumir_grupos(arts, ["ia"], 3)) == 1
+    with pytest.raises(RespostaInvalida):
+        r.resumir_grupos(arts, ["ia"], 3)
+
+
+def test_resposta_invalida_tenta_de_novo_uma_vez():
     arts = [art(i) for i in range(4)]
-    bom = {"grupos": [{"tema": "A", "nicho": "ia", "relevancia": 8, "ids": [0, 1]}]}
-    cliente = Falso("isto não é json", bom)
-    assert len(resumos.agrupar(cliente, arts, ["ia"])) == 1
+    bom = {"grupos": [item([0, 1], 8)]}
+    r, cliente = resumidor("isto não é json", bom)
+    assert len(r.resumir_grupos(arts, ["ia"], 3)) == 1
     assert len(cliente.prompts) == 2
 
 
-def test_agrupamento_invalido_duas_vezes_levanta_erro():
+def test_resposta_invalida_duas_vezes_levanta_erro():
+    r, cliente = resumidor({"grupos": "x"}, {"outra": 1})
     with pytest.raises(RespostaInvalida):
-        resumos.agrupar(Falso({"grupos": "x"}, {"outra": 1}), [art(0), art(1)], ["ia"])
+        r.resumir_grupos([art(0), art(1)], ["ia"], 3)
+    assert len(cliente.prompts) == 2          # nunca mais que 2 chamadas
+
+
+@pytest.mark.parametrize("campo,valor", [
+    ("titulo", ""), ("titulo", 5), ("resumo", "curto"), ("resumo", None), ("ids", []), ("ids", "x"), ("ids", [True]),
+])
+def test_grupo_com_campo_invalido_e_descartado(campo, valor):
+    ruim = dict(item([0, 1]), **{campo: valor})
+    r, _ = resumidor({"grupos": [ruim, item([2, 3])]})
+    grupos = r.resumir_grupos([art(i) for i in range(4)], ["ia"], 3)
+    assert [g.artigos[0].titulo for g in grupos] == ["Fato 2"]
+
+
+def test_aceita_cerca_markdown_e_limpa_espacos():
+    texto = "```json" + chr(10) + json.dumps({"grupos": [item([0, 1], titulo="  Título   com   espaços  ok ")]}) + chr(10) + "```"
+    r, _ = resumidor(texto)
+    assert r.resumir_grupos([art(0), art(1)], ["ia"], 3)[0].titulo == "Título com espaços ok"
+
+
+def test_resumidor_cumpre_o_contrato_do_pipeline():
+    # o pipeline só precisa do método resumir_grupos; outro provedor pode implementá-lo
+    assert callable(getattr(gemini.GeminiResumidor, "resumir_grupos"))
 
 
 def test_limitar_artigos_alterna_nichos():
     arts = [art(i, nicho="a", hora=10) for i in range(5)] + [art(i + 10, nicho="b", hora=9) for i in range(5)]
-    escolhidos = resumos.limitar_artigos(arts, limite=4)
-    assert {a.nicho for a in escolhidos} == {"a", "b"}
-
-
-def test_escolher_top_prioriza_relevancia_e_completa_com_avulsas():
-    g1 = resumos.Grupo("x", "ia", 3, [art(0), art(1)])
-    g2 = resumos.Grupo("y", "ia", 9, [art(2), art(3)])
-    avulsas = [art(4, hora=8), art(5, hora=12), *g1.artigos, *g2.artigos]
-    top = resumos.escolher_top([g1, g2], avulsas, total=3)
-    assert [g.tema for g in top][:2] == ["y", "x"]
-    assert len(top) == 3 and len(top[2].artigos) == 1 and top[2].artigos[0].titulo == "Fato 5"
-    assert len(resumos.escolher_top([g1, g2], avulsas, total=1)) == 1
-
-
-# ------------------------------------------------------------ resumo
-
-def grupo2():
-    return resumos.Grupo("tema", "ia", 8, [art(1), art(2)])
-
-
-def test_resumo_valido():
-    r = resumos.resumir(Falso(RESUMO_OK), grupo2())
-    assert r.titulo.startswith("MEC define")
-    assert [f["url"] for f in r.fontes] == ["https://site1.com/materia-1", "https://site2.com/materia-2"]
-
-
-def test_resumo_rejeita_url_inventada_e_tenta_de_novo():
-    ruim = dict(RESUMO_OK, fontes=[{"nome": "X", "url": "https://inventado.com/a"}])
-    cliente = Falso(ruim, RESUMO_OK)
-    assert resumos.resumir(cliente, grupo2()).titulo
-    assert len(cliente.prompts) == 2
-
-
-@pytest.mark.parametrize("campo,valor", [
-    ("titulo", ""), ("titulo", 5), ("resumo", "curto"), ("resumo", None), ("fontes", []), ("fontes", "x"),
-])
-def test_resumo_rejeita_campos_invalidos(campo, valor):
-    ruim = dict(RESUMO_OK, **{campo: valor})
-    with pytest.raises(RespostaInvalida):
-        resumos.resumir(Falso(ruim, ruim), grupo2())
-
-
-def test_resumo_aceita_cerca_markdown():
-    texto = "```json\n" + json.dumps(RESUMO_OK) + "\n```"
-    assert resumos.resumir(Falso(texto), grupo2()).resumo
-
-
-def test_prompt_inclui_trecho_das_fontes():
-    g = grupo2()
-    g.artigos[0].trecho = "Texto de apoio da matéria"
-    assert "Texto de apoio da matéria" in resumos.prompt_resumo(g)
+    assert {a.nicho for a in resumos.limitar_artigos(arts, limite=4)} == {"a", "b"}
 
 
 def test_com_dados_reais_do_exemplo_coletado():
     dados = json.loads((FIXTURES / "exemplo_coleta.json").read_text(encoding="utf-8"))
     arts = [Artigo(**a) for a in dados["artigos"]]
-    resposta = {"grupos": [{"tema": "t", "nicho": "inteligência artificial", "relevancia": 9, "ids": [0, 1]}]}
-    grupos = resumos.agrupar(Falso(resposta), arts, ["inteligência artificial"])
+    r, _ = resumidor({"grupos": [item([0, 1], 9, nicho="inteligência artificial")]})
+    grupos = r.resumir_grupos(arts, ["inteligência artificial"], 9)
     assert len(grupos) == 1 and len(grupos[0].artigos) == 2
 
 
