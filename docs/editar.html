@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editar nichos</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="style.css">
+<style>
+  .editor { max-width: 680px; margin: 24px auto; padding: 0 16px; }
+  .editor label { display: block; font-weight: 600; margin: 18px 0 6px; }
+  .editor input, .editor textarea {
+    width: 100%; padding: 10px 12px; font: inherit; color: var(--texto);
+    background: var(--papel); border: 1px solid var(--borda); border-radius: 8px;
+  }
+  .editor textarea { min-height: 180px; resize: vertical; }
+  .editor .dica { margin: 4px 0 0; font-size: 0.85rem; color: var(--suave); }
+  .editor .acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .botao-sec { background: transparent; color: var(--destaque); border: 1px solid var(--destaque); }
+  .caixa {
+    padding: 12px 14px; border-radius: 8px; border: 1px solid var(--borda);
+    background: var(--papel); font-size: 0.95rem;
+  }
+  .caixa-aviso { border-color: #c98a00; }
+  .estado { margin-top: 16px; min-height: 1.5em; }
+  .estado.ok { color: #1a7f37; }
+  .estado.erro { color: #cf222e; }
+  @media (prefers-color-scheme: dark) { .estado.ok { color: #56d364; } .estado.erro { color: #ff7b72; } }
+  .botao[disabled] { opacity: 0.5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<header class="topo topo-interno">
+  <a class="voltar" href="index.html">&larr; Voltar às notícias</a>
+</header>
+<main class="editor">
+  <h1>Editar nichos</h1>
+  <p>Um termo de interesse por linha. A próxima atualização do site (03:00 ou 15:00, horário de Cuiabá)
+     já usa a lista nova.</p>
+
+  <div class="caixa caixa-aviso">
+    <strong>Token do GitHub.</strong> Crie um token <em>fine-grained</em> restrito a <strong>este repositório</strong>,
+    com a permissão <strong>somente de Contents (leitura e escrita)</strong> e nenhuma outra.
+    O token é digitado por você e fica guardado <strong>apenas no <code>localStorage</code> deste navegador</strong>:
+    não é gravado no site nem no repositório e só é enviado para <code>api.github.com</code>.
+  </div>
+
+  <form id="form" autocomplete="off">
+    <label for="repo">Repositório (dono/nome)</label>
+    <input id="repo" name="repo" type="text" placeholder="dono/repositorio" spellcheck="false" required>
+
+    <label for="token">Token do GitHub</label>
+    <input id="token" name="token" type="password" placeholder="github_pat_..." spellcheck="false" autocomplete="off" required>
+    <p class="dica">Fica salvo neste navegador depois de um envio bem-sucedido.</p>
+
+    <label for="nichos">Nichos (um por linha)</label>
+    <textarea id="nichos" name="nichos" placeholder="inteligência artificial&#10;economia"></textarea>
+    <p class="dica">Até 10 termos. Cada termo vira uma busca no Google Notícias.</p>
+
+    <div class="acoes">
+      <button class="botao" type="submit" id="salvar" disabled>Salvar</button>
+      <button class="botao botao-sec" type="button" id="recarregar">Recarregar do GitHub</button>
+      <button class="botao botao-sec" type="button" id="esquecer">Esquecer token</button>
+    </div>
+    <p class="estado" id="estado" role="status" aria-live="polite"></p>
+  </form>
+</main>
+
+<script src="editar.js"></script>
+<script>
+(function () {
+  "use strict";
+  var CHAVE_TOKEN = "sitenoticias.token";
+  var $ = function (id) { return document.getElementById(id); };
+  var base = null; // conteúdo de nichos.json no momento em que a página carregou/recarregou
+
+  function guardado(acao, valor) {
+    try {
+      if (acao === "ler") return localStorage.getItem(CHAVE_TOKEN) || "";
+      if (acao === "gravar") localStorage.setItem(CHAVE_TOKEN, valor);
+      if (acao === "apagar") localStorage.removeItem(CHAVE_TOKEN);
+    } catch (e) { /* localStorage indisponível (modo privado, bloqueio) */ }
+    return "";
+  }
+
+  function mostrar(texto, tipo) {
+    var el = $("estado");
+    el.textContent = texto;
+    el.className = "estado" + (tipo ? " " + tipo : "");
+  }
+
+  function ocupado(sim) {
+    $("salvar").disabled = sim || base === null;
+    $("recarregar").disabled = sim;
+  }
+
+  async function carregar() {
+    var repo = $("repo").value.trim();
+    if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) { mostrar("Informe o repositório no formato dono/nome.", "erro"); return; }
+    ocupado(true);
+    mostrar("Carregando nichos atuais...");
+    try {
+      var atual = await Nichos.lerArquivo(fetch.bind(window), repo, $("token").value.trim());
+      base = atual.raw;
+      $("nichos").value = atual.lista.join("\n");
+      mostrar("Lista carregada do GitHub.", "ok");
+    } catch (e) {
+      base = null;
+      mostrar(e.message, "erro");
+    }
+    ocupado(false);
+  }
+
+  $("form").addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+    var repo = $("repo").value.trim();
+    var token = $("token").value.trim();
+    if (!token) { mostrar("Digite o token do GitHub.", "erro"); return; }
+    ocupado(true);
+    mostrar("Salvando...");
+    try {
+      var lista = Nichos.analisarLinhas($("nichos").value);
+      var r = await Nichos.salvar({ fetch: fetch.bind(window), repo: repo, token: token, lista: lista, baseRaw: base });
+      base = r.raw;
+      $("nichos").value = lista.join("\n");
+      guardado("gravar", token);
+      mostrar(r.alterado ? "Nichos salvos. A próxima atualização do site usará a lista nova." : "Nada mudou: a lista já era essa.", "ok");
+    } catch (e) {
+      mostrar(e.message, "erro");
+    }
+    ocupado(false);
+  });
+
+  $("recarregar").addEventListener("click", carregar);
+  $("esquecer").addEventListener("click", function () {
+    guardado("apagar");
+    $("token").value = "";
+    mostrar("Token removido deste navegador.", "ok");
+  });
+
+  $("repo").value = Nichos.repoDaUrl(location);
+  $("token").value = guardado("ler");
+  if ($("repo").value) carregar();
+  else mostrar("Informe o repositório (dono/nome) para carregar a lista.");
+})();
+</script>
+</body>
+</html>
