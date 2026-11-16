@@ -24,6 +24,7 @@ STATUS_TRANSITORIOS = {429, 500, 502, 503, 504}
 MAX_TENTATIVAS = 2  # teto absoluto de requisições por chamada: a inicial + uma nova tentativa
 ESPERA_PADRAO = 10.0  # segundos, fixa, entre a primeira e a segunda tentativa
 PRAZO_TOTAL_PADRAO = 300.0  # segundos: teto de tempo para gerar(), somando esperas e requisições
+TIMEOUT_PADRAO = 60  # segundos por requisição (conexão e leitura); estourar conta como erro transitório
 
 
 class GeminiErro(RuntimeError):
@@ -35,7 +36,7 @@ class GeminiCotaErro(GeminiErro):
 
 
 class GeminiIndisponivel(GeminiErro):
-    """Erro transitório (503/5xx, 429 por minuto, rede) que persistiu após as tentativas permitidas."""
+    """Erro transitório (503/5xx, 429 por minuto, rede, timeout) que persistiu após as tentativas permitidas."""
 
 
 class RespostaInvalida(ValueError):
@@ -50,7 +51,7 @@ class GeminiClient:
         sessao: requests.Session | None = None,
         intervalo_minimo: float = 4.0,
         esperas: tuple[float, ...] = (ESPERA_PADRAO,),
-        timeout: int = 120,
+        timeout: int = TIMEOUT_PADRAO,
         prazo_total: float = PRAZO_TOTAL_PADRAO,
     ):
         self.chave = chave or os.environ.get("GEMINI_API_KEY", "")
@@ -69,7 +70,7 @@ class GeminiClient:
         """Envia o prompt e devolve o texto da resposta (esperado: JSON).
 
         Única camada de retentativa do pipeline. No máximo MAX_TENTATIVAS requisições, só para erros
-        transitórios (503/5xx, 429 por minuto, rede), com espera fixa e dentro de `prazo_total`.
+        transitórios (503/5xx, 429 por minuto, rede e timeout), com espera fixa e dentro de `prazo_total`.
         400/401/403, 429 de cota e resposta sem texto falham na hora, sem nova tentativa.
         """
         corpo = {
@@ -94,6 +95,8 @@ class GeminiClient:
             self.chamadas += 1
             try:
                 resp = self.http.post(url, headers=cabecalhos, json=corpo, timeout=min(self.timeout, restante))
+            except requests.Timeout as exc:  # mesmo tratamento do 503: transitório
+                erro = f"timeout após {min(self.timeout, restante):.0f}s: {exc}"
             except requests.RequestException as exc:
                 erro = f"erro de rede: {exc}"
             else:

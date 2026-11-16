@@ -322,6 +322,40 @@ def test_prazo_total_esgotado_impede_a_segunda_tentativa(monkeypatch):
     assert len(s.chamadas) == 1 and esperas == []     # 10 s de espera não cabem em 5 s de prazo
 
 
+def test_timeout_padrao_e_60s_e_timeout_de_leitura_e_repetido_uma_vez(monkeypatch):
+    esperas, timeouts = [], []
+    monkeypatch.setattr(gemini.time, "sleep", esperas.append)
+
+    class Lenta:
+        def post(self, url, headers=None, json=None, timeout=None):
+            timeouts.append(timeout)
+            raise requests.ReadTimeout(f"Read timed out. (read timeout={timeout})")
+
+    c = GeminiClient(chave="k", sessao=Lenta(), intervalo_minimo=0)  # configuração padrão
+    with pytest.raises(gemini.GeminiIndisponivel, match="timeout"):
+        c.gerar("x")
+    assert timeouts == [60, 60] and gemini.TIMEOUT_PADRAO == 60
+    assert c.chamadas == 2 and esperas == [gemini.ESPERA_PADRAO]
+
+
+def test_503_seguido_de_timeout_para_na_segunda_tentativa(monkeypatch):
+    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
+
+    class S:
+        n = 0
+
+        def post(self, *a, **k):
+            S.n += 1
+            if S.n == 1:
+                return RespostaHTTP(503, CORPO_503)
+            raise requests.ReadTimeout("Read timed out.")
+
+    c = GeminiClient(chave="k", sessao=S(), intervalo_minimo=0)
+    with pytest.raises(gemini.GeminiIndisponivel):
+        c.gerar("x")
+    assert S.n == 2
+
+
 def test_timeout_da_requisicao_respeita_o_prazo_total():
     timeouts = []
 

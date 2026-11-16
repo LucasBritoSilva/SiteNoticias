@@ -8,9 +8,9 @@ TEXTO = (Path(__file__).parent.parent / ".github" / "workflows" / "atualizar-sit
 
 
 def test_horarios_em_utc():
-    assert 'cron: "50 9 * * *"' in TEXTO   # 09:50 UTC = 05:50 em Cuiabá (UTC-4)
-    assert 'cron: "50 16 * * *"' in TEXTO  # 16:50 UTC = 12:50 em Cuiabá
-    assert 'cron: "50 22 * * *"' in TEXTO  # 22:50 UTC = 18:50 em Cuiabá
+    assert 'cron: "40 0 * * *"' in TEXTO   # 00:40 UTC = 20:40 em Cuiabá (UTC-4), dia anterior
+    assert 'cron: "5 9 * * *"' in TEXTO    # 09:05 UTC = 05:05 em Cuiabá
+    assert 'cron: "5 21 * * *"' in TEXTO   # 21:05 UTC = 17:05 em Cuiabá
     assert TEXTO.count("- cron:") == 3
 
 

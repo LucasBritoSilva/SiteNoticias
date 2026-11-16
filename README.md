@@ -38,8 +38,8 @@ pelo gatilho manual (`workflow_dispatch`).
 
 | Brasília | UTC | cron |
 |---|---|---|
-| 06:50 | 09:50 | `50 9 * * *` |
-| 13:50 | 16:50 | `50 16 * * *` |
-| 19:50 | 22:50 | `50 22 * * *` |
+| 06:05 | 09:05 | `5 9 * * *` |
+| 18:05 | 21:05 | `5 21 * * *` |
+| 21:40 | 00:40 (dia seguinte) | `40 0 * * *` |
 
 O GitHub pode atrasar execuções agendadas em alguns minutos nos horários de pico.
