@@ -50,7 +50,9 @@ def test_index_tem_cartoes_com_imagem_titulo_e_botao():
     assert 'href="resumos/01-titulo-1.html"' in html and "Ler resumo" in html
     assert "<b>1</b>" not in html and "&lt;b&gt;1&lt;/b&gt;" in html          # escapado
     assert 'name="viewport"' in html
-    assert "03:00 (horário de Cuiabá)" in html                                 # 07:00 UTC
+    assert "04:00 (horário de Brasília)" in html                               # 07:00 UTC
+    assert "editar.html" not in html                                          # sem link para editar nichos
+    assert "atualizado todos os dias às 06:05, 18:05 e 21:40 (horário de Brasília)" in html
 
 
 def test_pagina_de_resumo_lista_fontes_e_escapa():

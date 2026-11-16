@@ -16,7 +16,10 @@ from urllib.parse import urlsplit
 
 from resumos import Resumo
 
-CUIABA = timezone(timedelta(hours=-4), "Cuiabá")  # UTC-4 o ano todo, sem horário de verão
+BRASILIA = timezone(timedelta(hours=-3), "Brasília")  # UTC-3 o ano todo, sem horário de verão
+# Horários de Brasília das execuções agendadas (cron do workflow em UTC: 09:05, 21:05 e 00:40).
+# tests/test_workflow.py confere que estes valores batem com o cron.
+HORARIOS_ATUALIZACAO = ("06:05", "18:05", "21:40")
 TITULO_SITE = "Notícias por nicho"
 IMAGEM_GENERICA = "generica.svg"
 GERADOS = ("index.html", "resumos")  # além de img/* (exceto a genérica)
@@ -49,7 +52,7 @@ def url_segura(url: str) -> str:
 
 
 def data_legivel(quando: datetime) -> str:
-    return quando.astimezone(CUIABA).strftime("%d/%m/%Y às %H:%M") + " (horário de Cuiabá)"
+    return quando.astimezone(BRASILIA).strftime("%d/%m/%Y às %H:%M") + " (horário de Brasília)"
 
 
 def _pagina(titulo: str, corpo: str, prefixo: str, descricao: str) -> str:
@@ -100,7 +103,7 @@ def pagina_index(itens: list[Item], nichos: list[str], atualizado: datetime) -> 
 </main>
 <footer class="rodape">
   <p>Resumos gerados automaticamente a partir de notícias do Google Notícias. Confira sempre as fontes originais.</p>
-  <p><a href="editar.html">Editar nichos</a></p>
+  <p>O site é atualizado todos os dias às {", ".join(HORARIOS_ATUALIZACAO[:-1])} e {HORARIOS_ATUALIZACAO[-1]} (horário de Brasília).</p>
 </footer>"""
     return _pagina(TITULO_SITE, corpo, "", f"Notícias dos nichos: {', '.join(nichos)}")
 

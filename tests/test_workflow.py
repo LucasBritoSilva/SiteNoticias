@@ -14,6 +14,17 @@ def test_horarios_em_utc():
     assert TEXTO.count("- cron:") == 3
 
 
+def test_horarios_do_rodape_batem_com_o_cron():
+    import re
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+    import site_builder
+
+    crons = re.findall(r'cron: "(\d+) (\d+) \* \* \*"', TEXTO)
+    brasilia = sorted(f"{(int(h) - 3) % 24:02d}:{int(m):02d}" for m, h in crons)
+    assert brasilia == sorted(site_builder.HORARIOS_ATUALIZACAO)
+
+
 def test_gatilho_manual_e_concorrencia():
     assert "workflow_dispatch:" in TEXTO
     assert "concurrency:" in TEXTO and "cancel-in-progress: false" in TEXTO
