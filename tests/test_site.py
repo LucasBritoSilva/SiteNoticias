@@ -7,7 +7,8 @@ import pytest
 
 import main
 import site_builder
-from gemini import GeminiClient, GeminiCotaErro, GeminiErro, GeminiResumidor, RespostaInvalida
+import gemini
+from gemini import GeminiClient, GeminiCotaErro, GeminiErro, GeminiIndisponivel, GeminiResumidor, RespostaInvalida
 from coleta import Artigo
 from resumos import Resumo
 from site_builder import Item
@@ -171,7 +172,7 @@ def test_com_tentativas_repete_ate_3_vezes_com_espera():
         chamadas.append(1)
         raise RuntimeError("falhou")
 
-    assert main.com_tentativas(tarefa, dormir=esperas.append) is False
+    assert main.com_tentativas(tarefa, tentativas=3, dormir=esperas.append) is False
     assert len(chamadas) == 3 and esperas == [900, 900]    # 15 min entre as tentativas, nenhuma após a última
 
 
@@ -184,8 +185,19 @@ def test_com_tentativas_para_no_primeiro_sucesso():
             raise RuntimeError("x")
 
     esperas = []
-    assert main.com_tentativas(tarefa, dormir=esperas.append) is True
+    assert main.com_tentativas(tarefa, tentativas=3, dormir=esperas.append) is True
     assert estado["n"] == 2 and esperas == [900]
+
+
+def test_por_padrao_o_pipeline_roda_uma_vez_so():
+    esperas, chamadas = [], []
+
+    def tarefa():
+        chamadas.append(1)
+        raise RuntimeError("falhou")
+
+    assert main.com_tentativas(tarefa, dormir=esperas.append) is False
+    assert len(chamadas) == 1 and esperas == []
 
 
 # ------------------------------------------------------------ erro de cota x temporário na execução
@@ -203,28 +215,22 @@ def test_cota_para_a_execucao_sem_retentativa_e_sem_esperar(caplog):
     assert "ERRO DE COTA" in caplog.text and "sem novas tentativas" in caplog.text
 
 
-def test_erro_temporario_continua_com_3_tentativas_e_o_log_diz_o_tipo(caplog):
-    esperas = []
+@pytest.mark.parametrize("erro,rotulo", [
+    (GeminiIndisponivel("Gemini indisponível após 2 tentativa(s) (HTTP 503)"), "GEMINI INDISPONÍVEL"),
+    (GeminiErro("Gemini recusou a requisição, erro não transitório (HTTP 403)"), "REQUISIÇÃO RECUSADA"),
+    (RespostaInvalida("JSON inválido"), "RESPOSTA INVÁLIDA"),
+])
+def test_erro_do_gemini_nunca_e_repetido_pelo_nivel_externo(caplog, erro, rotulo):
+    esperas, chamadas = [], []
 
     def tarefa():
-        raise GeminiErro("Gemini indisponível após 3 tentativas (HTTP 503)")
+        chamadas.append(1)
+        raise erro
 
     with caplog.at_level("ERROR"):
-        assert main.com_tentativas(tarefa, dormir=esperas.append) is False
-    assert esperas == [900, 900]
-    assert "TEMPORÁRIO" in caplog.text and "COTA" not in caplog.text
-
-
-def test_temporario_seguido_de_cota_para_na_cota():
-    estado = {"n": 0}
-    esperas = []
-
-    def tarefa():
-        estado["n"] += 1
-        raise GeminiErro("503") if estado["n"] == 1 else GeminiCotaErro("429 cota")
-
-    assert main.com_tentativas(tarefa, dormir=esperas.append) is False
-    assert estado["n"] == 2 and esperas == [900]
+        assert main.com_tentativas(tarefa, tentativas=3, dormir=esperas.append) is False
+    assert len(chamadas) == 1 and esperas == []
+    assert rotulo in caplog.text and "sem novas tentativas" in caplog.text
 
 
 def test_cota_no_pipeline_real_mantem_docs_e_cache(raiz):
@@ -251,6 +257,44 @@ def test_cota_no_pipeline_real_mantem_docs_e_cache(raiz):
     assert Sessao429.chamadas == 1                                        # nenhuma retentativa
     assert (raiz / "docs" / "index.html").read_text() == "VERSAO ANTERIOR"  # docs/ mantido
     assert not (raiz / "dados").exists()                                  # cache não foi criado
+
+
+class Sessao503:
+    """Sessão HTTP falsa: o Gemini responde sempre 503 UNAVAILABLE. Nenhuma cota real é usada."""
+
+    def __init__(self):
+        self.chamadas = 0
+
+    def post(self, *a, **k):
+        self.chamadas += 1
+        corpo = {"error": {"code": 503, "status": "UNAVAILABLE",
+                           "message": "This model is currently experiencing high demand."}}
+
+        class R:
+            status_code, text = 503, json.dumps(corpo)
+
+            def json(self):
+                return corpo
+        return R()
+
+
+def test_503_no_main_faz_2_requisicoes_mantem_docs_e_dados_e_sai_com_erro(raiz, monkeypatch, caplog):
+    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)   # a espera de 10 s não atrasa o teste
+    sessao = Sessao503()
+    cliente = GeminiClient(chave="chave-de-teste", sessao=sessao, intervalo_minimo=0)  # configuração padrão
+    executar_real = main.executar
+    monkeypatch.setattr(main, "RAIZ", raiz)
+    monkeypatch.setattr(main, "GeminiResumidor", lambda: GeminiResumidor(cliente))
+    monkeypatch.setattr(main, "executar", lambda r, res: executar_real(r, res, agora=AGORA))
+    monkeypatch.setattr(main.logging, "basicConfig", lambda **k: None)
+    with caplog.at_level("INFO"):
+        assert main.main() == 1                                         # GitHub Actions registra a falha
+    assert sessao.chamadas == 2                                          # 1 inicial + 1 nova tentativa
+    assert (raiz / "docs" / "index.html").read_text() == "VERSAO ANTERIOR"
+    assert not (raiz / "dados").exists()
+    final = [r.getMessage() for r in caplog.records if "RESUMO DA EXECUÇÃO" in r.getMessage()][-1]
+    assert "requisições ao Gemini: 2" in final and "GEMINI INDISPONÍVEL" in final
+    assert "próximo agendamento" in final
 
 
 # ------------------------------------------------------------ texto lido antes da chamada única

@@ -20,13 +20,15 @@ import coleta
 import paginas
 import resumos
 import site_builder
-from gemini import GeminiCotaErro, GeminiErro, GeminiResumidor, RespostaInvalida
+from gemini import GeminiCotaErro, GeminiErro, GeminiIndisponivel, GeminiResumidor, RespostaInvalida
 from resumos import Resumo
 from site_builder import Item
 
 RAIZ = Path(__file__).resolve().parent.parent
-TENTATIVAS = 3
-ESPERA_ENTRE_TENTATIVAS = 15 * 60  # segundos
+# Uma única execução de `executar` por agendamento: a retentativa fica só em GeminiClient.gerar.
+# Reexecutar o pipeline inteiro repetiria a chamada ao Gemini; quem tenta de novo é o próximo agendamento.
+TENTATIVAS = 1
+ESPERA_ENTRE_TENTATIVAS = 15 * 60  # segundos (só usada se alguém passar tentativas > 1)
 MIN_NOVOS_PARA_CHAMAR = 2  # com menos de 2 notícias novas não vale gastar uma chamada
 
 log = logging.getLogger("pipeline")
@@ -102,10 +104,14 @@ def tipo_do_erro(exc: BaseException) -> str:
     """Rótulo usado no log para deixar claro o que parou a execução."""
     if isinstance(exc, GeminiCotaErro):
         return "COTA ESGOTADA"
+    if isinstance(exc, GeminiIndisponivel):
+        return "GEMINI INDISPONÍVEL (503/5xx, limite por minuto ou rede, tentativas esgotadas)"
     if isinstance(exc, RespostaInvalida):
         return "RESPOSTA INVÁLIDA"
-    if isinstance(exc, (GeminiErro, requests.RequestException)):
-        return "TEMPORÁRIO (rede/instabilidade/limite por minuto)"
+    if isinstance(exc, GeminiErro):
+        return "REQUISIÇÃO RECUSADA PELO GEMINI (erro não transitório: 400/401/403...)"
+    if isinstance(exc, requests.RequestException):
+        return "REDE"
     return "OUTRO"
 
 
@@ -117,7 +123,8 @@ def com_tentativas(
 ) -> bool:
     """Executa `tarefa` até `tentativas` vezes, esperando `espera` s entre elas.
 
-    Erro de cota não é repetido nem entra na contagem: a execução para na hora.
+    Qualquer erro do Gemini (cota, indisponível, recusa, resposta inválida) para na hora: as
+    retentativas dele já foram feitas em GeminiClient.gerar e não se multiplicam aqui.
     """
     for n in range(1, tentativas + 1):
         try:
@@ -126,7 +133,10 @@ def com_tentativas(
         except GeminiCotaErro as exc:
             log.error("EXECUÇÃO INTERROMPIDA POR ERRO DE COTA (sem novas tentativas): %s", exc)
             return False
-        except Exception as exc:  # noqa: BLE001 - qualquer outra falha dispara nova tentativa
+        except (GeminiErro, RespostaInvalida) as exc:
+            log.error("EXECUÇÃO INTERROMPIDA (sem novas tentativas). Tipo de erro: %s. %s", tipo_do_erro(exc), exc)
+            return False
+        except Exception as exc:  # noqa: BLE001 - falha fora do Gemini: repete só se tentativas > 1
             log.exception("Tentativa %d/%d falhou. Tipo de erro: %s", n, tentativas, tipo_do_erro(exc))
             if n < tentativas:
                 log.info("Aguardando %.0f min para tentar de novo...", espera / 60)
@@ -142,10 +152,26 @@ def main() -> int:
     except Exception as exc:  # noqa: BLE001
         log.error("%s", exc)
         return 1
-    ok = com_tentativas(lambda: executar(RAIZ, resumidor))
+    falhas: list[BaseException] = []
+
+    def tarefa() -> None:
+        try:
+            executar(RAIZ, resumidor)
+        except Exception as exc:  # guarda o motivo para o resumo final e repassa
+            falhas.append(exc)
+            raise
+
+    ok = com_tentativas(tarefa)
+    chamadas = getattr(getattr(resumidor, "cliente", None), "chamadas", "?")
     if not ok:
-        log.error("Execução encerrada sem atualizar o site: docs/ e dados/ foram mantidos como estavam.")
+        motivo = falhas[-1] if falhas else None
+        log.error(
+            "RESUMO DA EXECUÇÃO: FALHOU | requisições ao Gemini: %s | motivo da parada: %s (%s) | "
+            "docs/ e dados/ mantidos como estavam; será reexecutada no próximo agendamento.",
+            chamadas, tipo_do_erro(motivo) if motivo else "desconhecido", motivo,
+        )
         return 1
+    log.info("RESUMO DA EXECUÇÃO: OK | requisições ao Gemini: %s", chamadas)
     return 0
 
 

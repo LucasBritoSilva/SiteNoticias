@@ -20,7 +20,7 @@ concurrency:
 jobs:
   atualizar:
     runs-on: ubuntu-latest
-    # 3 tentativas do pipeline com 15 min de intervalo cabem folgadamente em 90 min.
+    # Teto de segurança: o pipeline roda uma vez só (Gemini: no máximo 2 requisições em até 5 min).
     timeout-minutes: 90
     steps:
       - name: Baixar o repositório
@@ -35,9 +35,9 @@ jobs:
       - name: Instalar dependências
         run: pip install -r requirements.txt
 
-      # O próprio script tenta até 3 vezes, esperando 15 min entre as tentativas.
-      # Ele só altera docs/ se uma tentativa terminar com sucesso; se todas falharem,
-      # o passo falha, o próximo passo não roda e a versão anterior do site continua no ar.
+      # O script roda o pipeline uma vez; só o Gemini tem uma nova tentativa curta (503/rede).
+      # Ele só altera docs/ se a execução terminar com sucesso; se falhar, o passo falha,
+      # o próximo passo não roda e a versão anterior do site continua no ar até o próximo agendamento.
       - name: Gerar o site
         run: python scripts/main.py
         env:

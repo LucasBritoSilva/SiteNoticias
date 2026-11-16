@@ -114,19 +114,20 @@ def test_nada_e_inventado_ids_precisam_existir():
         r.resumir_grupos(arts, ["ia"], 3)
 
 
-def test_resposta_invalida_tenta_de_novo_uma_vez():
+def test_json_invalido_falha_na_hora_sem_nova_chamada():
     arts = [art(i) for i in range(4)]
     bom = {"grupos": [item([0, 1], 8)]}
     r, cliente = resumidor("isto não é json", bom)
-    assert len(r.resumir_grupos(arts, ["ia"], 3)) == 1
-    assert len(cliente.prompts) == 2
+    with pytest.raises(RespostaInvalida, match="sem nova tentativa"):
+        r.resumir_grupos(arts, ["ia"], 3)
+    assert len(cliente.prompts) == 1          # erro não transitório: uma chamada só
 
 
-def test_resposta_invalida_duas_vezes_levanta_erro():
+def test_estrutura_invalida_falha_na_hora_sem_nova_chamada():
     r, cliente = resumidor({"grupos": "x"}, {"outra": 1})
     with pytest.raises(RespostaInvalida):
         r.resumir_grupos([art(0), art(1)], ["ia"], 3)
-    assert len(cliente.prompts) == 2          # nunca mais que 2 chamadas
+    assert len(cliente.prompts) == 1
 
 
 @pytest.mark.parametrize("campo,valor", [
@@ -256,11 +257,12 @@ def test_cota_e_um_tipo_de_erro_do_gemini():
     assert issubclass(gemini.GeminiCotaErro, GeminiErro)
 
 
-def test_429_por_minuto_e_repetido_com_espera_curta():
+def test_429_por_minuto_e_repetido_uma_vez_e_depois_desiste():
     s = SessaoFalsa(RespostaHTTP(429, corpo_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier")),
                     RespostaHTTP(429, corpo_429(mensagem="Rate limit: too many requests per minute")), ok('{"a":1}'))
-    assert cliente(s).gerar("x") == '{"a":1}'
-    assert len(s.chamadas) == 3
+    with pytest.raises(gemini.GeminiIndisponivel):
+        cliente(s).gerar("x")
+    assert len(s.chamadas) == 2                       # teto de 2, mesmo com esperas=(0, 0)
 
 
 def test_429_generico_sem_pista_de_cota_e_tratado_como_temporario():
@@ -269,7 +271,7 @@ def test_429_generico_sem_pista_de_cota_e_tratado_como_temporario():
     assert len(s.chamadas) == 2
 
 
-def test_503_e_erro_de_rede_continuam_sendo_repetidos():
+def test_erro_de_rede_e_repetido_uma_vez():
     class Cai:
         def __init__(self):
             self.n = 0
@@ -278,12 +280,80 @@ def test_503_e_erro_de_rede_continuam_sendo_repetidos():
             self.n += 1
             if self.n == 1:
                 raise requests.ConnectionError("rede caiu")
-            if self.n == 2:
-                return RespostaHTTP(503, {})
             return ok("{}")
 
     s = Cai()
-    assert cliente(s).gerar("x") == "{}" and s.n == 3
+    c = cliente(s)
+    assert c.gerar("x") == "{}" and s.n == 2 and c.chamadas == 2
+
+
+# ------------------------------------------------------------ 503 persistente (sem gastar cota real)
+
+CORPO_503 = {"error": {"code": 503, "status": "UNAVAILABLE",
+                       "message": "This model is currently experiencing high demand. Please try again later."}}
+
+
+def test_503_persistente_faz_no_maximo_2_requisicoes_com_espera_fixa_curta(monkeypatch):
+    esperas = []
+    monkeypatch.setattr(gemini.time, "sleep", esperas.append)
+    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 5)
+    c = GeminiClient(chave="chave-de-teste", sessao=s, intervalo_minimo=0)  # configuração padrão
+    with pytest.raises(gemini.GeminiIndisponivel, match="após 2 tentativa"):
+        c.gerar("x")
+    assert len(s.chamadas) == 2 and c.chamadas == 2
+    assert esperas == [gemini.ESPERA_PADRAO] == [10.0]
+
+
+def test_esperas_extras_nao_aumentam_o_teto_de_tentativas(monkeypatch):
+    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
+    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 5)
+    with pytest.raises(gemini.GeminiIndisponivel):
+        GeminiClient(chave="k", sessao=s, intervalo_minimo=0, esperas=(0, 0, 0, 0)).gerar("x")
+    assert len(s.chamadas) == gemini.MAX_TENTATIVAS == 2
+
+
+def test_prazo_total_esgotado_impede_a_segunda_tentativa(monkeypatch):
+    esperas = []
+    monkeypatch.setattr(gemini.time, "sleep", esperas.append)
+    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 2)
+    c = GeminiClient(chave="k", sessao=s, intervalo_minimo=0, esperas=(10.0,), prazo_total=5.0)
+    with pytest.raises(gemini.GeminiIndisponivel):
+        c.gerar("x")
+    assert len(s.chamadas) == 1 and esperas == []     # 10 s de espera não cabem em 5 s de prazo
+
+
+def test_timeout_da_requisicao_respeita_o_prazo_total():
+    timeouts = []
+
+    class S:
+        def post(self, url, headers=None, json=None, timeout=None):
+            timeouts.append(timeout)
+            return ok("{}")
+
+    GeminiClient(chave="k", sessao=S(), intervalo_minimo=0, timeout=120, prazo_total=30).gerar("x")
+    assert 0 < timeouts[0] <= 30
+
+
+@pytest.mark.parametrize("status", [400, 401, 403, 404])
+def test_erros_nao_transitorios_falham_na_hora(status):
+    s = SessaoFalsa(RespostaHTTP(status, {"error": {"message": "x"}}), ok("{}"))
+    with pytest.raises(GeminiErro, match="não transitório") as e:
+        cliente(s).gerar("x")
+    assert not isinstance(e.value, gemini.GeminiIndisponivel)
+    assert len(s.chamadas) == 1
+
+
+def test_corpo_200_que_nao_e_json_e_resposta_invalida_sem_retentativa():
+    class R:
+        status_code, text = 200, "<html>"
+
+        def json(self):
+            raise ValueError("não é JSON")
+
+    s = SessaoFalsa(R(), ok("{}"))
+    with pytest.raises(RespostaInvalida):
+        cliente(s).gerar("x")
+    assert len(s.chamadas) == 1
 
 
 # ------------------------------------------------------------ resumos elaborados (texto das matérias)

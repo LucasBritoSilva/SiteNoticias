@@ -21,6 +21,9 @@ log = logging.getLogger(__name__)
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent"
 MODELO_PADRAO = "gemini-flash-latest"
 STATUS_TRANSITORIOS = {429, 500, 502, 503, 504}
+MAX_TENTATIVAS = 2  # teto absoluto de requisições por chamada: a inicial + uma nova tentativa
+ESPERA_PADRAO = 10.0  # segundos, fixa, entre a primeira e a segunda tentativa
+PRAZO_TOTAL_PADRAO = 300.0  # segundos: teto de tempo para gerar(), somando esperas e requisições
 
 
 class GeminiErro(RuntimeError):
@@ -29,6 +32,10 @@ class GeminiErro(RuntimeError):
 
 class GeminiCotaErro(GeminiErro):
     """Cota/limite diário/faturamento esgotado (HTTP 429): repetir não adianta, então não se repete."""
+
+
+class GeminiIndisponivel(GeminiErro):
+    """Erro transitório (503/5xx, 429 por minuto, rede) que persistiu após as tentativas permitidas."""
 
 
 class RespostaInvalida(ValueError):
@@ -42,8 +49,9 @@ class GeminiClient:
         modelo: str | None = None,
         sessao: requests.Session | None = None,
         intervalo_minimo: float = 4.0,
-        esperas: tuple[float, ...] = (5.0, 20.0),
+        esperas: tuple[float, ...] = (ESPERA_PADRAO,),
         timeout: int = 120,
+        prazo_total: float = PRAZO_TOTAL_PADRAO,
     ):
         self.chave = chave or os.environ.get("GEMINI_API_KEY", "")
         if not self.chave:
@@ -53,10 +61,17 @@ class GeminiClient:
         self.intervalo_minimo = intervalo_minimo
         self.esperas = esperas
         self.timeout = timeout
+        self.prazo_total = prazo_total
+        self.chamadas = 0  # requisições HTTP feitas por este cliente (para o log final)
         self._ultima = 0.0
 
     def gerar(self, prompt: str) -> str:
-        """Envia o prompt e devolve o texto da resposta (esperado: JSON)."""
+        """Envia o prompt e devolve o texto da resposta (esperado: JSON).
+
+        Única camada de retentativa do pipeline. No máximo MAX_TENTATIVAS requisições, só para erros
+        transitórios (503/5xx, 429 por minuto, rede), com espera fixa e dentro de `prazo_total`.
+        400/401/403, 429 de cota e resposta sem texto falham na hora, sem nova tentativa.
+        """
         corpo = {
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {
@@ -67,28 +82,43 @@ class GeminiClient:
         }
         cabecalhos = {"x-goog-api-key": self.chave, "Content-Type": "application/json"}
         url = API_URL.format(modelo=self.modelo)
-        tentativas = len(self.esperas) + 1
+        tentativas = min(len(self.esperas) + 1, MAX_TENTATIVAS)
+        inicio = time.monotonic()
+        feitas = 0
         for i in range(tentativas):
             self._respeitar_intervalo()
+            restante = self.prazo_total - (time.monotonic() - inicio)
+            if restante <= 0:
+                break
+            feitas += 1
+            self.chamadas += 1
             try:
-                resp = self.http.post(url, headers=cabecalhos, json=corpo, timeout=self.timeout)
+                resp = self.http.post(url, headers=cabecalhos, json=corpo, timeout=min(self.timeout, restante))
             except requests.RequestException as exc:
                 erro = f"erro de rede: {exc}"
             else:
                 self._ultima = time.monotonic()
                 if resp.status_code == 200:
-                    return extrair_texto(resp.json())
+                    try:
+                        dados = resp.json()
+                    except ValueError as exc:
+                        raise RespostaInvalida(f"Corpo da resposta não é JSON: {exc}") from exc
+                    return extrair_texto(dados)
                 erro = f"HTTP {resp.status_code}: {resp.text[:300]}"
                 if resp.status_code == 429:
                     if tipo_de_429(resp) == "cota":
                         raise GeminiCotaErro(f"Cota do Gemini esgotada ({erro})")
                     erro += " [limite por minuto: temporário]"
                 if resp.status_code not in STATUS_TRANSITORIOS:
-                    raise GeminiErro(f"Gemini recusou a requisição ({erro})")
+                    raise GeminiErro(f"Gemini recusou a requisição, erro não transitório ({erro})")
             if i < tentativas - 1:
-                log.warning("Gemini: %s; nova tentativa em %.0fs", erro, self.esperas[i])
-                time.sleep(self.esperas[i])
-        raise GeminiErro(f"Gemini indisponível após {tentativas} tentativas ({erro})")
+                espera = self.esperas[i]
+                if time.monotonic() - inicio + espera >= self.prazo_total:
+                    log.warning("Gemini: %s; prazo total de %.0fs esgotado, sem nova tentativa", erro, self.prazo_total)
+                    break
+                log.warning("Gemini: %s; nova tentativa (%d/%d) em %.0fs", erro, i + 2, tentativas, espera)
+                time.sleep(espera)
+        raise GeminiIndisponivel(f"Gemini indisponível após {feitas} tentativa(s) ({erro})")
 
     def _respeitar_intervalo(self) -> None:
         falta = self.intervalo_minimo - (time.monotonic() - self._ultima)
@@ -159,15 +189,11 @@ RESERVA_DE_GRUPOS = 2  # pede um pouco a mais; grupos que falharem na validaçã
 
 
 def gerar_validado(cliente, prompt: str, validar: Callable[[object], object]):
-    """Chama o modelo, interpreta o JSON e valida. Se inválido, tenta mais uma vez."""
-    ultimo: Exception | None = None
-    for tentativa in (1, 2):
-        try:
-            return validar(interpretar_json(cliente.gerar(prompt)))
-        except RespostaInvalida as exc:
-            ultimo = exc
-            log.warning("Resposta inválida do Gemini (tentativa %d/2): %s", tentativa, exc)
-    raise RespostaInvalida(f"Resposta inválida após 2 tentativas: {ultimo}")
+    """Chama o modelo, interpreta o JSON e valida. Resposta inválida não é transitória: falha na hora."""
+    try:
+        return validar(interpretar_json(cliente.gerar(prompt)))
+    except RespostaInvalida as exc:
+        raise RespostaInvalida(f"Resposta inválida do Gemini (sem nova tentativa): {exc}") from exc
 
 
 MIN_RESUMO_COM_TEXTO = 500  # caracteres; ~3 parágrafos curtos é o mínimo aceitável
