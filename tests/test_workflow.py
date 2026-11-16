@@ -29,5 +29,15 @@ def test_push_so_depois_de_gerar_e_com_nova_tentativa():
     assert "git pull --rebase" in TEXTO and "--force" not in TEXTO
 
 
+def test_retentativa_unica_em_1_hora_so_para_gemini_indisponivel():
+    assert "retry:" in TEXTO and "type: boolean" in TEXTO
+    reagendar = TEXTO[TEXTO.index("  reagendar:"):]
+    assert "needs.atualizar.outputs.codigo == '75'" in reagendar      # só 503/timeout do Gemini
+    assert "github.event.inputs.retry != 'true'" in reagendar         # a retentativa não reagenda
+    assert "failure()" in reagendar and "sleep 3600" in reagendar
+    assert "-f retry=true" in reagendar and "actions: write" in reagendar
+    assert 'echo "codigo=$codigo" >> "$GITHUB_OUTPUT"' in TEXTO and "exit $codigo" in TEXTO
+
+
 def test_workflow_versiona_o_cache_dos_resumos():
     assert "git add -A dados" in TEXTO

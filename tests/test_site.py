@@ -288,13 +288,39 @@ def test_503_no_main_faz_2_requisicoes_mantem_docs_e_dados_e_sai_com_erro(raiz, 
     monkeypatch.setattr(main, "executar", lambda r, res: executar_real(r, res, agora=AGORA))
     monkeypatch.setattr(main.logging, "basicConfig", lambda **k: None)
     with caplog.at_level("INFO"):
-        assert main.main() == 1                                         # GitHub Actions registra a falha
+        assert main.main() == main.CODIGO_GEMINI_INDISPONIVEL == 75     # falha que pede a retentativa de 1 h
     assert sessao.chamadas == 2                                          # 1 inicial + 1 nova tentativa
     assert (raiz / "docs" / "index.html").read_text() == "VERSAO ANTERIOR"
     assert not (raiz / "dados").exists()
     final = [r.getMessage() for r in caplog.records if "RESUMO DA EXECUÇÃO" in r.getMessage()][-1]
     assert "requisições ao Gemini: 2" in final and "GEMINI INDISPONÍVEL" in final
-    assert "próximo agendamento" in final
+    assert "retentativa em 1 hora" in final and "próximo agendamento" in final
+
+
+def test_erro_nao_transitorio_no_main_sai_com_1_e_nao_pede_retentativa(raiz, monkeypatch, caplog):
+    class Sessao403:
+        chamadas = 0
+
+        def post(self, *a, **k):
+            Sessao403.chamadas += 1
+
+            class R:
+                status_code, text = 403, '{"error": {"message": "chave inválida"}}'
+
+                def json(self):
+                    return {"error": {"message": "chave inválida"}}
+            return R()
+
+    cliente = GeminiClient(chave="chave-de-teste", sessao=Sessao403(), intervalo_minimo=0)
+    executar_real = main.executar
+    monkeypatch.setattr(main, "RAIZ", raiz)
+    monkeypatch.setattr(main, "GeminiResumidor", lambda: GeminiResumidor(cliente))
+    monkeypatch.setattr(main, "executar", lambda r, res: executar_real(r, res, agora=AGORA))
+    monkeypatch.setattr(main.logging, "basicConfig", lambda **k: None)
+    with caplog.at_level("INFO"):
+        assert main.main() == 1
+    assert Sessao403.chamadas == 1
+    assert "retentativa em 1 hora" not in caplog.text
 
 
 # ------------------------------------------------------------ texto lido antes da chamada única

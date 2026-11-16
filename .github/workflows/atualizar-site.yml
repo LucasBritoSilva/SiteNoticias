@@ -7,6 +7,11 @@ on:
     - cron: "5 9 * * *"    # 09:05 UTC = 05:05 em Cuiabá
     - cron: "5 21 * * *"   # 21:05 UTC = 17:05 em Cuiabá
   workflow_dispatch:
+    inputs:
+      retry:
+        description: "Execução de retentativa (não agenda outra)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -19,6 +24,8 @@ concurrency:
 jobs:
   atualizar:
     runs-on: ubuntu-latest
+    outputs:
+      codigo: ${{ steps.gerar.outputs.codigo }}
     # Teto de segurança: o pipeline roda uma vez só (Gemini: no máximo 2 requisições em até 5 min).
     timeout-minutes: 90
     steps:
@@ -34,11 +41,18 @@ jobs:
       - name: Instalar dependências
         run: pip install -r requirements.txt
 
-      # O script roda o pipeline uma vez; só o Gemini tem uma nova tentativa curta (503/rede).
+      # O script roda o pipeline uma vez; só o Gemini tem uma nova tentativa curta (503/rede/timeout).
       # Ele só altera docs/ se a execução terminar com sucesso; se falhar, o passo falha,
-      # o próximo passo não roda e a versão anterior do site continua no ar até o próximo agendamento.
+      # o próximo passo não roda e a versão anterior do site continua no ar.
+      # Saída 75 = Gemini indisponível (503/timeout): o job "reagendar" tenta de novo em 1 hora.
       - name: Gerar o site
-        run: python scripts/main.py
+        id: gerar
+        run: |
+          set +e
+          python scripts/main.py
+          codigo=$?
+          echo "codigo=$codigo" >> "$GITHUB_OUTPUT"
+          exit $codigo
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
@@ -69,3 +83,23 @@ jobs:
           done
           echo "Não foi possível enviar as alterações." >&2
           exit 1
+
+  # UMA retentativa em 1 hora, só quando o Gemini ficou indisponível (saída 75: 503/timeout).
+  # A execução disparada aqui leva retry=true e por isso nunca agenda outra: não há laço.
+  # Enquanto este job espera, o grupo de concorrência fica ocupado; o menor intervalo entre
+  # agendamentos (21:05 -> 00:40 UTC) é de 3h35, então a espera de ~1h10 não atrasa nenhum deles.
+  reagendar:
+    needs: atualizar
+    if: failure() && needs.atualizar.outputs.codigo == '75' && github.event.inputs.retry != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    permissions:
+      actions: write
+    steps:
+      - name: Aguardar 1 hora e disparar a retentativa
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sleep 3600
+          gh workflow run atualizar-site.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f retry=true
+          echo "Retentativa disparada (retry=true)."
