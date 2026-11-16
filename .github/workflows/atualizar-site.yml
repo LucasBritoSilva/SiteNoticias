@@ -3,10 +3,9 @@ name: Atualizar notícias
 on:
   schedule:
     # Cuiabá é UTC-4 (sem horário de verão); o GitHub Actions usa UTC.
-    - cron: "50 10 * * *"  # 06:50 em Cuiabá
+    - cron: "50 9 * * *"   # 05:50 em Cuiabá
     - cron: "50 16 * * *"  # 12:50 em Cuiabá
-    - cron: "50 21 * * *"  # 17:50 em Cuiabá
-    - cron: "30 2 * * *"   # 22:30 em Cuiabá (02:30 UTC do dia seguinte)
+    - cron: "50 22 * * *"  # 18:50 em Cuiabá
   workflow_dispatch:
 
 permissions:
