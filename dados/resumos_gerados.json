@@ -1,0 +1,197 @@
+{
+  "versao": 1,
+  "grupos": [
+    {
+      "id": "1e9df89e9fe8",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 9.0,
+      "titulo": "Candidatos à presidência do Corinthians debatem modelo de gestão, finanças e governança na TV Gazeta",
+      "resumo": "Os cinco candidatos à presidência do Corinthians — André Castro, Ilmar Schiavenato, José Augusto Mendes, Rozallah Santoro e Sérgio Janikian — participaram no último domingo de um debate realizado pela TV Gazeta, no programa Mesa Redonda. A eleição no clube está agendada para o dia 28 de novembro, no Parque São Jorge, e definirá quem comandará a instituição no triênio de 2027 a 2029, sucedendo o atual mandatário Osmar Stábile.\n\nO encontro abordou temas centrais da crise financeira e institucional, governança e modelo de gestão. André Castro defendeu reformas estruturais, combate à corrupção e normas para abandonar o amadorismo e restabelecer a credibilidade do clube. Sérgio Janikian indicou que criará um departamento exclusivo voltado ao combate à corrupção. Já Ilmar Schiavenato apresentou planos de modernização para a sede social, prevendo um complexo multiuso com shopping, hotel e opções de lazer com o objetivo de gerar receitas financeiras.\n\nDurante o debate, José Augusto Mendes anunciou André Mastrobuono para atuar como CEO nas diretorias financeira, jurídica, administrativa e de marketing com foco no pagamento das dívidas, alertando para cerca de R$ 1 bilhão com vencimento em 2027. Questionado sobre a contratação e renovação de Memphis Depay, Mendes apontou benefícios contratuais anteriores, mas ressaltou que não teria firmado os termos da forma como foram acordados.",
+      "fontes": [
+        {
+          "nome": "Terra",
+          "url": "https://www.terra.com.br/esportes/corinthians/candidatos-a-presidencia-do-corinthians-fazem-debate-focado-em-modelo-de-gestao-e-crise-financeira,7a9eb9a135be05da16a2abb4599be717dzbxslxa.html",
+          "link": "https://news.google.com/rss/articles/CBMimgJBVV95cUxOcDlqbjZ4V0dzSXc4VXVkUEdkQ0Ixb1RYaTVYelNGdGJ5d2gwaTNqc2xGSW9NdGtfLTRtUVBubEQ4NVBTemkzRG1FSm96QTB2SXZvWjhFWnMtb1doWjg3d3lCN3BYd1VhYy1UMDNIZlIxN3U4UXp1U2NVUUZVMmdYOGNsT0Zobk5qTzZTZV9LLW9CNzluZlFHWWpNRjNfZWU2NC1QY2MxQU9kZ3NfbW9URnNzajE5RmVnbEkyeld6ZEVlci1Hb2pJSjM1V3Azd0tmUllLQWlzV05NX2piWXR1MzhCODhNX19SZ3lHSzZKeUxkVG5WWGVrc3JPNVQ2V0tsandfUzZRc3VmSkNQc1MyVVJZSE1walN5aGc?oc=5",
+          "imagem_url": "https://p2.trrsf.com/image/fget/cf/1200/630/middle/images.terra.com/2026/11/16/702469799-735lxff5tnfg3np3gdjhgsmx5i.png"
+        },
+        {
+          "nome": "Gazeta Esportiva",
+          "url": "https://www.gazetaesportiva.com/times/corinthians/candidatos-a-presidencia-do-corinthians-debatem-e-apresentam-propostas-no-mesa-redonda/",
+          "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOQ01pc1gwc0ZOMi00ckdkbmhybFFrQTl1eGlhZ1kwc1BvdnNJMTd6OUpScTc0TlJQdmI3b3NDcVhnV0tHQnk3NzB6cVNmcVpGVkVndnNURDNjYVgzdFRCLVpNS1dORFMzS2xDdzQ4b3QteW8td2stVUFLZVBfV2xTXzVkdVF1UDJTa3Q5TUd1TENJOHQ2LVA2UUszT1VtVk5CalJ1cG4yY2NUV0JNQ3pzMExYYmtyc0VrOThnMHFuRHVRTl80U3JSUzlTdnFwQl83MGFB0gHYAUFVX3lxTE1NeUstcjJ0WHZPSzY4dkppTTVmckVrQk12WGVETkpLOFJUVGVUZzQtVGpIZ2lLRzNMc0ZRaG5YX1hXMWZvdFN4MWtMUUNhVDJYMDBNLUo1RkpPOGdjd0Nod2ZHOXZfSU5DMzlOMkdsQWhHYlFJQ0VPV2FWaFNhOFNCME02eF9QeDFrRmJTZExIXzlKUWxxaFJpX0ZnVXZGLVh3dllKeEFuQm5YNGJhQVZ5TDl2T09TS1FJdkxlUXVETkR1cXpXeE5NdC1TNDE5SmIwVm9QMEU2bg?oc=5",
+          "imagem_url": "https://static.gazetaesportiva.com/uploads/2026/11/IMG_6578.webp"
+        },
+        {
+          "nome": "Diário de São Paulo",
+          "url": "https://spdiario.com.br/noticias/esportes/cinco-candidatos-a-presidencia-do-corinthians-se-enfrentam-em-debate.html",
+          "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPNldvQUFMUGx5QnlOakdCd0ZXOTJLYW1LSVIyWERCVVkyUGhNNlZybGZXbjZVbFpxaGdRUnFlaTVabmxteUlpUllEcENJS25DdFIwcldUYzc5U2lYZEg1XzA1eUVqOGtHaC1EOGZBbkRuai00OHNVeHZFTDlYSkpTbEY0SEdPdUNyUHZRX3VEVDNlY3lONDlMaWdTZVZhandUam1HM3ZoNXZQMkt2M2Z3ODlDN2pTd9IBuwFBVV95cUxNNm9KSVBzdnA5RDRqZnFCSk5SYVNkZGxCczdqNVN6OGpVTzB1Zk0zaWdxUjlIMWhyWUVtYzViRDVqMnFUVm9pdFR2UFhOSS00aE9xNmdwYVh5WVY2SjdUbzJRRWNWeTAxY2RqbHdpd3VCWjgtR2RqM1BEMEc2ZjZWVldrVW1rSlc3UzlmWXd6bjJoZlJlS2Qyb2lTTmdOeDd4RlVNeE5lRU1MbUk2S3NZMC1LVnhCcl9IbEhR?oc=5",
+          "imagem_url": "https://spdiario.com.br/media/_versions/spd1511d4_widelg.jpg"
+        }
+      ]
+    },
+    {
+      "id": "834e9c277960",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 8.0,
+      "titulo": "Ferroviária vence o Corinthians, garante título do Paulista Feminino Sub-20 e partida termina em briga",
+      "resumo": "A Ferroviária sagrou-se tricampeã invicta do Campeonato Paulista Feminino Sub-20 ao vencer o Corinthians por 2 a 0 neste domingo, na Arena Fonte Luminosa, em Araraquara. A atacante Gabi Pusch marcou os dois gols do confronto no primeiro tempo, abrindo o placar logo no início e ampliando a vantagem na sequência. A equipe da capital paulista atuou em desvantagem numérica desde o primeiro tempo após a expulsão de Débora pelo segundo cartão amarelo.\n\nA reta final da decisão ficou marcada por uma pancadaria generalizada a partir dos 31 minutos da segunda etapa, originada em uma dividida no meio-campo entre Miga, da Ferroviária, e Gabi Jordi, do Corinthians. A jogadora grená desferiu um pontapé contra a corinthiana, desencadeando troca de agressões entre as equipes. Durante o tumulto, a atleta Mel levou um soco de Miga, caiu desacordada ou sem reação imediata e necessitou de socorro médico em campo, enquanto outras atletas também relataram agressões.\n\nApós cerca de seis a sete minutos de paralisação e uma reunião da arbitragem, Miga recebeu cartão vermelho, assim como a treinadora do Corinthians, Júlia Passero, e a reserva Emy. Em notas oficiais, a Federação Paulista de Futebol e o Corinthians repudiaram a violência física. O clube alvinegro manifestou repúdio formal às ações cometidas por Miga e declarou que tomará medidas desportivas e legais, incluindo o registro de boletim de ocorrência e representação perante a entidade estadual.",
+      "fontes": [
+        {
+          "nome": "Blog do Ricardo Antunes",
+          "url": "https://ricardoantunes.net/atletas-protagonizam-briga-generalizada-na-final-do-paulistao-sub-20-feminino/",
+          "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPbTcxNHYyN3gtNmVEenVaTEJZa0duQVVoSGF3XzNyYTZlOF9aNjNJZGY4bkxFWE5rLW9LT1EtZjc5X3hsNTR5d0U5cWtwSGw1amF4T1ljWTNtM0RCUEZ5cTJLYy1OMk1GRG5SNmxoSDlfSmtXb1ZoeFkwZzNnMVFDazNQb3lGcVk5Wk9vQ2E5X2pkWV9ONkdFV1djMHJvR1JKYkxveC1VRnA?oc=5",
+          "imagem_url": "https://ricardoantunes.net/wp-content/uploads/2026/11/Copia-de-CAPA-2026-11-15T162605.644.jpg"
+        },
+        {
+          "nome": "CNN Brasil",
+          "url": "https://www.cnnbrasil.com.br/esportes/futebol/corinthians/video-final-do-paulistao-sub-20-termina-em-pancadaria-e-briga-generalizada/",
+          "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxObDlnb3Q2N1FaUTRFejc4RS0tTzVEelI3bkNFQlU3TUNPRmFZVnkxaFhwSHRPVUY3SXU0TmxlVHg4cl9yX2NlUVN2cXpOdDdjWkxURVZzSGY2U3hMT0FjTzJOcU1CbVFBMll0a01BTjM2VzE4eFd0SGl1Y3puMUswcnQtSndiQjhTWHZLaENMcm90OXJ3U0lPR3V2Y2ktbEd5MDI1SHF4dkdjeVN6M29aX1J3R25idF9TRjFNTTk4SnU2NnpjZlJtS0dFaFFMUQ?oc=5",
+          "imagem_url": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/11/Paulista-Feminino.webp?w=659&h=489&crop=1"
+        },
+        {
+          "nome": "A Crítica de Campo Grande",
+          "url": "https://acritica.net/esportes/futebol/final-entre-ferroviaria-e-corinthians-tem-pancadaria-e-jogadora-atingida-por-soco/",
+          "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPZFhIa01sNW5lN2ptbzQ5dWJNcTE0THlIZTFKWDZySUxzZVhXblY1cFkyT21KTHN5S0F0MlZpT2YzV3haeExkMlh0bjVFbm1LTktILTRvOGZlc0lORWpVMFFhYkFlY01RWklydC16ZWwtbzNPZXRYRGFZa2xvdFczSkRVTUFtMGgxeEVFNmduQzduUlBzNHFXWjc3SmxRUFZVMGZTRzNmZ013NV9FRVJDQjVHdk81WmdzcVJsVg?oc=5",
+          "imagem_url": "https://uploads.acritica.net/2026/11/AFNAGNYLMFB2XHMZCLAEN2LKLY.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "e24188e88343",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 8.0,
+      "titulo": "Corinthians atinge 50% de probabilidade de rebaixamento no Campeonato Brasileiro",
+      "resumo": "O Corinthians alcançou a marca de 50% a 50,7% de probabilidade de rebaixamento para a Série B do Campeonato Brasileiro, de acordo com levantamentos matemáticos da Universidade Federal de Minas Gerais (UFMG) e do portal InfoBola. O clube alvinegro, comandado pelo técnico Clarence Seedorf, ocupa a 17ª posição com 37 pontos, abrindo a zona da degola na tabela de classificação.\n\nA situação do clube paulista permaneceu delicada com os desdobramentos da rodada, incluindo a vitória por 2 a 0 do Vasco da Gama sobre a Chapecoense e o empate entre Mirassol e Atlético Mineiro. O resultado positivo vascaíno levou o time carioca a 44 pontos e reduziu seu risco de descenso para índices abaixo de 1% (0,33% pela UFMG e 0,033% em levantamentos alternativos), deixando-o praticamente livre da ameaça.\n\nA luta direta contra o descenso reúne outros clubes tradicionais em margens apertadas. O Grêmio aparece com risco variando entre 53% e 54,4%, superando a probabilidade de queda do próprio Corinthians. Logo acima do Z-4, Internacional e Vitória somam 38 pontos e registram riscos estimados entre 35% e 37,4%. Na parte de baixo da tabela, a Chapecoense já se encontra matematicamente rebaixada com 100% de probabilidade, enquanto o Remo tem 99% a 99,9% de chance de queda.",
+      "fontes": [
+        {
+          "nome": "InfoMoney",
+          "url": "https://www.infomoney.com.br/esportes/vasco-tem-menos-de-1-de-chance-de-ser-rebaixado-corinthians-chega-a-50/",
+          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxORGVWcXRzU09pVnZJbDlpQnEwbjZxUFhha0drWkp2QWV4ZjdvcG9sbjBZVmluNmhRNnhTRW5RWGNlUXdFeG5KWlo4eVpoQ3BRRXRDY3F2VF9LdjhtRlh2eXhJQVhMX2R5TE1DUVN0c1diREREN0pyYTNBbDhzN2RtZFlmbDY4Ym1rZUtFRFZacUdTWWE3Y3V0d3pLcTBLbTFjUWphdFFHazVhN3JLb1HSAbMBQVVfeXFMTzZ3RmRoRDhtYVlyZERfSUFweDBTZTJ5dXphTVQwbzBaWDMyd3puUW5GVWNGdTFUSEJsSWpfbW9QSGJnc00teUJDSXRYeTluaWRSRFJiNXg0YnBuSDE5bTdNdkpnNjhvN0VWcFpsTHJ0R2p5YmFJOWdpWFhkSlFLdy1FR2RwZ0pPMHVnZmVEdlUyMDdXd0o4YzdpSndoSDNEYnNicm1RN281OUpoRl8ydkdDdnM?oc=5",
+          "imagem_url": "https://www.infomoney.com.br/wp-content/uploads/2026/08/david-correa.webp?fit=1000%2C582&quality=70&strip=all"
+        },
+        {
+          "nome": "Band",
+          "url": "https://www.band.com.br/esportes/futebol/brasileirao-serie-a/corinthians-supera-50-de-risco-de-queda-veja-chances-de-rebaixamento",
+          "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPMlhqUmxtbzR5cllvSXRzZ0NDRkZIQXNZUlZnRmZiX3FMWHZ3OVE5NjdFTFZ3bzRPWVU1aW5lYmJKZ3JQcTk5ZG1SSG1PVDBGc0Ntb1laNUtDeGh3MkxxaUlQVnhfbmZfcm1LZ082V0pyTV9rZkdvUHdVTkFiLWhLZ1ZObU10MHk2OENnal9ibFlBZmxxWTZ3UWpXMWVEbEhCUDFadkFjYUVmbjM2aEtHLXgxQ0tneUhfbEs1MWhmY1lZYVVxVzJYbQ?oc=5",
+          "imagem_url": "https://img.band.com.br/image/2026/10/seedorf.jpg"
+        },
+        {
+          "nome": "UOL",
+          "url": "https://www.uol.com.br/esporte/ultimas-noticias/agencia/2026/11/15/vasco-tem-menos-de-1-de-chance-de-ser-rebaixado-no-brasileirao-corinthians-chega-a-50.htm",
+          "link": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxNQTRCdG1UdGFacUR5TjhyeDNRQ004b2xjNm00NDNFRFJZdmxqZUtpOHNjaGJrQlNPaG9lbTZiNVhHdFlJQkNwdUF3SDA4OFpkZHF6SHVBeHh0X1ZwbVBLaDFNTHVpRjA4ZjFXQlRnOTZWME1LcGhZQXBRTExtTE9sR2xVV3FSQWVaT21KcnprRU1uVEhUV0VfZzJYVXNtTy1aQ2ZHQWNQYzhjVXR1UDBPUEhsNEpEZmpkbDRHeHZrZE1XWDdpRUgxb3NjbDZpQ0kzeWR0X1J1SEFVLVBwUHhfSEJRUWZVeW0ycjZNYg?oc=5",
+          "imagem_url": "https://conteudo.imguol.com.br/c/_layout/v3/logo-30-anos/share-30-anos.png"
+        }
+      ]
+    },
+    {
+      "id": "9986d039c98e",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 8.0,
+      "titulo": "Corinthians conta com desfalques e tem apenas dois zagueiros disponíveis contra o Botafogo",
+      "resumo": "O técnico Clarence Seedorf terá problemas para armar o sistema defensivo do Corinthians para o confronto diante do Botafogo, agendado para quarta-feira, às 21h30, na Neo Química Arena, em duelo válido pela 35ª rodada do Campeonato Brasileiro. Até o momento, apenas Gustavo Henrique e João Pedro Tchoca figuram como opções da posição totalmente disponíveis na equipe.\n\nAs principais baixas do setor incluem o titular André Ramalho, suspenso de forma automática pelo acúmulo de três cartões amarelos, e o jovem Iago Machado, convocado para defender a seleção brasileira na disputa da Copa do Mundo Sub-17 no Catar. A partida é considerada decisiva para os objetivos do Corinthians, que está na 17ª posição com 37 pontos na luta contra o rebaixamento, enquanto o adversário carioca soma 42 pontos na 11ª posição.\n\nA comissão técnica avalia a situação clínica de Gabriel Paulista, de 35 anos, que se recupera de um estiramento muscular no adutor da coxa esquerda sofrido no fim de outubro. O zagueiro está em processo de transição física no CT Joaquim Grava, trabalhando parcialmente com o restante do elenco, e reúne chances de ser relacionado caso apresente condições favoráveis de jogo.",
+      "fontes": [
+        {
+          "nome": "VG Notícias",
+          "url": "https://www.vgnoticias.com.br/esportes/corinthians-fica-com-apenas-dois-zagueiros-disponiveis-para-enfrentar-o-botafogo/155071",
+          "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxObGVxU3hqSmJMUF94QWxsMjBZVkdqR1pYbWZlSXE4S2NZR1pRMDR6SGowUHhlZzlOU19va3pIV0htRDdoaENqQklnNTRVQ0RsVEowMkw5YnBEclZXR2VEMDlvUjMzRHg3VHk1TGVsOGkyU3BUSHJncG5rSC1MMXNXamg4enZTZ1JoSjA5bXl1NzQ1SWwzbmMyaHNUV3p1d0ZoNGtsMl85Y3F5UU9oSUpnNUpLbThZQjRKdVkzajJzMU5McHBR?oc=5",
+          "imagem_url": "https://cdn.vgnoticias.com.br/storage/webdisco/2026/11/09/800x600/0540d1bf437ae0370219b55bf1629c02.png"
+        },
+        {
+          "nome": "ge",
+          "url": "https://ge.globo.com/futebol/times/corinthians/noticia/2026/11/15/corinthians-pode-ter-apenas-dois-zagueiros-a-disposicao-de-seedorf-contra-o-botafogo.ghtml",
+          "link": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxPUjNPRUJIRzctMWRUVXhnb0lWTzlyQm0xYklfbG0xX0wyblVzY21rNTdhOTNxd3NDTVFJc21oWGdiR2d6VE1uNUJhXzJrbjdDc0xNRUJvaUFJR3hzN1YzN0pGdEVVLXgtMFBPVzB4RHZkZTZPUFZMNkVxSFkzeC1rYWhzc1VOcWVaRnF3ME9LTnhtdDRtaXktU1M1VUY1bnpMeUdFa3hwb1dJUk5LdXBBUnU0anJaRGIzcnFhNHBlQUx2X09UMFd6OEVUSjhURnFIZVdlamtLV09jWjBVTWRJS1oxdDZBTjAtTi1DatIB-wFBVV95cUxQOGVGbEtVYnozdzY5QXhrZ2FTbTdkTDdxaEdTdkVXVGM5RkFUTDlRY2lRUGtNNUhjMlhGYWdMejdMbnlESWpMRTJpWU9nbEJ0U3hUa0ZERkZmZG5lTGtaY3JMejU1eEFwcl94eUZfZ2JEWWtaOTBpeTFvYy13cXBaMFMycEJTbzhsd1dNa3NNTTRCTHhYT09EYkFuOExJLXBxbVFKb3EteHRwM1UxLUpROVRyQkwxUXJKNlJEX01ETnRvYUlVX3FkbjMzOU5KZno2b181ejFKTE82cnl6UFBlTzUzOXRpODVrLTJPMWlrb3VId3k4dm9palhvYw?oc=5",
+          "imagem_url": "https://s2-ge.glbimg.com/jw1mEdPd9LVDTYrXesVRRxQNT6Y=/3000x0/filters:format(jpeg)/https://i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2026/P/5/ar0ltBQqaTqexc1nib1A/248336.jpg"
+        }
+      ]
+    },
+    {
+      "id": "fac7b5175c5d",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 7.0,
+      "titulo": "Neto cogita disputar a presidência do Corinthians em 2029 sob certas condições",
+      "resumo": "O ex-jogador e apresentador de televisão Neto revelou que avalia disputar a presidência do Corinthians na eleição de 2029. O ídolo do clube afirmou que sua decisão final dependerá diretamente do desempenho e dos resultados entregues pela administração que for eleita no pleito deste ano, marcado para 28 de novembro entre cinco postulantes ao cargo.\n\nNeto revelou ter recebido convites para integrar chapas na condição de vice-presidente em dois momentos distintos, tanto na gestão de Augusto Melo quanto no atual processo eleitoral. Ambas as ofertas foram recusadas pelo comunicador, que apontou o fato de a função não ser remunerada, além de ressaltar a impossibilidade de deixar seu trabalho na emissora de TV para atuar como dirigente no presente cenário da instituição.\n\nPara viabilizar uma eventual candidatura em 2029, o ex-atleta condicionou sua entrada ao direito de voto estendido aos associados do programa Fiel Torcedor e à sua prévia aposentadoria da televisão. Em relação à gestão, Neto afirmou ter convicção de vitória nas urnas e indicou uma diretriz financeira rígida, com metas de arrecadar R$ 1 bilhão e limitar os gastos anuais a R$ 500 milhões.",
+      "fontes": [
+        {
+          "nome": "Portal ABC do ABC",
+          "url": "https://www.abcdoabc.com.br/neto-diz-que-pode-ser-presidente/",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE01dWVjS3VqdzdwRkpZU0pYNThJRzVHVDlWYklGSDM1dVR0TVQxaURsWlZTS0w1aFExV3hHaTEzQVFHWkNPeXZ4MS0wVEtuX3g1X21HLXQwUm5ZV1VkZmk4VkVGaldYcVB0LU5vZmtn?oc=5",
+          "imagem_url": "https://cdn-imgs.s3.sa-east-1.amazonaws.com/wp-content/uploads/2026/11/netsss.webp"
+        },
+        {
+          "nome": "Terra",
+          "url": "https://www.terra.com.br/esportes/corinthians/craque-neto-se-manifesta-sobre-ser-presidente-do-corinthians,17418de105cd5bd07ce2521a55409aaf46pe86qy.html",
+          "link": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNcXhScGI4dHJjRm5welpleG5FM1BJajhnazZzOGxYTTlxTkplb191dmEtVVNQbHhycTNKX0ZLM0EwS3N5ZTZLQzgyRTdJTFozMjlYVzVnT0RBOGNXWS1PSm1oUk9saFE2RFBYUm9mTml0dl9pTXlMZUx3Q2NXZHEzN0Y1V1BzRy1tSVUyd3g4bnl5RjBRMWRSbkJwSTY2ZUUwdDd1ejc4Tzd6VUZLZHIySGtYQU95c1dhUjZGT3RKclIydWk4bGhhOEJOdXZyUUd5R2xxX3c3VnZjQ0hvc0RRM3E4elpPVnM?oc=5",
+          "imagem_url": "https://p2.trrsf.com/image/fget/cf/1200/630/middle/images.terra.com/2026/11/15/436691694-craque-neto-os-donos-da-bola-foto-reproducao-sbt-tvpop-r3he1z6hh093584lnodg2xhq979zlueebjtcucx540.jpg"
+        }
+      ]
+    },
+    {
+      "id": "d570eb797bd6",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Mercado da Tecnologia",
+      "relevancia": 6.0,
+      "titulo": "Expansão de data centers de IA deve reduzir ofertas e descontos de RAM e SSD na Black Friday",
+      "resumo": "A Black Friday de 2026 deve apresentar poucas promoções significativas em componentes de memória RAM e SSD para computadores pessoais e laptops. A escassez no varejo e os sucessivos aumentos de preços ao longo do ano decorrem da forte demanda por infraestrutura de inteligência artificial gerada pelas grandes empresas do setor de tecnologia.\n\nFabricantes mundiais como Micron, Samsung e SK hynix redirecionaram expressiva parcela de sua capacidade produtiva para módulos de alta largura de banda (HBM) e unidades de armazenamento voltadas ao setor corporativo, que oferecem margens financeiras superiores. Com a menor oferta de semicondutores de padrão DRAM convencional e memória Flash NAND para produtos finais de consumo, os preços de atacado e varejo sofreram pressões constantes.\n\nAnalistas alertam que grande parte dos eventuais descontos anunciados pode representar apenas ajustes cosméticos sobre valores inflacionados nos trimestres recentes. As promoções reais com estoques em liquidação devem se concentrar em linhas de entrada e padrões tecnológicos consolidados mais antigos, como módulos de memória DDR4 e unidades SSD em formato SATA de 2,5 polegadas ou conexões PCIe 3.0.",
+      "fontes": [
+        {
+          "nome": "SpaceMoney",
+          "url": "https://www.spacemoney.com.br/tecnologia/black-friday-2026-ram-ssd-ofertas-limitadas/",
+          "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOMUdfcGNPcEl3dGJ5aXpSR3ZJVndIc0xXTEd0Z1dyUE1rN0kwV1A5VlhvZ0x3cXpsSXJiSlk2LWZSMmZUWE14bDA3MU8zQmE0ZnBkWUU0MFdVRUtrRll4c1NCdi1kWWQyb0JuSWxfQjlNdU1lckswYUtNWldKc0RhTnRzLUdvWXhiVl9HVzVR?oc=5",
+          "imagem_url": "https://www.spacemoney.com.br/wp-content/uploads/2026/11/pexels-photo-33792050-1.webp"
+        }
+      ]
+    },
+    {
+      "id": "73fdc2cdddca",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Mercado da Tecnologia",
+      "relevancia": 6.0,
+      "titulo": "Empresas brasileiras de tecnologia debatem estratégias globais durante o Web Summit Lisboa",
+      "resumo": "Debates voltados ao desenvolvimento e à internacionalização de empresas brasileiras de tecnologia ganharam destaque durante a realização do Web Summit 2026, em Lisboa. O evento internacional congrega startups, investidores institucionais e lideranças globais com foco em áreas em expansão, incluindo inteligência artificial, automação e cibersegurança.\n\nUma delegação composta por 19 empresas catarinenses vinculadas à Associação Catarinense de Tecnologia (ACATE) esteve presente no evento, em iniciativa coordenada pela ApexBrasil em conjunto com o Sebrae Startups. O objetivo principal do grupo foi estruturar canais de relacionamento comercial e buscar parcerias internacionais para produtos e serviços digitais brasileiros.\n\nEspecialistas presentes destacaram que a expansão global de produtos tecnológicos exige maturidade de gestão, planejamento contínuo e mapeamento regulatório local. Segundo a liderança da ACATE Global, soluções que alcançam sucesso no mercado doméstico comumente demandam reformulações de abordagem comercial, adaptação de proposta técnica e preparação de equipes locais para atender à demanda de mercados estrangeiros.",
+      "fontes": [
+        {
+          "nome": "Noticenter",
+          "url": "https://www.noticenter.com.br/noticia/42427/especialistas-catarinenses-discutem-caminhos-para-empresas-brasileiras-de-tecnologia-conquistarem-o-mercado-global-no-web-summit-lisboa",
+          "link": "https://news.google.com/rss/articles/CBMiiwJBVV95cUxPYmU0SnZKTndxNkpfUndRNmdBUy1wOV9xZjZLZEE0MWtIN1g1UEN0YW9iUnZDb2VkVGtfYVpEOWZVUlF0ZHVBLWhnVXg2M0wzRFNnR1BzM3N2eXVmSklLelNvSUdVSUhzZV9UdkZLdC1qZXlzLWloM2F2blFBY2l1S2hLdzBfeGJmMmRzSTJFY2tjbVN1R1hkSC16d2lxUzFVbTM1ZEEyemx3VHJCQk4xdmtTOGs4bDhqV0dlczY2Q3hXYmR4OWZvaWlRQ0VrajhtWXd6UWJzcG1JbklaNWFHWktCQjh1ZGxwMWlNOUV3Sk05ejhJcllSNjhNREV6TjFyUVo4TFBVUThqWjQ?oc=5",
+          "imagem_url": "https://www.noticenter.com.br/noticias/6afa27e9afede.jpg"
+        }
+      ]
+    },
+    {
+      "id": "20d236873f29",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Mercado da Tecnologia",
+      "relevancia": 5.0,
+      "titulo": "Piauí estrutura ecossistema de tecnologia com programas de inovação, inteligência artificial e parcerias",
+      "resumo": "O estado do Piauí tem estruturado uma série de iniciativas governamentais na área de tecnologia e inovação educacional. Entre os programas ativos, destacam-se a inserção da matéria de Inteligência Artificial no currículo da Educação Básica das escolas da rede pública estadual e o serviço de telessaúde Saúde Digital, disponível ininterruptamente para 224 municípios piauienses.\n\nNa área de segurança pública, o modelo estadual denominado 'Meu Celular de Volta' serviu como matriz técnica para o programa Celular Seguro do governo federal, com redução relatada de 53% nos registros locais de roubos do dispositivo entre 2022 e 2025. O estado também opera o Piauí Instituto de Tecnologia (PIT), que ministra formações gratuitas e cursos superiores, além do modelo de linguagem SoberanIA, desenvolvido a partir de bases em língua portuguesa.\n\nPor meio da agência Investe Piauí, a unidade federativa estabeleceu escritórios de conexões de negócios fora do estado, sediados em Boston, nos Estados Unidos, em Xiamen, na China, em Lisboa, em Portugal, e em São Paulo. A estrutura conta com acordos de cooperação com entidades como o Massachusetts Institute of Technology (MIT) e presta suporte a um portfólio de 465 startups aceleradas.",
+      "fontes": [
+        {
+          "nome": "Correio Braziliense",
+          "url": "https://www.correiobraziliense.com.br/economia/2026/11/7538775-a-receita-piauiense-para-ganhar-relevancia-no-mercado-de-tecnologia.html",
+          "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNak9ldi1IUjhPck1uYkdjTFczay1QS1huVE1USl90SFYwdG9hZ0xPNXZmdURwdThWOFV1VS0xUC1INHpzaDhibXdFQlJHX0ZMNFFCSDNBNVBhVmRWX3Vld0Zucl9OT2VTMjFYU0h5X1JMYnhOWEQySDlqazJMSTZGeHlwNVdpOHR4Wjdab1h3Rkl5Y2VHQjlob3NuUm0tMmxWWVNCTzloNkdYR1RyLTRvMlZweWtQaTBvc0p2TGV6WktFbUdUVmFQMl9VbkoyR08y0gHWAUFVX3lxTFBpeEpEMi1rcEVZY3o3NUZOMk82NElTeUJ1cjdPN01TTjhnU1BhMUZVUzAtc2J2aDkzTnYyQXlNejJyYXdKSDNPOUgtR3FiMVVBMm5uOFpiMF8wUWlqNmh0WWZCNHQ3V1Z2TENHXzBhM2VBVlVfbXVzZ2RMU2NFSGpad09OUGRQdmVNNVRnMWVaQy1FY08wLTN5REpkbzJYNzlYMmJPYTc0SWdkeGtHdmhqeUlnR0pfOWROSUdDV2N6SDd0SXMwMTMtRDhvSWx4amJSeTMzS2c?oc=5",
+          "imagem_url": "https://midias.correiobraziliense.com.br/_midias/jpg/2026/11/14/675x450/1_img-3224-68224703.jpg?20261114234101?20261114234101"
+        }
+      ]
+    },
+    {
+      "id": "f81d2d9345f1",
+      "gerado_em": "2026-11-16T03:49:30.854585+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 5.0,
+      "titulo": "Corinthians tem presença garantida no novo Mundial de Clubes Feminino da FIFA de 2028",
+      "resumo": "A Federação Internacional de Futebol (FIFA) confirmou a classificação da equipe feminina do Corinthians para a primeira edição do Mundial de Clubes Feminino, torneio programado para ocorrer entre os dias 5 e 30 de janeiro de 2028, nos Estados Unidos. A presença corintiana foi assegurada em razão dos títulos obtidos na Copa Libertadores Feminina nos anos de 2024 e 2025.\n\nA competição contará com 19 agremiações ao redor do mundo, com a América do Sul dispondo de três representantes: duas equipes entram diretamente na fase principal de grupos e a terceira deverá atuar em uma eliminatória preliminar. Além do Corinthians, o Cruzeiro também garantiu presença no evento esportivo ao levantar o troféu da Libertadores Feminina de 2026, derrotando o próprio clube alvinegro nos pênaltis após placar de 4 a 4 no tempo regulamentar.\n\nEnquanto Corinthians e Cruzeiro definiram seus passaportes, equipes como o Flamengo continuam em busca de vagas no torneio global. Os critérios de classificação determinados pela entidade internacional privilegiam as conquistas continentais no período compreendido entre 2024 e 2027, impedindo que conquistas domésticas concedam vagas automáticas para o certame nos Estados Unidos.",
+      "fontes": [
+        {
+          "nome": "Terra",
+          "url": "https://www.terra.com.br/esportes/flamengo/flamengo-ve-corinthians-garantir-vaga-em-nova-competicao-da-fifa,86bc0d71f012b6e11140bb06cf6f05dbd3egw2aj.html",
+          "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOT1B2R1VSb3BvU3JpV1hJSFpDUDJsTHQ3S0NBSWRlOURtZWtQMGp5TWoycXNES1F3a1RoUTRjU3p0bVlubXFGT3I5ejNicDlBNTJnR2k4djM5X2JnME9ENFN0TTFKdmV6Uk5GWEt0eFZTMnAzQW5pLW5wV1dkbmw1WUQtOFVOSEM3UW9yUmNReWxMbnNqdENqNlJOVGJjdVYtSHNYQnFESmdYSG1QLV85UmpSWlNqV09IY1ZmakNDckdHd1pTRGFxekMxZVlXcm9HejFMc190YkIzNjZmUmVhNWtFMDRVNl9x?oc=5",
+          "imagem_url": "https://p2.trrsf.com/image/fget/cf/1200/630/middle/images.terra.com/2026/11/15/1134074787-fifa.png"
+        }
+      ]
+    }
+  ]
+}
