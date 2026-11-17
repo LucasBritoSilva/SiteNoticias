@@ -203,7 +203,16 @@ MIN_RESUMO_COM_TEXTO = 500  # caracteres; ~3 parágrafos curtos é o mínimo ace
 MIN_RESUMO_SO_MANCHETE = 60  # alternativa quando nenhuma matéria teve o texto lido
 
 
-def prompt_unico(candidatos: list[Artigo], nichos: list[str], quantidade: int) -> str:
+def prompt_unico(
+    candidatos: list[Artigo], nichos: list[str], quantidade: int, garantir: list[str] | None = None
+) -> str:
+    garantir = nichos if garantir is None else garantir
+    obrigatorio = (
+        "Obrigatório: inclua pelo menos um grupo de cada um destes nichos, desde que haja matéria "
+        f"sobre ele: {json.dumps(garantir, ensure_ascii=False)}. Se um deles não tiver grupo com 2 "
+        "ou mais matérias, use uma matéria isolada dele (grupo com um único id).\n"
+        if garantir else ""
+    )
     blocos = []
     for i, a in enumerate(candidatos):
         texto = a.trecho.strip() or "(indisponível: use só a manchete)"
@@ -226,6 +235,7 @@ def prompt_unico(candidatos: list[Artigo], nichos: list[str], quantidade: int) -
         f"3. Só se houver menos de {quantidade} grupos com 2 ou mais matérias, complete com "
         "matérias isoladas (grupo com um único id), de veículos diferentes e relevantes para "
         "os nichos.\n"
+        f"{obrigatorio}"
         "4. Para cada grupo escreva `titulo` (explicativo e neutro, até 120 caracteres, dizendo o que "
         "aconteceu) e `resumo`.\n\n"
         "Como escrever o `resumo`: um texto bem elaborado, de 3 a 5 parágrafos (cerca de 150 a 300 "
@@ -283,12 +293,14 @@ class GeminiResumidor:
     def __init__(self, cliente=None):
         self.cliente = cliente or GeminiClient()
 
-    def resumir_grupos(self, artigos: list[Artigo], nichos: list[str], total: int) -> list[Grupo]:
+    def resumir_grupos(
+        self, artigos: list[Artigo], nichos: list[str], total: int, garantir: list[str] | None = None
+    ) -> list[Grupo]:
         candidatos = limitar_artigos(artigos)
-        prompt = prompt_unico(candidatos, nichos, total + RESERVA_DE_GRUPOS)
+        prompt = prompt_unico(candidatos, nichos, total + RESERVA_DE_GRUPOS, garantir)
         # Com o texto das matérias, exige um resumo elaborado; só com manchetes, aceita bem menos.
         minimo = MIN_RESUMO_COM_TEXTO if any(a.trecho.strip() for a in candidatos) else MIN_RESUMO_SO_MANCHETE
         brutos = gerar_validado(self.cliente, prompt, lambda d: validar_resposta(d, len(candidatos), minimo))
-        grupos = montar_grupos(brutos, candidatos, total)
+        grupos = montar_grupos(brutos, candidatos, total, garantir)
         log.info("Gemini devolveu %d grupos válidos; %d após as regras", len(brutos), len(grupos))
         return grupos

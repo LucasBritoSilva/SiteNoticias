@@ -6,7 +6,7 @@ objeto que cumpra o protocolo `Resumidor` (hoje, `gemini.GeminiResumidor`).
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Protocol
+from typing import Callable, Protocol
 
 from coleta import Artigo, normalizar_titulo
 
@@ -40,10 +40,39 @@ class Resumidor(Protocol):
 
     Recebe as notícias coletadas e devolve, em UMA chamada, até `total` grupos já resumidos
     (com `titulo` e `resumo` preenchidos), seguindo as regras de `montar_grupos`.
+    `garantir`: nichos que devem ter pelo menos um grupo, se houver notícia deles (padrão: todos).
     Para trocar de provedor basta implementar este método.
     """
 
-    def resumir_grupos(self, artigos: list[Artigo], nichos: list[str], total: int) -> list[Grupo]: ...
+    def resumir_grupos(
+        self, artigos: list[Artigo], nichos: list[str], total: int, garantir: list[str] | None = None
+    ) -> list[Grupo]: ...
+
+
+def chave_nicho(nicho: str) -> str:
+    """Compara nichos sem diferenciar maiúsculas, acentos ou pontuação."""
+    return normalizar_titulo(nicho or "")
+
+
+def escolher_com_cobertura(itens: list, total: int, nicho_de: Callable[[object], str], nichos: list[str]) -> list:
+    """Escolhe até `total` itens (já em ordem de preferência) com pelo menos um de cada nicho.
+
+    Primeiro reserva o melhor item de cada nicho de `nichos` (na ordem dada) que tiver algum
+    item; depois completa com os demais na ordem original. Devolve na ordem original.
+    """
+    escolhidos: set[int] = set()
+    for nicho in dict.fromkeys(chave_nicho(n) for n in nichos):
+        if len(escolhidos) >= total:
+            break
+        for i, it in enumerate(itens):
+            if i not in escolhidos and chave_nicho(nicho_de(it)) == nicho:
+                escolhidos.add(i)
+                break
+    for i in range(len(itens)):
+        if len(escolhidos) >= total:
+            break
+        escolhidos.add(i)
+    return [it for i, it in enumerate(itens) if i in escolhidos]
 
 
 def limitar_artigos(artigos: list[Artigo], limite: int = MAX_ARTIGOS_NO_PROMPT) -> list[Artigo]:
@@ -106,7 +135,9 @@ def selecionar_pool(artigos: list[Artigo], tamanho: int = TAMANHO_POOL) -> list[
     return [artigos[i] for i in escolhidos]
 
 
-def montar_grupos(brutos: list[dict], candidatos: list[Artigo], total: int = TOTAL_GRUPOS) -> list[Grupo]:
+def montar_grupos(
+    brutos: list[dict], candidatos: list[Artigo], total: int = TOTAL_GRUPOS, garantir: list[str] | None = None
+) -> list[Grupo]:
     """Aplica as regras sobre os grupos propostos pelo provedor e devolve até `total`.
 
     Cada item de `brutos`: {"ids": [...], "nicho", "relevancia", "titulo", "resumo"}.
@@ -114,8 +145,11 @@ def montar_grupos(brutos: list[dict], candidatos: list[Artigo], total: int = TOT
     - grupos de 2 a 3 fontes vêm primeiro, por relevância;
     - se faltarem, completa com notícias avulsas (grupo de uma fonte só, a que o provedor
       devolveu com um único id), de veículos diferentes entre si. Nada é inventado: tudo
-      vem de ids que existem em `candidatos`.
+      vem de ids que existem em `candidatos`;
+    - cada nicho de `garantir` (padrão: todos os nichos dos candidatos) fica com pelo menos um
+      grupo, se o provedor devolveu algum dele — mesmo que seja uma notícia avulsa.
     """
+    conhecidos = {chave_nicho(n): n for n in [*(garantir or []), *(a.nicho for a in candidatos)]}
     por_relevancia = sorted(brutos, key=lambda g: -g["relevancia"])
     usados: set[int] = set()
     grupos: list[Grupo] = []
@@ -123,7 +157,9 @@ def montar_grupos(brutos: list[dict], candidatos: list[Artigo], total: int = TOT
     def novo(g: dict, indices: list[int]) -> Grupo:
         usados.update(indices)
         artigos = [candidatos[i] for i in indices]
-        return Grupo(g["nicho"] or artigos[0].nicho, g["relevancia"], artigos, g["titulo"], g["resumo"])
+        # o nicho devolvido pelo provedor é normalizado para a grafia de nichos.json
+        nicho = conhecidos.get(chave_nicho(g["nicho"])) or artigos[0].nicho
+        return Grupo(nicho, g["relevancia"], artigos, g["titulo"], g["resumo"])
 
     for g in por_relevancia:  # 1) grupos com 2 a 3 fontes
         if len(g["ids"]) < MIN_FONTES_POR_GRUPO:
@@ -142,9 +178,7 @@ def montar_grupos(brutos: list[dict], candidatos: list[Artigo], total: int = TOT
             grupos.append(novo(g, indices))
 
     veiculos_avulsos: set[str] = set()
-    for g in por_relevancia:  # 2) avulsas, só para completar
-        if len(grupos) >= total:
-            break
+    for g in por_relevancia:  # 2) avulsas, para completar ou cobrir um nicho sem grupo
         if len(g["ids"]) != 1:
             continue
         i = g["ids"][0]
@@ -154,4 +188,5 @@ def montar_grupos(brutos: list[dict], candidatos: list[Artigo], total: int = TOT
         veiculos_avulsos.add(fonte)
         grupos.append(novo(g, [i]))
 
-    return grupos[:total]
+    obrigatorios = list(conhecidos.values()) if garantir is None else garantir
+    return escolher_com_cobertura(grupos, total, lambda g: g.nicho, obrigatorios)

@@ -458,3 +458,34 @@ def test_pool_com_dados_reais_do_exemplo():
     pool = resumos.selecionar_pool(arts, tamanho=12)
     assert len(pool) == 12
     assert sum("MEC" in x.titulo for x in pool) <= resumos.MAX_POR_ASSUNTO_NO_POOL + 1
+
+
+# ------------------------------------------------------------ pelo menos uma notícia de cada nicho
+
+
+def test_cada_nicho_tem_pelo_menos_um_grupo_mesmo_avulso():
+    # 4 grupos de "ia" muito relevantes e uma notícia avulsa de "fosseis" pouco relevante
+    arts = [art(i, nicho="ia") for i in range(8)] + [art(8, nicho="fosseis")]
+    resposta = {"grupos": [item([0, 1], 9), item([2, 3], 8), item([4, 5], 7), item([6, 7], 6),
+                           item([8], 1, nicho="Fósseis")]}
+    r, cliente = resumidor(resposta)
+    grupos = r.resumir_grupos(arts, ["ia", "fosseis"], total=3)
+    assert [g.nicho for g in grupos] == ["ia", "ia", "fosseis"]   # o avulso de fosseis toma a última vaga
+    assert "Obrigatório" in cliente.prompts[0] and '"fosseis"' in cliente.prompts[0]
+
+
+def test_garantir_limita_os_nichos_obrigatorios():
+    arts = [art(i, nicho="ia") for i in range(4)] + [art(4, nicho="fosseis")]
+    resposta = {"grupos": [item([0, 1], 9), item([2, 3], 8), item([4], 1, nicho="fosseis")]}
+    r, cliente = resumidor(resposta)
+    grupos = r.resumir_grupos(arts, ["ia", "fosseis"], total=2, garantir=["ia"])
+    assert [g.nicho for g in grupos] == ["ia", "ia"]
+    assert '["ia"]' in cliente.prompts[0]
+
+
+def test_escolher_com_cobertura_mantem_a_ordem():
+    itens = ["a1", "a2", "a3", "b1", "c1"]
+    escolhidos = resumos.escolher_com_cobertura(itens, 3, lambda s: s[0], ["a", "b", "c"])
+    assert escolhidos == ["a1", "b1", "c1"]
+    assert resumos.escolher_com_cobertura(itens, 2, lambda s: s[0], ["c"]) == ["a1", "c1"]
+    assert resumos.escolher_com_cobertura(itens, 9, lambda s: s[0], ["z"]) == itens

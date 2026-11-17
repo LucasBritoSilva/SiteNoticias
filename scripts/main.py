@@ -71,7 +71,10 @@ def executar(raiz: Path, resumidor: resumos.Resumidor, sessao=None, agora: datet
             com_texto = pool
         log.info("Texto lido de %d das %d matérias escolhidas", sum(1 for a in pool if a.trecho), len(pool))
         chamadas = 1
-        novos = resumidor.resumir_grupos(com_texto, nichos, faltam)
+        # Pelo menos uma notícia de cada nicho: o Gemini precisa cobrir os que o cache não cobre.
+        cobertos = {resumos.chave_nicho(e.nicho) for e in reaproveitadas}
+        garantir = [n for n in nichos if resumos.chave_nicho(n) not in cobertos]
+        novos = resumidor.resumir_grupos(com_texto, nichos, faltam, garantir)
     log.info(
         "Cache: %d entradas válidas, %d reaproveitadas, %d notícias novas, %d grupos novos; "
         "chamadas ao Gemini nesta execução: %d",

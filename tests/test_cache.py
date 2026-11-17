@@ -154,3 +154,17 @@ def test_cache_nao_guarda_segredos(tmp_path, raiz):
     with pytest.raises(ValueError):
         cache.salvar(tmp_path / "c.json", [suspeita], AGORA)
     assert not (tmp_path / "c.json").exists()
+
+
+def test_planejar_reserva_vaga_para_nicho_sem_resumo_no_cache():
+    arts = artigos_do_exemplo()
+    nicho = arts[0].nicho
+    entradas = [cache.entrada_de_grupo(Grupo(nicho, 9 - k, [arts[2 * k], arts[2 * k + 1]], f"T{k}", "R"), AGORA)
+                for k in range(9)]
+    outro = Artigo("Fóssil novo", "https://news.google.com/rss/articles/FOSSIL", "Y", "", arts[0].publicado,
+                   "paleontologia")
+    reaproveitadas, novos = cache.planejar(entradas, arts + [outro], total=9)
+    assert len(reaproveitadas) == 8                       # uma vaga fica para paleontologia
+    assert outro in novos
+    # sem nicho descoberto, o cache pode ocupar as 9 vagas
+    assert len(cache.planejar(entradas, arts, total=9)[0]) == 9

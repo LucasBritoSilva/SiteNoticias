@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from coleta import Artigo, normalizar_link
-from resumos import Grupo
+from resumos import Grupo, chave_nicho, escolher_com_cobertura
 
 log = logging.getLogger(__name__)
 
@@ -125,12 +125,19 @@ def planejar(entradas: list[Entrada], artigos: list[Artigo], total: int) -> tupl
 
     Devolve (reaproveitadas, novos_artigos):
     - reaproveitadas: até `total` entradas do cache que ainda têm alguma fonte no feed atual
-      (as mais relevantes primeiro);
+      (as mais relevantes primeiro, com pelo menos uma de cada nicho presente no cache);
     - novos_artigos: artigos do feed cujas fontes NÃO aparecem em nenhum resumo recente.
+
+    Cada nicho que tem notícia nova mas nenhuma entrada reaproveitável fica com uma vaga livre,
+    para que a chamada ao Gemini possa cobri-lo (pelo menos uma notícia de cada nicho).
     """
     no_feed = {normalizar_link(a.link) for a in artigos}
     ja_resumidos = set().union(*(e.links() for e in entradas)) if entradas else set()
     vivas = [e for e in entradas if e.links() & no_feed]
     vivas.sort(key=lambda e: (len(e.fontes) < 2, -e.relevancia))
     novos = [a for a in artigos if normalizar_link(a.link) not in ja_resumidos]
-    return vivas[:total], novos
+
+    nichos_cache = list(dict.fromkeys(e.nicho for e in vivas))
+    sem_grupo = {chave_nicho(a.nicho) for a in novos} - {chave_nicho(n) for n in nichos_cache}
+    limite = max(total - len(sem_grupo), min(total, len(nichos_cache)))
+    return escolher_com_cobertura(vivas, limite, lambda e: e.nicho, nichos_cache), novos

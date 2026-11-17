@@ -105,7 +105,7 @@ class GeminiSimulado:
         if self.quebrar:
             return "nada de json"
         return json.dumps({"grupos": [
-            {"nicho": "ia", "relevancia": max(0, 10 - n), "ids": ids,
+            {"nicho": "inteligência artificial", "relevancia": max(0, 10 - n), "ids": ids,
              "titulo": f"Resumo simulado {self.prefixo} {n}",
              "resumo": RESUMO_LONGO}
             for n, ids in enumerate(self.ids)
@@ -124,7 +124,7 @@ def raiz(tmp_path, monkeypatch):
     (tmp_path / "docs" / "style.css").write_text("x")
     (tmp_path / "docs" / "editar.html").write_text("x")
     (tmp_path / "docs" / "index.html").write_text("VERSAO ANTERIOR")
-    (tmp_path / "nichos.json").write_text(json.dumps({"nichos": ["ia"]}), encoding="utf-8")
+    (tmp_path / "nichos.json").write_text(json.dumps({"nichos": ["inteligência artificial"]}), encoding="utf-8")
     dados = json.loads((FIXTURES / "exemplo_coleta.json").read_text(encoding="utf-8"))
     arts = [Artigo(**a) for a in dados["artigos"]]
     monkeypatch.setattr(main.coleta, "coletar", lambda nichos, agora=None: arts)
