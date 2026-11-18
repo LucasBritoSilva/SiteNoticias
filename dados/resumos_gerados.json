@@ -2,198 +2,6 @@
   "versao": 1,
   "grupos": [
     {
-      "id": "cc3c43f8249d",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Inteligência Artificial",
-      "relevancia": 9.0,
-      "titulo": "EUA impõem restrições à exportação de chips de inteligência artificial para o Brasil e outros quatro países",
-      "resumo": "O governo dos Estados Unidos, sob a gestão de Donald Trump, anunciou nesta segunda-feira (16) a inclusão do Brasil em uma lista de países que enfrentarão novas exigências para a aquisição de semicondutores e processadores avançados de inteligência artificial. A determinação também afeta empresas de Singapura, Malásia, Tailândia e Indonésia, passando a exigir uma autorização prévia das autoridades norte-americanas para transações de exportação, reexportação ou transferência desses componentes.\n\nSegundo o Departamento de Comércio dos EUA, a regulamentação foi elaborada pelo Departamento do Tesouro e pelo Conselho de Segurança Nacional, sendo divulgada pelo Bureau of Industry and Security. O objetivo central é conter o risco de que empresas chinesas acessem capacidade computacional avançada em data centers situados no exterior para treinar modelos de inteligência artificial, contornando sanções comerciais por meio de serviços remotos na nuvem.\n\nA medida não impõe uma proibição definitiva ao Brasil, mas estabelece que cada pedido de compra por empresas brasileiras passará por avaliação individual sob critérios de segurança nacional. O documento norte-americano não apontou casos concretos de irregularidades ou envolvimento direto de companhias instaladas no território brasileiro em desvios de tecnologia.",
-      "fontes": [
-        {
-          "nome": "CNN Brasil",
-          "url": "https://www.cnnbrasil.com.br/economia/money/macroeconomia/eua-vao-restringir-acesso-da-china-a-chips-de-ia-medida-inclui-brasil/",
-          "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNVl9vcjJ4Zkp0d2FDQi1FZXROeW91aGVJVXBlMGNFLTBPMVlVLUl5aFpnN01YcXlvdE0taEZhVDdkYjMycnVLdmVWM19HVUNvakY4SE9fdExrLU53Z3pyY2UtR3E0M0dER0Zxc2dLaEZfejVCOUNaeHZEYTlQVVc4ZGFpMjN6UTVwV2xwb1RfUW92OVBsZmd4QXFVNjdKNEhWa1NscktTQ3FMdmptQ3cyazJMNEhnVWxOSS1DeGRhYXdyYXdZWFo4?oc=5",
-          "imagem_url": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/Reuters_Direct_Media/BrazilOnlineReportBusinessNews/tagreuters.com2026binary_LYNXMPEM2H0V0-BASEIMAGE.jpg?w=800&h=533&crop=1"
-        },
-        {
-          "nome": "Jornal Opção",
-          "url": "https://www.jornalopcao.com.br/ultimas-noticias/eua-impoem-restricoes-a-venda-de-chips-de-inteligencia-artificial-para-o-brasil-889340/",
-          "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNUmc0aWlSNVVvQW9iRFVFTmhJZmFHWm1JdHlSa0FoX18ydHVFQXluY085bE14LV9wOVhMV21Sc2Uya2tFY1kwY0lsNV9sWFRKYktZeVU3WEFiVHZIN3lWSTlubkNCTmxSWm5aSXlsMU1KRVJJWW1yTUNPLXJnS2tJaEdLXzc1WW1uUEwyYlpWTXZiTHRCVXlQdTZmLVJsdmxjMEx5Q3d6TnJmd3BFdHR4NDZ2U19JZGVBbkxHVGliSlVkcTRyWEVWS3VTX1VCaWx3?oc=5",
-          "imagem_url": "https://cdn.jornalopcao.com.br/assets/2026/08/12123908/1786538347-donald-trump-960x540-1.webp"
-        },
-        {
-          "nome": "Gazeta do Povo",
-          "url": "https://www.gazetadopovo.com.br/mundo/para-barrar-china-eua-incluem-brasil-em-lista-de-paises-com-restricoes-para-acesso-a-chips-de-ia/",
-          "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOZjVadklud0NESU5FS1JtV2FQTnZORDNFbzlzRE9MTjl4S2xPdmtGMDk4VWpJSHVRRk1fbHg0OWZUTnFzaGZpWTRTSFZEY2xydm5naGxTRGJtOTdSTDlLUHJ1UnJ3ektFYWVNM1JReG1kckttR1ZpZ2dGV2h1emVmVkprWlEwQmJZbGpzMDlISHFzSXRUaDJibDB4LThvaWc3MkRUeHduN2k1aGlTdXdzcnZnZDJhdDN0UXluazJLVTdwSFU0UGd1aGM1Nl9XZ2JI?oc=5",
-          "imagem_url": "https://media.gazetadopovo.com.br/2026/11/05122615/trump.alasca.jpg"
-        }
-      ]
-    },
-    {
-      "id": "e69df03f1a30",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Inteligência Artificial",
-      "relevancia": 9.0,
-      "titulo": "Brasil adere a compromisso internacional na COP31 para incentivar IA sustentável e defender empregos",
-      "resumo": "O Brasil assinou nesta segunda-feira (16), durante a COP31 em Antália, na Turquia, a adesão ao Compromisso de Antália sobre Inteligência Artificial. A iniciativa multilateral foi liderada pela Presidência turca em parceria com a Organização das Nações Unidas para a Educação, a Ciência e a Cultura (Unesco) e a União Internacional de Telecomunicações (UIT), voltando-se ao uso responsável da tecnologia diante dos desafios climáticos e trabalhistas.\n\nO documento tem entre suas prioridades a contenção dos impactos ecológicos associados à infraestrutura de data centers, com ênfase no alto consumo de água e energia elétrica, além da preservação de postos de trabalho ameaçados pela crescente automação. Representando a delegação brasileira, o secretário de Telecomunicações do Ministério das Comunicações, Hermano Tercius, defendeu que o avanço tecnológico deve assegurar garantias aos trabalhadores.\n\nDurante o evento internacional, representantes brasileiros apresentaram ações públicas ligadas à transformação digital e sustentabilidade, como a plataforma Gov.br, o Plano Brasileiro de Inteligência Artificial e o programa Computadores para Inclusão. O país também participou de debates sobre a futura instalação da sede do Instituto de Inteligência Artificial para Mudanças Climáticas (AICI) em território nacional.",
-      "fontes": [
-        {
-          "nome": "Portal Cambé",
-          "url": "https://portalcambe.com.br/brasil-pacto-global-ia-sustentavel-cop31/",
-          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBtNDRHbXVpRWpJek5xSHV6SWZFTlVXLWpIdzhGNDVfWXplQlVCdHdLVEFWRGFxcXVXTV9TX19xcWhDZmNEdk04Y2ZuSjZUZC1idXF5Xzlmd1RxQlplMndYRDNydEVSck5VY1diOGxnVDdMdG9RRFJN?oc=5",
-          "imagem_url": "https://portalcambe.com.br/wp-content/uploads/cop31_negociacoes_avancam_mas_financiamento_e_desafio_para_2a_semana02.webp"
-        },
-        {
-          "nome": "Times Brasil | CNBC",
-          "url": "https://timesbrasil.com.br/mundo/brasil-adere-a-pacto-internacional-na-cop31-para-ia-sustentavel/",
-          "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQTVY0UnB0OW9XOUZSbkN2TU1Id0VCWXBqX0FVQ3VtREtxQW9fbjIxSHNKQ3RZMkl1MnFwa2JIQjF0WlN3MTNXTlZOMnNZbTU5eWwxbTMtLWZXTFdoMDVNVi05anZ4WVJtR19ZTmlqbW90SjZpb0JKYlBNT3RueGM1U2lTakhrRGJ4MlhIMm5paTJxSnFERWUwbUpPVVF6Zw?oc=5",
-          "imagem_url": "https://storage.googleapis.com/bucket.timesbrasil.com.br/sites/2026/11/7bf7535e-22a.webp"
-        },
-        {
-          "nome": "Agência Brasil",
-          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/brasil-assina-na-cop-31-pacto-global-por-ia-sustentavel-e-empregos",
-          "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPaWt4WGVCQ3JQZlRodkFxZVJsUmp2cXdpMDFiZGgycVRDQm1MR1J2alRTQV9lanlVWE1GWlZzZ1F2NGVzYVNFdWtLaV85T2hWbi1KdV9qTU9jRlNGRE5JTVI2VTRPRlMwVWhtTnhtcm5Ca3NjVV9wd3NaSldfMjNrVW5ONms2b2UtSUNCSGVtWkpNd0Zsd3NtTC1ua0pnMEFyN1lLaHdOcmY0OE03ci1Ca2Rwa1FKTnM2bldidnRsSWtxZw?oc=5",
-          "imagem_url": "https://imagens.ebc.com.br/GLj8-I0nD8Og3lmI5sug5ufbegM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/cop31_negociacoes_avancam_mas_financiamento_e_desafio_para_2a_semana02.jpg?itok=XiuCKwDv"
-        }
-      ]
-    },
-    {
-      "id": "59c5b58d7e4c",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Corinthians",
-      "relevancia": 8.0,
-      "titulo": "STJD nega recurso do Corinthians e mantém suspensão de duas partidas para Yuri Alberto",
-      "resumo": "O pleno do Superior Tribunal de Justiça Desportiva (STJD) negou o recurso apresentado pelo Corinthians nesta segunda-feira (16) e confirmou a punição de dois jogos ao atacante Yuri Alberto. Com a decisão unânime dos auditores, o jogador desfalca o clube nas próximas rodadas do Campeonato Brasileiro, ficando de fora das partidas contra o Botafogo e o Atlético-MG.\n\nA punição ao atleta ocorreu após sua expulsão no clássico contra o São Paulo, na Vila Belmiro. O atacante foi enquadrado no artigo 254 do Código Brasileiro de Justiça Desportiva por jogada violenta, devido a uma entrada com as travas no atleta Ferreirinha, e no artigo 258, por chutar a bandeira de escanteio que continha o emblema são-paulino ao deixar o gramado. A defesa alegou que lances parecidos não foram punidos anteriormente, argumento rejeitado pelo relator Luiz Felipe Bulus.\n\nO gerente de futebol corintiano, Julio Cesar, manifestou forte insatisfação em pronunciamento no CT Joaquim Grava. O dirigente classificou a decisão como exagerada, alegou a aplicação de dois pesos e duas medidas em relação a casos anteriores e afirmou que declarações sobre supostos favorecimentos ao clube vêm pressionando a arbitragem e os tribunais desportivos.",
-      "fontes": [
-        {
-          "nome": "Diário de Goiás",
-          "url": "https://diariodegoias.com.br/stjd-nega-recurso-do-corinthians-e-mantem-suspensao-de-yuri-alberto-por-dois-jogos/554761/",
-          "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQY0ZLWGtuMkN1dktZX2RyRThBaGZseFJYTm9EMGpnbUFqTHU1dzBBMHVKVkJJSHZmWGlkRWRYWEYxN2l3ZUhIODdCQ0JyckZndmhQU3NfblF4dVRhaWU4UHYyZXhFUFBXSGdKWVdaMEF4bUJHUEUxbVVUTlc3Qzh6ZV83RVRzaXJTMUE5WWdwTnhwOGZNRXM2cS11bkNVQm5lQy1LX0U5cHJJbWQ1VmNNUkNtVkdZYUxsMnpF?oc=5",
-          "imagem_url": "https://cdn.diariodegoias.com.br/wp-content/uploads/2026/11/16215737/rib3449-856x481.webp"
-        },
-        {
-          "nome": "CNN Brasil",
-          "url": "https://www.cnnbrasil.com.br/esportes/futebol/corinthians/gerente-do-corinthians-critica-stjd-por-punicao-a-yuri-alberto-exagerada/",
-          "link": "https://news.google.com/rss/articles/CBMiywFBVV95cUxObjdSRVc1SEdjSkZ2UnZmUkVXS3FHT3g1Q1hHTVFPSV9tcFIzMGpRdDQ2N09lQU1CLVVwWmNWMnB2eWhtWFg2emRNb3Jobm9pYzI3dGwxTlZRWFh2YVh0dkdYbjFyX2JQTTN0TE5YcnRYVHl6SUNKQWdSQUliQ0doMkEtQUExMXhSU2JVSUw0eXFKRFhjck9oblpJcWxwYXVUaTZNZGljQnhMU0VqYTlEZEVHQ3k1U1V6V3ZXOEdaUF9haEFqb195Z2l5MA?oc=5",
-          "imagem_url": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/03/WhatsApp-Image-2026-03-14-at-15.26.47-e1773512872690.jpeg?w=1170&h=630&crop=1"
-        },
-        {
-          "nome": "ge",
-          "url": "https://ge.globo.com/futebol/times/corinthians/noticia/2026/11/16/gerente-do-corinthians-critica-decisao-do-stjd-sobre-yuri-alberto-dois-pesos-e-duas-medidas.ghtml",
-          "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxPcVVtZFZSNWlrUVVSRDAtZzJfaVhfOEtHNXhhT09NS0FQR3hiZFB2TEtiS3NWckpmS0tjMzlEeE9WSDZsMXl4X2t5aXNzSEN4aEpmQUhPbXlnWW0xakxnUUpCdFJoQVRvX0w4dXlIaGdkb2NJeG1wOUhLcFM4c2ZwaVQyclpkWTJYeC1sa2dURlNWY3ptMEZSYmUtenkwd2hza0cyUklsMEwwWHFnandzNFVDakx5NVZHR1VNN0ZYcEVrMHpaSE1oN1JaYlo0Ui1uV3lUWXdaS0d0VzlBemU3RC0yM2VSMC1pSm1tbnViLVFYVHlSQ1HSAYQCQVVfeXFMUGFSLXRzYUtRUGp4d3FFOEYzMEdhV2Jrdnc4dVlvMktUX3ByeEJXczIyU3hsLUtVaEJSLV9OSUlTcURYSEZUbk1BZUY1N0QzZ2I1RlF0R2ttNEdRaVJfSURHa1I0LUZvT1habTBXN2F6dW5RM2x5TGRxRzNXNE02Vm9BNVkwM2xTSzNUTklTUU1mNkdCcV9CbjZpeWVIUkM4VTI1d2NkQlNLam5fTFJINzljQ3hIM0pNZFlIN1NFSHpXVXZQSWlnLVM2YUh1Y0RkNnBZLVk3bDRoaDlZUXVwTmVhcVpfeEpzc1FCOW40dHdZUk1pbmg5Q3czVUxJRGRGVE44Z1Q?oc=5",
-          "imagem_url": "https://s2-ge.glbimg.com/oaXSonsavgMBv02QWtQt6oKw6i4=/1600x0/filters:format(jpeg)/https://i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2026/7/Y/nOk9BcQISXYGJl1kOFmA/whatsapp-image-2026-11-16-at-13.12.53.jpeg"
-        }
-      ]
-    },
-    {
-      "id": "1faeef928625",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Corinthians",
-      "relevancia": 8.0,
-      "titulo": "Corinthians define eleição presidencial com cinco chapas no Parque São Jorge em 28 de novembro",
-      "resumo": "A eleição para a presidência do Corinthians foi marcada para o dia 28 de novembro, um sábado, na sede social do Parque São Jorge, em São Paulo. O pleito definirá a nova diretoria executiva, composta por presidente e dois vice-presidentes, que comandará a agremiação durante o triênio 2027–2029.\n\nCinco chapas concorrem ao comando do clube: José Augusto Cardoso Mendes (Chapa 08, \"Integridade\"), Ilmar Schiavenato (Chapa 09, \"Basta\"), Sérgio Janikian (Chapa 05, \"Corinthians de Verdade\"), André Castro (Chapa 27, \"Transforma Corinthians\") e Rozallah Santoro (Chapa \"Todo Dia Pelo Corinthians\"). Os pedidos de impugnação contra Castro e Santoro foram rejeitados pelo Conselho Deliberativo, homologando todos os postulantes. O atual presidente, Osmar Stábile, não concorre à reeleição.\n\nA votação será presencial e restrita a associados com pelo menos cinco anos ininterruptos de filiação, cadastro biométrico, maioridade civil e mensalidades quitadas, excluindo membros do programa Fiel Torcedor. O eleito enfrentará um cenário financeiro complexo, marcado por dívidas bilionárias, pendências com a Caixa Econômica Federal e débitos salariais que já atingiram dezenas de milhões de reais.",
-      "fontes": [
-        {
-          "nome": "Band",
-          "url": "https://www.band.com.br/esportes/futebol/times/corinthians/eleicao-do-corinthians-veja-candidatos-entrevistas-data-e-quem-vai-votar",
-          "link": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNNl8ydGtUQ1luai1ORFh1UXJPNjlIc2VKbGVjRFMyTGRSazFXT3RzaVhGc3NKUTBWT2VtR0UxbGZiVHlyTUJ3RUdfSWJXYUI2b2Rud0xheXlSekx3QTgxaGJ2SF90U3lWTldDMjB5blRkTURaRzlWaUp4VFNSSFZpZVlGZjVSRG5fTnVYM0Z1RWVFSVdscGVRVGNvMUdNLUFHUTVnWXh1V05KdFotVmpJZzJNVk1xSmNxRTFGTzRySTM0dHhCWG1KSGp5Zw?oc=5",
-          "imagem_url": "https://img.band.com.br/image/2024/11/29/parque-sao-jorge-sede-do-corinthians-214747.jpg"
-        },
-        {
-          "nome": "TV Sim Brasil",
-          "url": "https://tvsimbrasil.com.br/sp/sao-paulo/esportes/noticia/2026/11/16/corinthians-eleicao-presidencial-28-novembro-5-candidatos",
-          "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQQzc3V2RZZFhEMXNDZlR5c0w0QTliamJvUGJZbHd0SFBrREhjbHQxM2h2MmUyUWp6NlFtOTBoQ1IwaE1qbXBENzZrVmNzYUh5QjZ2NGJSQ21iVy1yX0ZJNF9mRm1hYzd6QzZwakhFR3lzOGdmZy1abDE2bU9sblBoT0ZIT1pVYWhzajFUeTFVeXJJVzQ3Rmhkb29GaVVSUTcxSTdCNVozcTZwUVk5MVhmOEZZWTF1VHZTU0Y0Y2lQZktUUDQ?oc=5",
-          "imagem_url": "https://tvsimbrasil.com.br/_next/image?url=https%3A%2F%2Fapi-news.tvsimbrasil.com.br%2Fstorage%2Farticles%2F513e5ce3-01b2-4311-a93b-0a0f147cd1b6.webp&w=1200&q=75"
-        }
-      ]
-    },
-    {
-      "id": "654d22caa220",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Corinthians",
-      "relevancia": 7.0,
-      "titulo": "Corinthians e Bragantino se enfrentam em Bragança Paulista pela ida do play-in do Paulistão Feminino",
-      "resumo": "Red Bull Bragantino e Corinthians disputam nesta terça-feira (17), às 21h (horário de Brasília), a partida de ida do play-in do Campeonato Paulista Feminino. O confronto eliminatório será realizado no Estádio Cícero de Souza Marques, em Bragança Paulista, abrindo a série em jogos de ida e volta que concede vaga nas semifinais da competição estadual.\n\nNa etapa de classificação, a equipe alvinegra encerrou sua participação no terceiro lugar, somando 13 pontos em sete confrontos, acumulando quatro vitórias, um empate e duas derrotas. Já o Bragantino terminou a fase na sexta posição, com 7 pontos decorrentes de uma vitória, quatro empates e duas derrotas, vindo de revés por 3 a 0 diante do Palmeiras.\n\nO play-in reúne os times posicionados entre o terceiro e o sexto lugares da primeira fase, enquanto Ferroviária e Palmeiras avançaram de forma direta às semifinais. O Corinthians busca recuperação esportiva após a recente troca no comando técnico e a perda dos troféus do Campeonato Brasileiro e da Copa Libertadores no ano.",
-      "fontes": [
-        {
-          "nome": "Gazeta Esportiva",
-          "url": "https://www.gazetaesportiva.com/times/corinthians/bragantino-x-corinthians-veja-onde-assistir-ao-jogo-de-ida-do-play-in-do-paulistao-f/",
-          "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOdDFjSENqMDh0OUxZOS1nZXdjRldsMmNpVFlHWGpMUHZmcUx5aERQTVpoTGdpWUoyRzJuTXJOaG1PQW1WT2t5ZHp6WV8xcEZGaXVjYlh3eWYyNEF3VTdGWkVFcE9mVGNDeFRRb3BxZmQtVjRRcFp2ZEZYOUZnaTR5SU1HTFE4aWVDTzVzdzJjWWtpZmdra1pJVjAxVmlhcUNkUl9jdTJvVXlEZmZzUzd4ZDQtVjFnVnRabFRlMGNrVFYxamdnNzdDNFEwUjcyVklt0gHWAUFVX3lxTE1kQWttTkpZemhoSmRYWFJzOUYzSzlNb296R0V4ZHlFZlg4Zm9Za0hxRFRFV25CM2FOUnIxQW15RXVSeUV4SzU4VGZtcW1oRDExR3hpaXlLbFNHMVFVSzFObDhlQWhpZlQ2VGdFV3Vhb3JNSVVtQ0UyVDlfNWQyajM3bWdsUE83dkFnZ3h6UklhUE5XRU9jWGtBX0VybkFhX0Z0NkVQWVFUdWpwQzlfWTVsdkdqVFVPTnNYeXRjc2pWZVZSd2x6d0s2cWlxVmRuV3VjbEQ1WHc?oc=5",
-          "imagem_url": "https://static.gazetaesportiva.com/uploads/2026/11/250328.webp"
-        },
-        {
-          "nome": "Olimpíada Todo Dia",
-          "url": "https://www.olimpiadatododia.com.br/futebol/773817-bragantino-x-corinthians-paulistao-feminino-onde-assistir-e-mais-informacoes/",
-          "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPbDEtRlpub3NfQlY2TG9LbE1oUGRielprWHU1TVlfN3M1RndNRDdWRVk3RGx1SUdWR29ia1pSaFBrRkp5YUdVM1lDS3EzSmotc0l0VThkY1FXYlNLZWFUUUdVZEdTMkRjWUJxdWZUbjE5eGdldmFnbXJaUTdoNV9hRk5kbW5RQVRGLVVyMEFYWmlDR1kyak5OR19wTlNzZ2lLZWxheU8zTmZzWTZzQXA0X2Y2MEVHemR6NjlXcHFaM3BLVkw0T2xr?oc=5",
-          "imagem_url": "https://www.olimpiadatododia.com.br/wp-content/uploads/2026/10/red-bull-bragantino-copa-do-brasil.png"
-        }
-      ]
-    },
-    {
-      "id": "e620acac0742",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Corinthians",
-      "relevancia": 7.0,
-      "titulo": "Rodrigo Garro avança na transição física e volta a treinar com bola no Corinthians",
-      "resumo": "O meio-campista argentino Rodrigo Garro avançou em seu processo de reabilitação e realizou atividades com bola junto ao elenco corintiano na manhã de segunda-feira (16), no CT Joaquim Grava. O atleta estava afastado desde o dia 4 de novembro, data em que sofreu uma contusão no joelho direito durante clássico contra o São Paulo.\n\nDurante o treinamento, o camisa 10 participou de trocas de passes iniciais antes de seguir para trabalhos em separado no gramado. A comissão técnica avalia a evolução diária do jogador com a expectativa de que ele possa intensificar o ritmo e, caso responda bem, ser relacionado para o banco de reservas no duelo de quarta-feira contra o Botafogo.\n\nAlém de Garro, o departamento de futebol acompanha as situações de outros atletas contundidos. O volante Raniele já treina normalmente após cirurgia de menisco, o meia Jesse Lingard recuperou-se de fissuras na costela e o zagueiro Gabriel Paulista aproxima-se da liberação médica após problema muscular na coxa esquerda.",
-      "fontes": [
-        {
-          "nome": "UOL",
-          "url": "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/11/16/garro-volta-a-treinar-com-o-elenco-e-aumenta-chance-de-volta-no-corinthians.ghtm",
-          "link": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQVWdTMVQ0cng0SWQyRG5PallkVzhjdWtyYjJ3VnFpUWtmenFtVW9xU212NFZKUGlqUHZ1Y3VvRTdOdE5hYzNkLUNPU1RqSThWLU9wVUVJampqZnZ4dGJVX09jcTh2Y3lvLXJGUUNMcVlHUzlMR1UwZjRrTE5HVG16V1NCUGxXdWMwOWh3Z0dGb1JsekJXMjJhSVRMaE83Z0l2bFluVnZVallXQm8wUkp0cGZ3ZzRZRG4xMzltd19JUko2YW95dFBTS0lsSWlGdGtJdjdPV2pWa3UzWTZtbWhLUw?oc=5",
-          "imagem_url": "https://conteudo.imguol.com.br/c/esporte/fc/2026/11/13/garro-corre-no-gramado-do-ct-dr-joaquim-grava-do-corinthians-1794595005118_v2_615x300.jpg"
-        }
-      ]
-    },
-    {
-      "id": "2e7c7fdf27db",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Corinthians",
-      "relevancia": 7.0,
-      "titulo": "Raniele confirma recuperação física e aborda impactos do ambiente e salários no Corinthians",
-      "resumo": "Em entrevista coletiva realizada nesta segunda-feira (16), o volante Raniele anunciou que está clinicamente liberado e à disposição para retornar aos gramados pelo Corinthians, cerca de um mês após ter passado por artroscopia no joelho direito. O jogador avaliou o momento da equipe no Campeonato Brasileiro e destacou a necessidade urgente de somar pontos na tabela.\n\nAo comentar a rotina do elenco, Raniele admitiu o desgaste mental provocado pelas constantes controvérsias que cercam os bastidores do Parque São Jorge. Ele apontou que trabalhar sob sucessivas polêmicas torna a convivência pesada e interfere no rendimento psicológico do grupo, que busca estancar erros defensivos para garantir a permanência na Série A.\n\nO atleta também se pronunciou sobre os vencimentos atrasados mantidos pelo clube, que incluem salários, premiações e meses de direitos de imagem. Embora tenha ressaltado que a diretoria precisa quitar suas obrigações financeiras, declarou que a preocupação dos jogadores está voltada prioritariamente ao risco de rebaixamento, definindo a situação na tabela como o maior incômodo atual.",
-      "fontes": [
-        {
-          "nome": "Terra",
-          "url": "https://www.terra.com.br/esportes/corinthians/corinthians-raniele-se-coloca-a-disposicao-e-fala-sobre-salarios-atrasados,452ac0c990eba0820a45d42abc434177xjutvq3x.html",
-          "link": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxOeDc0ZTRQd3BzaThmZUlTQlA5ZmxJcFRsWTZYVEkwSG1uTXp6TW8yS3NPU3lkNXJCRl9La2c3R2dkUVRhbHl2VFdtX1hyX0pWYlpvci02bTVSQUlNX3UydzNDYnJPNFV0c3lHZFlFOWswVE5iUWVBa08zeEFwV0tINDVLcm1LS0FnZWNTTGFZNGNaSU1UaV9Cdi1WTVJiSTBzZ3p6MTdmcnNYUEV4Q0FHTVFUb1MwNHJXT1pSaHFSNUg0ZWMtMGs0eHpLVnNQTTFKcWg1a19HenBDRDlUalpfeVlqTDhjMzE1cjVhTWk2d3FyLUlMTVlIeWpB?oc=5",
-          "imagem_url": "https://p2.trrsf.com/image/fget/cf/1200/630/middle/images.terra.com/2026/11/16/1707128705-hxrfcmawoaa74z7-610x400.jpg"
-        }
-      ]
-    },
-    {
-      "id": "a29edfe1a965",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Inteligência Artificial",
-      "relevancia": 6.0,
-      "titulo": "Pesquisadores do MIT desenvolvem método com inteligência artificial para acelerar simulações climáticas",
-      "resumo": "Cientistas do Instituto de Tecnologia de Massachusetts (MIT) desenvolveram uma abordagem baseada em inteligência artificial e dados sintéticos para acelerar projeções a respeito do aquecimento global. O sistema possibilita calcular em segundos os reflexos das emissões humanas sobre a temperatura global e a elevação dos oceanos, processos que tradicionalmente demandam meses em supercomputadores.\n\nA metodologia emprega emuladores climáticos treinados para espelhar as operações de modelos físicos complexos que integram atmosfera, mares e cobertura vegetal. O trabalho, publicado na revista científica Proceedings of the National Academy of Sciences (PNAS), propõe uma redução drástica no volume de dados prévios necessários ao aprendizado de máquina.\n\nSob a liderança do pesquisador Christopher Womack, o grupo formulou um algoritmo que necessita de apenas uma simulação climática inicial abrangente, gerando subsequentemente trajetórias sintéticas para o treinamento da rede neural. As variações induzidas permitem testar cenários improváveis e avaliar o comportamento do sistema climático frente a oscilações térmicas e de gases do efeito estufa.",
-      "fontes": [
-        {
-          "nome": "SITEPD",
-          "url": "https://sitepd.org.br/2026/11/16/inteligencia-artificial-acelera-previsoes-sobre-o-aquecimento-global/",
-          "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQdHBpWUVBdEhiWXJOU1J0d3JGSzFIaGxNSkVUTzAwdVJXOTJFaGVfSGhCMzRYLTY1V1JZOG5nVm0yc3hSXzdrMUxSR0hIdm9zZDJyaWl6Mm5JRlgxNkgxLTRVZmFBUVlFWjlTQ1hlU1Q5dUdHODZjdmdfNnB1TXBOdHZrekczNjhrdURickV6Unl3bDFudGZaeU9hdFVtMHpzLTBSeA?oc=5",
-          "imagem_url": "https://sitepd.org.br/wp-content/uploads/2026/11/inteligencia-artificial-previsoes-aquecimento-global.jpg"
-        }
-      ]
-    },
-    {
-      "id": "f463a815cfec",
-      "gerado_em": "2026-11-17T03:39:55.799671+00:00",
-      "nicho": "Inteligência Artificial",
-      "relevancia": 5.0,
-      "titulo": "Resende sediará encontro sobre inteligência artificial e negócios durante o FIND 2026",
-      "resumo": "O município fluminense de Resende recebe nesta terça-feira (24), no Boa Vista Hall, o Summit Rio Sul 2026. Focado nos avanços e impactos da inteligência artificial sobre a atividade empresarial e industrial, o encontro faz parte da grade do Festival de Inovação, Desenvolvimento e Empreendedorismo de Resende (FIND 2026).\n\nA conferência é fruto de parceria entre a TV Rio Sul, a Universidade do Estado do Rio de Janeiro (UERJ), a Prefeitura de Resende e a Federação das Indústrias do Estado do Rio de Janeiro (Firjan). Entre as metas está reunir executivos, acadêmicos e autoridades regionais para discutir cibersegurança e aplicações produtivas de novas tecnologias.\n\nA programação contará com apresentações do especialista Arthur Igreja, do engenheiro Wilson Miguel Sechi, da pesquisadora Fabiana Raulino e da especialista em cibersegurança Fernanda Dogiec. O festival prosseguirá no dia seguinte com painéis voltados a incentivos à inovação, aspectos legais de startups e demonstrações de ferramentas corporativas.",
-      "fontes": [
-        {
-          "nome": "G1",
-          "url": "https://g1.globo.com/rj/sul-do-rio-costa-verde/noticia/2026/11/16/resende-recebe-encontro-sobre-inteligencia-artificial-no-dia-24.ghtml",
-          "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQdnV3SnJaYndWVkhWMVZ5RVY2NnhUN1ZNdTRJdnFPeVQ3Q2g5OHZaOHpZZFZfcVUwa0pQd1V5djFnb1g2LUFieGQtRXJPVmI1M0NXcWxMM1E5b0VIX0pkanlsWm51ME5GZDgzaWlUaS1UMnI0emJ1a1RPUG5KZWtDWVdNcXJyZE0xWHBjem5QV2tCMW9SYVRpdTVPemt4bzJOUlFVNGtFNUM3bjdxUmRWR3BaMUtRakJrSXlyNWQ2cU5XSjdhLWx2eTNTXzhhTjU00gHfAUFVX3lxTFBXdGJkSW4tYkpXVmdnSjFFSTEzTXFVMmtUSnlFVDVVVmlHWThucUZJRWJpdkNxODB2UmZXRV9XajVobUFiZnlCMWdJcFlXRmY0eXNYWVU0VW5qdW1abEdHMk5MM1pjWnhrZFFBVUJhQ1UwbkU5R0o2TWdmR3pFSEVmc3Q3dmlJSl9henBMdWI0TE00WXMtSnZtRzBFYU91T1hyd2czRGlyS0F3WGlLV2UzaU9rSzVpbEFuVWlQT0NUVlZPTTFIaUZlSFFZNEdVZWoxcDMwOFRDeXNraENzUWM?oc=5",
-          "imagem_url": "https://s2-g1.glbimg.com/kzKBre9Vq19E3Sm_-HYYCi1HojE=/1920x0/filters:format(jpeg)/https://i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2026/P/6/BFEav8T0yHtpOKWCW6FA/capa-summit-rio-sul.jpg"
-        }
-      ]
-    },
-    {
       "id": "301be8b9e17a",
       "gerado_em": "2026-11-17T08:29:14.610055+00:00",
       "nicho": "Inteligência Artificial",
@@ -212,6 +20,216 @@
           "url": "https://rbtv.com.br/noticia/32365/eua-anunciam-restricoes-a-exportacao-de-chips-de-inteligencia-artificial-que-atingem-o-brasil",
           "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPRWN2RzlOS2xSMkxhWlRtWDFBWm9GdXBZRVJTaHl5T0RCM1lBaUkzNVc0QlpkTExRbnhzN1YxSVVqengxcVNxT0xBR0F4Q3RmX3gyV0ZXX2xRZmVtT08tZkdLaERPVC1BbDdud1AxbTVyYTNqQTVEeXc3ZmUtR0tmeENOQy1rRVdETGhtOHo3eVNFVDdJd091RzlNMFgzVlZNcVpTWEpYQkE4ckd6aU9rNmRibkhWU1lWT1VJZkJZTENUME1BLVE?oc=5",
           "imagem_url": "https://rbtv.com.br/images/noticias/32365/590282fdb31b5ca48e79344bffe6c11e.webp"
+        }
+      ]
+    },
+    {
+      "id": "fd77a236486b",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 10.0,
+      "titulo": "Corinthians aciona a Justiça com pedido de tutela cautelar para renegociar dívidas de R$ 2,8 bilhões",
+      "resumo": "O Sport Club Corinthians Paulista ingressou na Justiça de São Paulo com um pedido de tutela cautelar de urgência, fundamentado no artigo 20-B da Lei de Recuperação e Falências. O objetivo da medida é suspender cobranças judiciais, penhoras e bloqueios de contas por até 60 dias para viabilizar negociações prévias com credores antes de um eventual pedido de recuperação judicial. A instituição acumula um passivo estimado em cerca de R$ 2,8 bilhões.\n\nA representação jurídica foi protocolada pelo advogado Elias Mubarak, do escritório Mubarak Advogados. Segundo o clube, a decisão decorreu de uma avaliação técnica, financeira e jurídica após o agravamento do cenário fiscal e seus reflexos no funcionamento cotidiano. A iniciativa foi acelerada pelo risco iminente de colapso do Regime Centralizado de Execuções (RCE), que organiza R$ 200 milhões em débitos cíveis e trabalhistas, após expirar o prazo legal para regularizar o atraso de aproximadamente R$ 10 milhões em parcelas.\n\nAlém de salários do elenco profissional e comissão técnica em atraso e três meses pendentes de direitos de imagem, o clube lida com risco de intervenção judicial em meio a tratativas de Termo de Ajustamento de Conduta (TAC) com o Ministério Público estadual. A diretoria corinthiana também requereu a nomeação de um administrador judicial independente para acompanhar a mediação e dar transparência ao processo até a posse da nova administração em 2027.",
+      "fontes": [
+        {
+          "nome": "Agora RN",
+          "url": "https://agorarn.com.br/esporte/corinthians-pede-protecao-justica-renegociar-dividas-bilhoes/",
+          "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNNXZoUUNCYTR6bU5KMWd6djRXMGkxT2RjZE5kQVFYUm9YRksxY3ZIWkp6TlBwU21PS253S1hZc3FhcFU3aE1IXzR4cGtUMzlhUUc5Q2tBX1NTdWZCS0V4RktrU2gxWEFDRVd5S0xmTkxmUEc5SzQyNEZNVURkaDJvMENSOUQwS2RYZ3ppTk5oX3Y0dGVLQ280?oc=5",
+          "imagem_url": "https://agorarn.com.br/files/uploads/2026/11/neo-quimica-arena-portal.jpg"
+        },
+        {
+          "nome": "InfoMoney",
+          "url": "https://www.infomoney.com.br/esportes/corinthians-entra-com-pedido-de-tutela-cautelar-e-caminha-para-recuperacao-judicial/",
+          "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPNDZWVDJrWDh6VWFXZ2xWR3ZLNFc5Y19wNnVlN2ttWjAxUFduaWdUV1Z0QlBYZGV6RXFpVkdhaWNPb09KRnQ5YmNpOHpIQ2pmQUpqaDFSMi0wNnUwdUl1UTlLTWkwbjhjejc4bk5iRUU1ZmgzWjRRN1dzbGQxQmZ0Q09ud1V1c01JQVFKMUtYLU5kM3JHU3ZpaFpGaEVzYVQ2MVlRSnpGRjRTM1BVUTNNWGNWOC1iczJEdW1Bcjlyd9IBxAFBVV95cUxNYkFSbHlUYU9pLUZZV1hJTW50X09ZUGxXLWliaGU5YThSX3Y5Q3lQWFl5c3VxbkRaRm9CR1Qwb1drZW1yVXA4R3cyWjI0bDY1T2E4VC1ibzZhY0ZNUkVZSThkZ213OVl6bnN2RTJZa1FNOWktdE9MNWg3MkZMQkd3MkxyWWh4eXVZMEhncC1YRzZud3dMekxHOGd3VENzcGNZbWNVTWYwX2JIcUlZaVRNT25QeGU0Q05VNUR0MmpXWl9ueXlO?oc=5",
+          "imagem_url": "https://www.infomoney.com.br/wp-content/uploads/2025/05/corinthians-redes-sociais-e1747320028706.jpg"
+        },
+        {
+          "nome": "UOL",
+          "url": "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/11/17/corinthians-pede-tutela-cautelar-para-negociar-dividas-com-credores.ghtm",
+          "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxONHB2WDltM1g2YUF5b1pENlp1akFMY0g4TktzUGtyNzRVdm9QRGpNN1UyemhaWnZXeG44dXNKSmVMZGlfeW9ZY04ydC1jcjlXaFRyaVE1aWl0QndhZGM1S0xtZHlMWWZ5UndWN09WZ290Z3NIU1pQQU11OV9tRnBpY2tnQmZUS1FFQUJ3eFBfV1k3UUdyYmZ2WVVIYUNmTmZ3YUY0VXp6LUh0b25rWE45UnJuZHJHTzNfdDcxOFBLZ0RxT1lTWlI5NHQ3ZkEzUko2YXpuQnhn?oc=5",
+          "imagem_url": "https://conteudo.imguol.com.br/c/esporte/9b/2026/05/11/osmar-stabile-presidente-do-corinthians-1778548427538_v2_615x300.jpg"
+        }
+      ]
+    },
+    {
+      "id": "470eaf1cd057",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Inteligência Artificial",
+      "relevancia": 8.0,
+      "titulo": "Brasil formaliza adesão ao Compromisso de Antália sobre Inteligência Artificial durante a COP31",
+      "resumo": "O governo brasileiro oficializou em Antália, na Turquia, sua adesão ao Compromisso de Antália sobre Inteligência Artificial durante a 31ª Conferência das Nações Unidas sobre Mudança do Clima (COP31). O pacto internacional foi lançado pela Presidência turca em parceria com a União Internacional de Telecomunicações (UIT) e a Unesco, visando orientar o avanço sustentável e responsável da inteligência artificial.\n\nO documento articula dois eixos principais de preocupação global: o alto consumo de recursos ambientais, especialmente a demanda intensiva de água e energia por centros de processamento de dados (data centers), e as transformações geradas pela automação nas relações de trabalho. O secretário de Telecomunicações do Ministério das Comunicações, Hermano Tercius, representou o país e defendeu políticas para mitigar a substituição de postos de trabalho e salvaguardar a estabilidade dos profissionais.\n\nDurante o evento, a delegação do Brasil destacou iniciativas domésticas do setor, como a plataforma Gov.br, o Plano Brasileiro de Inteligência Artificial e o programa Computadores para Inclusão, realizado em colaboração com o Serpro. Também houve participação em painel da Agência Nacional de Telecomunicações (Anatel) sobre o futuro Instituto de Inteligência Artificial para Mudanças Climáticas, que terá sede no território brasileiro voltado ao apoio a nações em desenvolvimento.",
+      "fontes": [
+        {
+          "nome": "Sinpro-DF",
+          "url": "https://www.sinprodf.org.br/cop31-brasil-adere-a-pacto-sobre-ia-e-defende-protecao-dos-empregos/",
+          "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQTjhJZE50R2xkT0RPeVVlS1BJQ0tQWFQ4ZklTZjl2cDZzdVpadGtiNzIwZm1uWmplRVVqQ0pyQ1lFSkpaUHJYSlFGbWJSOVdoblhoc3daNHNud1VOVnIwOFVkREI5THdZWWRXU1F2MGtOVmRLZmdpZ0VfZnN4ZFVIZFgxcGdNUERUQ2s2dzlHM2FKWEFlTS1zd1o0SHU?oc=5",
+          "imagem_url": "https://www.sinprodf.org.br/wp-content/uploads/2026/11/systemuploadsnews5380b9eac48828d0ab7-700x460xfit-f9d19.jpg"
+        },
+        {
+          "nome": "Pará Terra Boa",
+          "url": "https://www.paraterraboa.com/cop31/brasil-assina-acordo-global-para-frear-impactos-da-inteligencia-artificial/",
+          "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPbk1LWXNwZkJkTERsM2V4V2RGRjYzSHNpZ3pESjdINWtOdlVac3VvUzdHWXUxREUxb0FQSFNhWTdMRkNJcVphX3pxX0FLc0g3ZjhKbmxBQndrYzNMS0tJRklqV3h3WXFMcTdLZ1ZVeWpXUUNiMUE4RTVMZ3pvanc1eHd5b2FjWDV2WkZhNDFzVU9NcUtIVktVeElTTkFJR2JYdmQyX3I2T3B4V3lEbXR3?oc=5",
+          "imagem_url": "https://www.paraterraboa.com/wp-content/uploads/2026/11/COP31_8.webp"
+        },
+        {
+          "nome": "CartaCapital",
+          "url": "https://www.cartacapital.com.br/sustentabilidade/brasil-adere-a-pacto-global-por-inteligencia-artificial-sustentavel-na-cop31/",
+          "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQS3pVU1NxbHZ1d3FoX2l0T1hvSTdIT1p5NzN5T2QwTm16WjFucVA5OGp5Tk9rcGhjUGlIUksxVGc0bnAtVFpJQ282alp4OGt6cTg1ckdaRld0WFhvYm93NHl0Zk5qZTByaThjQ3A3dnZuVXpybzB4VEsxcF9ucFpoS0pma05aTHZDRHZYSEd5TGhQU0Jwa1RLMnl3WXVDbmxaakFWWktqZDdEdzRER0tmZWNQUXN2WXZkV1QzWm4za0Njazhi?oc=5",
+          "imagem_url": "https://www.cartacapital.com.br/wp-content/uploads/2026/11/55644741346_b0edd55418_o.jpg"
+        }
+      ]
+    },
+    {
+      "id": "b10a2c8b6550",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Movimento Brasil Livre",
+      "relevancia": 8.0,
+      "titulo": "Instituto fundado por ex-integrantes do MBL prepara jovens para embates políticos nas redes",
+      "resumo": "O Instituto União Conservadora, fundado por ex-membros do Movimento Brasil Livre (MBL), vem recrutando e oferecendo treinamento gratuito para jovens e adolescentes a fim de torná-los influenciadores e lideranças políticas de direita. A instituição tem como presidente de honra o ex-vereador paulistano Fernando Holiday e oferece mentoria focada em retórica, oratória, economia, história e técnicas de captação de audiência nas plataformas digitais.\n\nO modelo pedagógico incentiva abordagens provocativas em espaços públicos, atos políticos e universidades, incluindo formatos como o debate \"20 contra 1\". Relatos destacam gravações na Avenida Paulista e protestos de rua que terminaram em atritos e agressões físicas. Casos citados envolvem um jovem de 17 anos com mais de 1,5 milhão de seguidores que confrontou o deputado Otoni de Paula, e o influenciador Victor Ruiz (PP), filmado agredindo um eleitor de Luiz Inácio Lula da Silva durante a campanha eleitoral.\n\nAs ações têm gerado apreensão em ambientes acadêmicos como a Faculdade de Filosofia, Letras e Ciências Humanas da Universidade de São Paulo (FFLCH-USP), onde alunos articulam medidas preventivas e cursos de defesa pessoal. Em contraponto, o presidente do instituto, Mario Fortes Neto, nega incentivo à violência física e declara que os estudantes recebem diretrizes teóricas, cabendo individualmente a cada jovem a responsabilidade pelos atos praticados durante as filmagens.",
+      "fontes": [
+        {
+          "nome": "NOVO Notícias",
+          "url": "https://novonoticias.com.br/instituto-ligado-a-direita-prepara-adolescentes-para-videos-de-confronto-politico/",
+          "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQRDh6SjF0ZFhyUEFFYm9lMFdYUzIyRlNhbGhGSExOcmNlMnpKSEhnMlFhNHpTOE1lQndYbGFkX3ZHSkNUVTl1WmU3X0U0VlNRZ3VSOFZoUERCN0Q5S2EzLUdaclNhc3MyZUV3QmxSM0dlb2NrYVp4VmI3azNQVlgwOTdUelpWZjl3WnhRVVQ0VGZOVHFSYWUwTEF4dHhIRHpMamRKRHFoZFJEYllCajlj?oc=5",
+          "imagem_url": "https://assets.novonoticias.com.br/uploads/2026/11/Instituto-conservador-prepara-jovens-para-‘bombar-com-videos-de-confronto-politico.webp"
+        },
+        {
+          "nome": "BNC Amazonas",
+          "url": "https://bncamazonas.com.br/rapidinhas/ex-mbl-agora-preparam-jovens-para-provocar-confronto-politico-e-filmar/",
+          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQQ1pQWFYydTJ1LW9KekxTMGVYOXJHWGZoRjUyNkRrNHM0bV9ZUU00eXR6VGFLOHJkVE5Cekx6OU1ESmdNcnhVUzY4QWx6ZWpkdk5QRGh0SkhlT2tmM2ZmNWtvUGxCOFdqcGRDVUcyNGNjWnVQZTV4Zi1sN09rdEpQazJIV1hIa3ppZFlzOG1fYXFlWk9ocmRESkFkdjBBSXRCbFF5ZEhRX3lkV0dZeHc?oc=5",
+          "imagem_url": "https://cdn.bncamazonas.com.br/wp-content/uploads/2026/11/fernando-holiday_foto-afonso-braga-cmsp.webp"
+        },
+        {
+          "nome": "Plantão Brasil",
+          "url": "https://www.plantaobrasil.net/noticias/163949-a-fabrica-de-provocadores-instituto-ligado-a-ex-mbl-treina-jovens-para-confrontos-nas-redes",
+          "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxORjV0R2J1dHZDMjh3RTJTZmlxUDNEaHJWN0U5Q2FwQmNzWGFsS280YTJ3YmVKQ1NJTEhKel9wVHBvaFhyWVNKOUxVbDlFa09nZklNd3hoUG45ZjdHbkFFbmh1RG5FRlBKamJYemIzbmNzbjJtWmJhbWozUVZDeW9WZ0Jmd0pIWXJFclplMzN3WFp2ekthYjFoUWNDVmJqQk1iVWN0czVkMjV4Nm5uX0dYcVlCNGg0X29FLVI3SUdPVDJScmJJQ0VPX0pSOENjSlJmZGxZ?oc=5",
+          "imagem_url": "https://www.plantaobrasil.net/social-photo/163949/eee4c01f266a56fff82c5e3dc48e71f203c77bc59cfba22de6ecad42bf76e27e.jpg"
+        }
+      ]
+    },
+    {
+      "id": "1437a6794c3c",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 7.0,
+      "titulo": "Corinthians e Botafogo se enfrentam pela 35ª rodada do Brasileirão na Neo Química Arena",
+      "resumo": "Corinthians e Botafogo medem forças nesta quarta-feira, às 21h30 (de Brasília), na Neo Química Arena, em duelo válido pela 35ª rodada do Campeonato Brasileiro. A transmissão ao vivo do confronto será realizada de forma exclusiva pelo canal por assinatura Premiere, além de acompanhamento em tempo real pelas plataformas digitais.\n\nO Corinthians ocupa a 17ª posição na tabela com 37 pontos e joga pressionado pela necessidade de somar pontos para sair da zona de rebaixamento, estando a um ponto de Internacional e Vitória. A equipe comandada por Clarence Seedorf chega com retrospecto recente de apenas uma vitória nos últimos cinco compromissos no torneio nacional, incluindo empate sem gols frente ao São Paulo.\n\nPor sua vez, o Botafogo tenta manter o equilíbrio no campeonato após superar o Atlético-MG por 1 a 0 antes da paralisação da Data Fifa. O time carioca soma 42 pontos e busca assegurar distância das posições inferiores da tabela, visando consistência tática fora de seus domínios.",
+      "fontes": [
+        {
+          "nome": "CNN Brasil",
+          "url": "https://www.cnnbrasil.com.br/esportes/brasileirao/corinthians-x-botafogo-horario-e-onde-assistir-ao-jogo-do-brasileirao-2/",
+          "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOdWkyMkZIZ0J0ODUwTmhNZW5TQXIyeTNoYTFNYmRxTE5NNUlWS1pCWk44T1BRWTVmSWtScmNRZzh4LTlEcHNoeWhzM1Q0cC05YlVrUkhqTGZUcWNfeUN5a2FIdlFFWWtRdUV2OEZDVXk3dExvenZZSV9vMHIyT05aOFdSMFBCMm5BWmt2enpuWHVSTzkwRl9tNVgtdFo3VUxmeHQ2Vl9FLU0wcmZfakowWUtLN09uVmJlYkFqcEo2TQ?oc=5",
+          "imagem_url": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/09/Neo-Quimica-Arena-e1789596568876.jpg?w=1200&h=630&crop=1"
+        },
+        {
+          "nome": "ge",
+          "url": "https://ge.globo.com/sp/futebol/brasileirao-serie-a/noticia/2026/11/18/corinthians-x-botafogo-onde-assistir-ao-vivo-horario-e-escalacoes.ghtml",
+          "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQeDltVm9jb185WXppOGVyeXJpeWpzX1VKMXZhaVlGb2dfWjFjeGxHeHRJOXBFcHhCYTVsUGpYZ21mTlpWRFhTeVM5T3psRDNFVDE1cmF6U0kySl9rZWFTaG04VnJFXzFYRmYwYWxsVm1UV3lrT2MxMTJXTUpCNFNFS2ppZVQ0cnNBbDRoSWJHVmRzWWFJMjBXdzdDV1J0MTc3aXhYb3pzemQzTmllNzRXZnJ5c1k4M0huaVo0aDEwWDlEalNSWEZjV2ZNa2toa3ctS1VpS1ozSENCQdIB6AFBVV95cUxPU01KV3VQeWlaeV9FSXEtU19NX0dyaUtHRXJpVVFzc2pLTWZIOE9ac1NtSFQyN3lqT0FsZnVncmw3YlNaRG40Z3d0dTRiRnZNTUpUejQyaC11MmlfcUxHRmpqQm5vSjZybnZXeUF5bXprbjFJdUkzTUpOR1hjVVNSSTBreE1OcHhWSzVWQ0REQ3MxdjJzME9faE92MFNjYTl3bWZZWEtiOXpLclRTQ0RCRXBib0doV0pCWjVJc3FXYzFJR0hVdV8xbzkxNWl5el9TaFJIem5mTnlmMk0zeVRhRnRJRjVlYnFx?oc=5",
+          "imagem_url": "https://s2-ge.glbimg.com/9d22RytaZPGnAv3aqSVmY5Km9Us=/3215x0/filters:format(jpeg)/https://i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2026/2/t/SxlG40T9enejbBoEu14Q/agif26032215315835.jpg"
+        },
+        {
+          "nome": "Goal.com",
+          "url": "https://www.goal.com/br/not%C3%ADcias/corinthians-x-botafogo-rj-ao-vivo-onde-assistir-na-tv-e-pela-internet/bltc36c158b3ba0550f",
+          "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxObkp6WHFFc1NvME1LU0lmNkxGZHAxeXRteTc3ak01NXlfVVpRblRSc2c4LXZQNnRsRVVqZ0JmbnhjMDZrMXlTMDBuLVNzNkFpRVQtTGhPYWRnME4wN3VWNUxYYUs4SUMxelVaX1JoTHhWbk1Bc3MwV3VhX3RHSERqcE9YTkFPY08wX0ZFLTNWVEFmUFl4OXNNcDdkUGxIZC1URmU4ekJ4OWxPYnE1RkhrRVQza2FWeDhCZDJXN3BJZm44YUxyTmc?oc=5",
+          "imagem_url": "https://assets.goal.com/images/v3/IY9n9f73MHYUhhJeWx_yJ_DESKTOP/image.jpg"
+        }
+      ]
+    },
+    {
+      "id": "dcce87c76ba1",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Corinthians",
+      "relevancia": 7.0,
+      "titulo": "Corinthians finaliza treinos e tem quatro desfalques confirmados para encarar o Botafogo",
+      "resumo": "O técnico Clarence Seedorf concluiu na Neo Química Arena os preparativos do Corinthians para enfrentar o Botafogo pelo Campeonato Brasileiro. O treinamento contou com análise de vídeos no vestiário, atividades de posse de bola com pressão pós-perda, treino tático em campo reduzido e ensaios de bolas paradas.\n\nPara o confronto, o Timão terá ausências relevantes. Rodrigo Garro foi vetado pelo departamento médico devido a uma lesão ligamentar colateral medial no joelho direito sofrida contra o São Paulo, permanecendo no CT Dr. Joaquim Grava em transição física. O clube também não poderá contar com Yuri Alberto e André Ramalho, suspensos por cartões, além de André Santos, que esteve com a seleção brasileira na Data Fifa sem intervalo hábil para retorno.\n\nPor outro lado, o setor defensivo e o meio-campo ganham alternativas com o término da suspensão do lateral-direito Matheuzinho e a recuperação física do volante Raniele e do zagueiro Gabriel Paulista, além de Jesse Lingard. O time alvinegro busca a vitória para deixar a 17ª colocação da Série A e ultrapassar adversários diretos na briga contra o descenso.",
+      "fontes": [
+        {
+          "nome": "Terra",
+          "url": "https://www.terra.com.br/esportes/corinthians/corinthians-tera-quatro-baixas-contra-o-botafogo-pelo-brasileirao-veja-escalacao,7602657f638411a384d0db100b548c7dk1lr5kja.html",
+          "link": "https://news.google.com/rss/articles/CBMiggJBVV95cUxNbWF0UWZncU1lN0VyMUlZTDJCbDVjZzlFT3FuOXhzT3pxeVhlNjI3M1ZKNG4tUEtGbU51LU9YbEdWWEJSRVo1T3NULVZHaU9vcEEyT013eFJkX2w0UzVqeFMydmMwZG9pS3pIcGJRTTZFR1RCUzNsbW1mcEVGVk9sZVdYcWlJSy1UTFhoR3FCSlJGdDdqaEdVMEN0allSVGVEUF9qM3p2MUlwYmRiWVJrams4c0EzV3RLa1BEV3ZILWNSSWtHcUNoemJyaE1jQU9SLTE5ZlJuUGlmZTFOWWFPYjVHUGlkMlBYNU9GRnJzQ2FCN2NNLVJodC1NM0RicHV1OEE?oc=5",
+          "imagem_url": "https://p2.trrsf.com/image/fget/cf/1200/630/middle/images.terra.com/2026/11/18/1602169670-2026-corinthians-tecnico-clarence-seedorf.jpg"
+        },
+        {
+          "nome": "Portal ABC do ABC",
+          "url": "https://www.abcdoabc.com.br/corinthians-confirma-baixa-de-garro/",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE0wN1djQ052bmtrOF9PNGJSalBkalRQaTFXV3BXbFM2eXFwZDdMMWJadW1EQkZoV2tIa2pqbnR0cnJlVEc1UG9xNGZOcHZCdUpnanlnMFd0bjdjdTY3ZkVJTmEwWTJxT2JkSkd0VDR3SGFJdw?oc=5",
+          "imagem_url": "https://cdn-imgs.s3.sa-east-1.amazonaws.com/wp-content/uploads/2026/11/image_1794599952791-scaled.webp"
+        },
+        {
+          "nome": "Gazeta Esportiva",
+          "url": "https://www.gazetaesportiva.com/times/corinthians/sem-garro-corinthians-treina-na-neo-quimica-e-fecha-preparacao-para-enfrentar-o-botafogo/",
+          "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPdXpRQkZPWG5tUk81dGVUZjhuRGVMVTRsN3RYeHd5Y0s3eUlHbV9QRXdqaVhOT0hWOV9MUTd1NzJ6dHBWWXBpanc5SFc0UkZtak5LbHAwOUtxZFdoUHhOSnFrN2pfZU9kWjZzLVYyUzZvektWWi01RC1PTXM0ajhxRFktRXA4QWFsVm92N3lsZ0JMdG5DZkx4M3JQeGdDeWc5OTBMSWRpSXAwdDRSWDdreTBnWHBDS1QyQzNyRW1QOXM1ZFZkYktXQ3NUZDhhaDFSX2pLNDJR0gHbAUFVX3lxTE9lQmQwN1ZnT2xIUkh5c1hxMVhIajJIMDI5UFM4TzlfY1RFZXJMQ0ZQaEFJdzhqSWZrcndJSVNPaEwyYzNjNE8tb2RCUzBNLWthZXYyZU1lT0dwTzZkYVBLbWhSYmxadnF5aTR0WFJqRVdqLVlzYVFFTUtGNVdzNUdnSmRORW1lQUpZRTNBNG5hSzdoV3ROZDg4REhuMGNTOXZTaGU0WHNJOWlCSWdod1YwUmFpbXdiLUhlTlF4MFh1S3BmdDBySVNtampfSFRpbTBkQ3lRb0hFbFBWTQ?oc=5",
+          "imagem_url": "https://static.gazetaesportiva.com/uploads/2026/11/226A6767.webp"
+        }
+      ]
+    },
+    {
+      "id": "6fea2669b373",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Inteligência Artificial",
+      "relevancia": 6.0,
+      "titulo": "Banco Central alerta para uso de inteligência artificial por organizações criminosas no sistema financeiro",
+      "resumo": "A diretora de Relacionamento, Cidadania e Supervisão de Conduta do Banco Central, Izabela Corrêa, emitiu um alerta sobre o uso crescente de inteligência artificial por organizações criminosas para lavar dinheiro e driblar mecanismos de conformidade. A exposição foi realizada em São Paulo durante o 16º Congresso de Prevenção à Lavagem de Dinheiro e Financiamento ao Terrorismo, promovido pela Febraban.\n\nDe acordo com dados de investigações da Polícia Federal, as facções têm recorrido a deepfakes e adulteração de arquivos digitais para fraudar rotinas de autenticação biométrica, criar empresas fictícias e abrir contas em nome de intermediários (contas-laranja). Foram citadas infiltrações em negócios formais como postos de combustível e serviços públicos, além de movimentações do Primeiro Comando da Capital (PCC) envolvendo criptoativos como bitcoin e a stablecoin USDT, apuradas na Operação Carbono Oculto.\n\nDiante dessas ameaças, o Banco Central e o Coaf estão desenvolvendo novas ferramentas e modelos automatizados de detecção de fraudes. As instituições bancárias, fintechs e corretoras de ativos virtuais terão prazos estipulados de adequação regulatória para aprimorar o monitoramento tecnológico e a troca de informações com os órgãos fiscalizadores.",
+      "fontes": [
+        {
+          "nome": "Vero Notícias",
+          "url": "https://veronoticias.com/economia/bc-alerta-para-uso-de-inteligencia-artificial-por-faccoes-em-esquemas-de-lavagem-de-dinheiro/",
+          "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOOVl5NTVBOExDWmFqcHZ5SXJzekZaSVFidGpwdkNjdGVLZEVaVnVoX00tSDRTaGRjUlFTLVdyc0Y5Rml0R05Qa3J6bFRrX3dsbzBvbDZNaG5KMHhrelUyM2lQdklOLXZrV0VMRkhfMzZaZWxRY3R2S2JNaDI5OWpjNXdyV2luQ2N6LUcyNnJvWV94YjVHbGVIdVQyeEJYMFhsTmZSV3o3RFkyclV5ZkItdlpoSVJ3VXF6RWJYdDJHbGw2ZGhRVVE?oc=5",
+          "imagem_url": "https://veronoticias.com/wp-content/uploads/2026/11/image-2026-11-17T121038.867.jpg"
+        },
+        {
+          "nome": "Agora RN",
+          "url": "https://agorarn.com.br/economia/inteligencia-artificial-crime-organizado-lavar-dinheiro-bc/",
+          "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQTFhnbXg3SmJhS3l5ZjlHQXZwYmRLZDZfUUJmYW82WjV4MEI3REJoWG5McV9zbTJJNTgxXzJxOW14ZDJrVEJoNndaeWhTQjFqRlNFYWpTeW1jWGR2Tlg5ZTQwQnVEQmw1Z09rbWRZLW5TZUFiWmJhQlgtZ2dwZGRYT3I1Q1R5M2ZKd2J2YTFYbDhscThtNmc?oc=5",
+          "imagem_url": "https://agorarn.com.br/files/uploads/2026/11/izabela-correa-banco-central.jpg"
+        }
+      ]
+    },
+    {
+      "id": "5098cbbf1df5",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Paleontologia",
+      "relevancia": 6.0,
+      "titulo": "Museu de Paleontologia em Santana do Cariri recebe concerto da Orquestra Contemporânea Brasileira",
+      "resumo": "O Museu de Paleontologia Plácido Cidade Nuvens, sediado em Santana do Cariri, no interior do Ceará, sediará uma apresentação musical inédita da Orquestra Contemporânea Brasileira. O evento está agendado para o dia 22 de novembro, às 18h, sob a regência do maestro Arley França.\n\nA realização do espetáculo no equipamento cultural aproveita o conjunto acústico e arquitetônico interno do espaço, conectando o patrimônio fóssil da Chapada do Araripe com performances orquestrais ao vivo diante do público.\n\nO programa sinfônico abrangerá composições clássicas de Johann Sebastian Bach e Antonio Vivaldi, intercaladas com adaptações de obras representativas de nomes latino-americanos e nordestinos, tais como Luiz Gonzaga, Sivuca, Astor Piazzolla e Guerra-Peixe.",
+      "fontes": [
+        {
+          "nome": "istoae.com.br",
+          "url": "https://istoae.com.br/noticia/6212/museu-de-paleontologia-de-santana-do-cariri-recebe-apresentacao-inedita-da-orquestra-contemporanea-brasileira",
+          "link": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQUGViTnRPeTg0Yl9MR0JseHR4WDZGdVRFM1g2MEhSUkFkRWdjM0xaYXR6T3N2ejRpTTlQUEhrRXVBeC1pNTgzdmdtamdOa282TVpQREYycWZXR0w4Rmh3RGRRV25TaF9XUXB2RlBzWHNKZVMxelRTVFRGTXRHdmxIa0VNanE0b2tfQzJCa2cxd011cGg5YTlLYUdNb2puamc4d0tmVDB0c205eUdRWEtMWURXT0UtbmRQb3BuUmlfMVc5Ti1PT0drUmRpc2RhRG1GWmJ3bFFyZWdnNkM5?oc=5",
+          "imagem_url": "https://istoae.com.br/images/noticias/6212/d5d9229904ce9b6b9b620f74b8969126.webp"
+        }
+      ]
+    },
+    {
+      "id": "4141a5eb69b3",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Paleontologia",
+      "relevancia": 6.0,
+      "titulo": "Fósseis da Bacia Bauru impulsionam a paleontologia e revelam novas espécies em Monte Alto",
+      "resumo": "Trabalhos de campo contínuos em sedimentos da Bacia Bauru tornaram a cidade de Monte Alto, no interior de São Paulo, um centro de referência da paleontologia brasileira. Desde as primeiras coletas na década de 1980 no sítio Campo Campestre, conduzidas inicialmente após descobertas de Elvira Aparecida Franciosi, a região revelou ossadas de grandes dinossauros herbívoros e predadores inéditos.\n\nAs rochas das formações Adamantina e Marília, pertencentes ao período Cretáceo, preservam evidências paleoambientais de rios, áreas alagadas e ciclos de seca de cerca de 66 milhões de anos atrás. O material resgatado ao longo dos anos estruturou o acervo do Museu de Paleontologia Professor Antonio Celso de Arruda Campos, inaugurado em 1992.\n\nAtualmente, a administração municipal mapeia mais de 30 pontos fossilíferos, majoritariamente em áreas rurais privadas, reunindo achados de tetrápodes pré-históricos como dinossauros, crocodiliformes, tartarugas e peixes fósseis fundamentais para a reconstituição da paleoecologia paulista.",
+      "fontes": [
+        {
+          "nome": "O Imparcial Monte Alto",
+          "url": "https://www.oimparcialmontealto.com.br/noticias/rochas-da-bacia-bauru-em-monte-alto-revelam-ossadas-e-novas-especies-de-dinossauros-gigantes-que-habitaram-sao-paulo/",
+          "link": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxQVXctbmVhemdmNzY3M3R5dlZBM0NaUW91Zm9XQjUxZ2l0VnVKLWtfeEJwSVZqRm5Za3FLX01oenRReWtPVXZJNkhCU2NYcHRDZTJWMmZ3TjV6WnF2aFdDRXdzSkxLMXdRc09rbnZnSUc2d0FtT2NVNzJwbl93clhFLU5iMXRaOUVZTTFOanoyS2NLeTdTVzJtT3ZMVE12WGhHU0FEOVI5TWYyQUlwWEZfblVqYkJNczY1WXQ5cE9qOVQ5bVNYOHFUWEJzOUZrU2R1MkdMNVpyZFBya3BybFRpdVltdXhkdWxjMUNfZmNQV3VuMno2TEhFcQ?oc=5",
+          "imagem_url": "https://www.oimparcialmontealto.com.br/wp-content/uploads/2026/11/novas-especies-de-dinossauros-gigantes.jpg"
+        }
+      ]
+    },
+    {
+      "id": "f1c0a50a4ee0",
+      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "nicho": "Paleontologia",
+      "relevancia": 6.0,
+      "titulo": "Fósseis de lobos-terríveis em poços de asfalto na Califórnia fornecem acervo histórico para a paleontologia",
+      "resumo": "Depósitos naturais de asfalto em Rancho La Brea, localizado na região de Los Angeles, acumularam a maior concentração fóssil conhecida de lobos-terríveis (Aenocyon dirus). Os registros datam do Pleistoceno Superior e contam com cerca de 4 mil indivíduos preservados, compondo a fauna mais abundante do sítio da Era do Gelo.\n\nO fenômeno de aprisionamento ocorria quando lâminas de asfalto pegajoso, camufladas por detritos e poças de água, capturavam herbívoros desavisados. Em resposta, grupos sucessivos de predadores carnívoros eram atraídos pelas presas e acabavam presos no material viscoso ao longo de milhares de anos.\n\nA ação química e a impermeabilização das camadas betuminosas barraram a ação de decompositores e intempéries, resultando em fósseis articulados que viabilizam investigações sobre patologias, maturidade e relações anatômicas da fauna extinta, expostos historicamente no museu local em uma parede com 400 crânios.",
+      "fontes": [
+        {
+          "nome": "Brasil 247",
+          "url": "https://www.brasil247.com/tendencias/2026/11/17/o-lobo-terrivel-que-ficou-preso-em-pocos-naturais-de-asfalto-na-california-ha-milhares-de-anos-e-deixou-fosseis-tao-numerosos-que-virou-referencia-para-a-paleontologia/",
+          "link": "https://news.google.com/rss/articles/CBMivAJBVV95cUxQTFl3YjM3aW5Gd29ManFQYnZuU3d0TFNYbzItOEpXMkttM3BKMmszcG1QQ2hzbFZEQi1GVFRPbW1qWTJxNElkQkxGQm5TS2FaTGlERklBRlVWTFluVUlsamFMNDhSZGx1ekNMa3lOdUdKRi05eWxUaFh0RFRQVlJRZTY0R0VFaWV1VTM4c09FVS02TGZRTXZpc1pzdy1VdGxqMW1scml0ejA4VFZmN0NxSW9DYXo4VURmdklHNnFiQVM3amNtS29udEtESW1pSC1GbGZYUnlxMmkxZnlkT0xYVmlRaUI1SUhuVVozdjloUEswUGF3Z1FUcnMtR3F1Q2ttOEUwR3NFdlFqMHFoc2Z2ekZlckQ3RkUycGZTdkQwd1EzQ2NqSmVpaUpTY2hhRXFIeWN4bGRiTkFDajN0?oc=5",
+          "imagem_url": "https://www.brasil247.com/tendencias/wp-content/uploads/2026/11/dire_wolf_skull_on_mount_e917afb.jpg"
         }
       ]
     }
