@@ -52,7 +52,7 @@ def test_index_tem_cartoes_com_imagem_titulo_e_botao():
     assert 'name="viewport"' in html
     assert "04:00 (horário de Brasília)" in html                               # 07:00 UTC
     assert "editar.html" not in html                                          # sem link para editar nichos
-    assert "atualizado todos os dias às 06:05, 18:05 e 21:40 (horário de Brasília)" in html
+    assert "atualizado todos os dias às 04:05 (horário de Brasília)" in html
 
 
 def test_pagina_de_resumo_lista_fontes_e_escapa():

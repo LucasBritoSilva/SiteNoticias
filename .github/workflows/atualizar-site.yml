@@ -3,9 +3,7 @@ name: Atualizar notícias
 on:
   schedule:
     # Cuiabá é UTC-4 (sem horário de verão); o GitHub Actions usa UTC.
-    - cron: "40 0 * * *"   # 00:40 UTC = 20:40 em Cuiabá (do dia anterior)
-    - cron: "5 9 * * *"    # 09:05 UTC = 05:05 em Cuiabá
-    - cron: "5 21 * * *"   # 21:05 UTC = 17:05 em Cuiabá
+    - cron: "5 7 * * *"    # 07:05 UTC = 03:05 em Cuiabá = 04:05 em Brasília (uma vez por dia)
   workflow_dispatch:
     inputs:
       retry:
@@ -86,8 +84,8 @@ jobs:
 
   # UMA retentativa em 1 hora, só quando o Gemini ficou indisponível (saída 75: 503/timeout).
   # A execução disparada aqui leva retry=true e por isso nunca agenda outra: não há laço.
-  # Enquanto este job espera, o grupo de concorrência fica ocupado; o menor intervalo entre
-  # agendamentos (21:05 -> 00:40 UTC) é de 3h35, então a espera de ~1h10 não atrasa nenhum deles.
+  # Enquanto este job espera, o grupo de concorrência fica ocupado; como só há um agendamento
+  # por dia, a espera de ~1h10 não atrasa o próximo.
   reagendar:
     needs: atualizar
     if: failure() && needs.atualizar.outputs.codigo == '75' && github.event.inputs.retry != 'true'

@@ -33,13 +33,11 @@ Além de disponibilizar notícias de forma organizada, o projeto demonstra como 
 
 ## Horários de execução
 
-O GitHub Actions usa UTC; abaixo, o horário de Brasília (UTC-3) de cada execução. Também dá para rodar na hora
-pelo gatilho manual (`workflow_dispatch`).
+O site é atualizado uma vez por dia. O GitHub Actions usa UTC; abaixo, o horário de Brasília (UTC-3).
+Também dá para rodar na hora pelo gatilho manual (`workflow_dispatch`).
 
 | Brasília | UTC | cron |
 |---|---|---|
-| 06:05 | 09:05 | `5 9 * * *` |
-| 18:05 | 21:05 | `5 21 * * *` |
-| 21:40 | 00:40 (dia seguinte) | `40 0 * * *` |
+| 04:05 | 07:05 | `5 7 * * *` |
 
 O GitHub pode atrasar execuções agendadas em alguns minutos nos horários de pico.
