@@ -18,6 +18,7 @@ log = logging.getLogger(__name__)
 RSS_URL = "https://news.google.com/rss/search?q={q}&hl=pt-BR&gl=BR&ceid=BR:pt-419"
 USER_AGENT = "Mozilla/5.0 (compatible; SiteNoticias/1.0)"
 JANELA_HORAS = 24
+LIMITE_POR_NICHO = 10  # só as mais recentes de cada nicho seguem para a leitura e o Gemini
 
 
 @dataclass
@@ -146,6 +147,18 @@ def deduplicar(artigos: list[Artigo]) -> list[Artigo]:
     return unicos
 
 
+def limitar_por_nicho(artigos: list[Artigo], limite: int = LIMITE_POR_NICHO) -> list[Artigo]:
+    """Mantém as `limite` mais recentes de cada nicho; sem data conta como a mais antiga."""
+    ordenados = sorted(artigos, key=lambda a: (bool(a.publicado), a.publicado), reverse=True)
+    contagem: dict[str, int] = {}
+    mantidos: list[Artigo] = []
+    for a in ordenados:
+        if contagem.get(a.nicho, 0) < limite:
+            contagem[a.nicho] = contagem.get(a.nicho, 0) + 1
+            mantidos.append(a)
+    return mantidos
+
+
 def coletar(nichos: list[str], agora: datetime | None = None, buscar=buscar_feed) -> list[Artigo]:
     """Busca todos os feeds, filtra as últimas 24 h e remove duplicadas.
 
@@ -168,4 +181,8 @@ def coletar(nichos: list[str], agora: datetime | None = None, buscar=buscar_feed
         raise RuntimeError("Nenhum feed RSS pôde ser lido.")
     unicos = deduplicar(todos)
     log.info("Total: %d coletadas, %d após remover duplicadas", len(todos), len(unicos))
-    return unicos
+    mantidos = limitar_por_nicho(unicos)
+    for termo in nichos:
+        log.info("Nicho '%s': %d notícias mantidas (limite %d)",
+                 termo, sum(1 for a in mantidos if a.nicho == termo), LIMITE_POR_NICHO)
+    return mantidos

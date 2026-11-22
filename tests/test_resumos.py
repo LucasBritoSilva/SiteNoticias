@@ -257,12 +257,13 @@ def test_cota_e_um_tipo_de_erro_do_gemini():
     assert issubclass(gemini.GeminiCotaErro, GeminiErro)
 
 
-def test_429_por_minuto_e_repetido_uma_vez_e_depois_desiste():
-    s = SessaoFalsa(RespostaHTTP(429, corpo_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier")),
-                    RespostaHTTP(429, corpo_429(mensagem="Rate limit: too many requests per minute")), ok('{"a":1}'))
+def test_429_por_minuto_e_repetido_ate_o_teto_e_depois_desiste(monkeypatch):
+    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
+    por_minuto = RespostaHTTP(429, corpo_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier"))
+    s = SessaoFalsa(*[por_minuto] * gemini.MAX_TENTATIVAS, ok('{"a":1}'))
     with pytest.raises(gemini.GeminiIndisponivel):
-        cliente(s).gerar("x")
-    assert len(s.chamadas) == 2                       # teto de 2, mesmo com esperas=(0, 0)
+        GeminiClient(chave="k", sessao=s, intervalo_minimo=0).gerar("x")
+    assert len(s.chamadas) == gemini.MAX_TENTATIVAS == 5
 
 
 def test_429_generico_sem_pista_de_cota_e_tratado_como_temporario():
@@ -293,23 +294,40 @@ CORPO_503 = {"error": {"code": 503, "status": "UNAVAILABLE",
                        "message": "This model is currently experiencing high demand. Please try again later."}}
 
 
-def test_503_persistente_faz_no_maximo_2_requisicoes_com_espera_fixa_curta(monkeypatch):
+def test_503_persistente_faz_5_requisicoes_com_espera_crescente_e_variacao(monkeypatch):
     esperas = []
     monkeypatch.setattr(gemini.time, "sleep", esperas.append)
-    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 5)
+    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 6)
     c = GeminiClient(chave="chave-de-teste", sessao=s, intervalo_minimo=0)  # configuração padrão
-    with pytest.raises(gemini.GeminiIndisponivel, match="após 2 tentativa"):
+    with pytest.raises(gemini.GeminiIndisponivel, match="após 5 tentativa"):
         c.gerar("x")
-    assert len(s.chamadas) == 2 and c.chamadas == 2
-    assert esperas == [gemini.ESPERA_PADRAO] == [10.0]
+    assert len(s.chamadas) == 5 and c.chamadas == 5
+    assert gemini.ESPERAS_PADRAO == (2.0, 4.0, 8.0, 16.0) and len(esperas) == 4
+    for feita, base in zip(esperas, gemini.ESPERAS_PADRAO):
+        assert base * 0.75 <= feita <= base * 1.25                  # ±25% de variação
+
+
+def test_503_seguido_de_sucesso_devolve_o_texto(monkeypatch):
+    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
+    s = SessaoFalsa(RespostaHTTP(503, CORPO_503), RespostaHTTP(503, CORPO_503), ok("{}"))
+    assert GeminiClient(chave="k", sessao=s, intervalo_minimo=0).gerar("x") == "{}"
+    assert len(s.chamadas) == 3
+
+
+@pytest.mark.parametrize("status", [500, 502, 504])
+def test_outros_5xx_nao_sao_repetidos_mas_contam_como_indisponivel(status):
+    s = SessaoFalsa(RespostaHTTP(status, {"error": {"message": "x"}}), ok("{}"))
+    with pytest.raises(gemini.GeminiIndisponivel, match="sem nova tentativa"):
+        cliente(s).gerar("x")
+    assert len(s.chamadas) == 1
 
 
 def test_esperas_extras_nao_aumentam_o_teto_de_tentativas(monkeypatch):
     monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
-    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 5)
+    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 10)
     with pytest.raises(gemini.GeminiIndisponivel):
-        GeminiClient(chave="k", sessao=s, intervalo_minimo=0, esperas=(0, 0, 0, 0)).gerar("x")
-    assert len(s.chamadas) == gemini.MAX_TENTATIVAS == 2
+        GeminiClient(chave="k", sessao=s, intervalo_minimo=0, esperas=(0,) * 8).gerar("x")
+    assert len(s.chamadas) == gemini.MAX_TENTATIVAS == 5
 
 
 def test_prazo_total_esgotado_impede_a_segunda_tentativa(monkeypatch):
@@ -322,7 +340,7 @@ def test_prazo_total_esgotado_impede_a_segunda_tentativa(monkeypatch):
     assert len(s.chamadas) == 1 and esperas == []     # 10 s de espera não cabem em 5 s de prazo
 
 
-def test_timeout_padrao_e_60s_e_timeout_de_leitura_e_repetido_uma_vez(monkeypatch):
+def test_timeout_padrao_e_60s_e_timeout_de_leitura_e_repetido_ate_o_teto(monkeypatch):
     esperas, timeouts = [], []
     monkeypatch.setattr(gemini.time, "sleep", esperas.append)
 
@@ -334,11 +352,11 @@ def test_timeout_padrao_e_60s_e_timeout_de_leitura_e_repetido_uma_vez(monkeypatc
     c = GeminiClient(chave="k", sessao=Lenta(), intervalo_minimo=0)  # configuração padrão
     with pytest.raises(gemini.GeminiIndisponivel, match="timeout"):
         c.gerar("x")
-    assert timeouts == [60, 60] and gemini.TIMEOUT_PADRAO == 60
-    assert c.chamadas == 2 and esperas == [gemini.ESPERA_PADRAO]
+    assert timeouts == [60] * 5 and gemini.TIMEOUT_PADRAO == 60
+    assert c.chamadas == 5 and len(esperas) == 4
 
 
-def test_503_seguido_de_timeout_para_na_segunda_tentativa(monkeypatch):
+def test_503_seguido_de_timeouts_para_no_teto(monkeypatch):
     monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
 
     class S:
@@ -353,7 +371,7 @@ def test_503_seguido_de_timeout_para_na_segunda_tentativa(monkeypatch):
     c = GeminiClient(chave="k", sessao=S(), intervalo_minimo=0)
     with pytest.raises(gemini.GeminiIndisponivel):
         c.gerar("x")
-    assert S.n == 2
+    assert S.n == 5
 
 
 def test_timeout_da_requisicao_respeita_o_prazo_total():

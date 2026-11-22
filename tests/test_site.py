@@ -52,7 +52,7 @@ def test_index_tem_cartoes_com_imagem_titulo_e_botao():
     assert 'name="viewport"' in html
     assert "04:00 (horário de Brasília)" in html                               # 07:00 UTC
     assert "editar.html" not in html                                          # sem link para editar nichos
-    assert "atualizado todos os dias às 04:05 (horário de Brasília)" in html
+    assert "atualizado todos os dias às 04:00 e 21:05 (horário de Brasília)" in html
 
 
 def test_pagina_de_resumo_lista_fontes_e_escapa():
@@ -280,8 +280,8 @@ class Sessao503:
         return R()
 
 
-def test_503_no_main_faz_2_requisicoes_mantem_docs_e_dados_e_sai_com_erro(raiz, monkeypatch, caplog):
-    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)   # a espera de 10 s não atrasa o teste
+def test_503_no_main_faz_5_requisicoes_mantem_docs_e_dados_e_sai_com_erro(raiz, monkeypatch, caplog):
+    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)   # as esperas não atrasam o teste
     sessao = Sessao503()
     cliente = GeminiClient(chave="chave-de-teste", sessao=sessao, intervalo_minimo=0)  # configuração padrão
     executar_real = main.executar
@@ -291,11 +291,11 @@ def test_503_no_main_faz_2_requisicoes_mantem_docs_e_dados_e_sai_com_erro(raiz, 
     monkeypatch.setattr(main.logging, "basicConfig", lambda **k: None)
     with caplog.at_level("INFO"):
         assert main.main() == main.CODIGO_GEMINI_INDISPONIVEL == 75     # falha que pede a retentativa de 1 h
-    assert sessao.chamadas == 2                                          # 1 inicial + 1 nova tentativa
+    assert sessao.chamadas == 5                                          # 1 inicial + 4 novas tentativas
     assert (raiz / "docs" / "index.html").read_text() == "VERSAO ANTERIOR"
     assert not (raiz / "dados").exists()
     final = [r.getMessage() for r in caplog.records if "RESUMO DA EXECUÇÃO" in r.getMessage()][-1]
-    assert "requisições ao Gemini: 2" in final and "GEMINI INDISPONÍVEL" in final
+    assert "requisições ao Gemini: 5" in final and "GEMINI INDISPONÍVEL" in final
     assert "retentativa em 1 hora" in final and "próximo agendamento" in final
 
 

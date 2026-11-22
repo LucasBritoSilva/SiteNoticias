@@ -8,8 +8,9 @@ TEXTO = (Path(__file__).parent.parent / ".github" / "workflows" / "atualizar-sit
 
 
 def test_horarios_em_utc():
-    assert 'cron: "5 7 * * *"' in TEXTO    # 07:05 UTC = 03:05 em Cuiabá (UTC-4)
-    assert TEXTO.count("- cron:") == 1
+    assert 'cron: "0 7 * * *"' in TEXTO    # 07:00 UTC = 03:00 em Cuiabá (UTC-4)
+    assert 'cron: "5 0 * * *"' in TEXTO    # 00:05 UTC = 20:05 em Cuiabá, dia anterior
+    assert TEXTO.count("- cron:") == 2
 
 
 def test_horarios_do_rodape_batem_com_o_cron():

@@ -90,6 +90,20 @@ def test_coletar_ignora_feed_com_erro_mas_falha_se_todos_falharem():
         coleta.coletar(["ruim"], AGORA, buscar)
 
 
+def test_limita_a_10_mais_recentes_por_nicho_e_sem_data_fica_por_ultimo():
+    def art(nicho, horas, titulo):
+        publicado = (AGORA - timedelta(hours=horas)).isoformat() if horas is not None else ""
+        return coleta.Artigo(titulo=titulo, link=f"https://x/{titulo}", fonte="F", fonte_url="",
+                             publicado=publicado, nicho=nicho)
+
+    arts = [art("ia", h, f"ia{h}") for h in range(12)] + [art("ia", None, "ia-sem-data")]
+    arts += [art("eco", 1, "eco1"), art("eco", None, "eco-sem-data")]
+    mantidos = coleta.limitar_por_nicho(arts)
+    ia = [a.titulo for a in mantidos if a.nicho == "ia"]
+    assert ia == [f"ia{h}" for h in range(10)]                     # as 10 mais recentes, sem a sem data
+    assert [a.titulo for a in mantidos if a.nicho == "eco"] == ["eco1", "eco-sem-data"]
+
+
 def test_exemplo_real_salvo_e_consistente():
     dados = json.loads((FIXTURES / "exemplo_coleta.json").read_text(encoding="utf-8"))
     arts = [coleta.Artigo(**a) for a in dados["artigos"]]

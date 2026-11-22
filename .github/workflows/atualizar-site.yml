@@ -3,7 +3,8 @@ name: Atualizar notícias
 on:
   schedule:
     # Cuiabá é UTC-4 (sem horário de verão); o GitHub Actions usa UTC.
-    - cron: "5 7 * * *"    # 07:05 UTC = 03:05 em Cuiabá = 04:05 em Brasília (uma vez por dia)
+    - cron: "0 7 * * *"    # 07:00 UTC = 03:00 em Cuiabá = 04:00 em Brasília
+    - cron: "5 0 * * *"    # 00:05 UTC = 20:05 em Cuiabá = 21:05 em Brasília (do dia anterior)
   workflow_dispatch:
     inputs:
       retry:
@@ -24,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       codigo: ${{ steps.gerar.outputs.codigo }}
-    # Teto de segurança: o pipeline roda uma vez só (Gemini: no máximo 2 requisições em até 5 min).
+    # Teto de segurança: o pipeline roda uma vez só (Gemini: no máximo 5 requisições em até 5 min).
     timeout-minutes: 90
     steps:
       - name: Baixar o repositório
@@ -84,8 +85,8 @@ jobs:
 
   # UMA retentativa em 1 hora, só quando o Gemini ficou indisponível (saída 75: 503/timeout).
   # A execução disparada aqui leva retry=true e por isso nunca agenda outra: não há laço.
-  # Enquanto este job espera, o grupo de concorrência fica ocupado; como só há um agendamento
-  # por dia, a espera de ~1h10 não atrasa o próximo.
+  # Enquanto este job espera, o grupo de concorrência fica ocupado; o menor intervalo entre
+  # agendamentos (00:05 -> 07:00 UTC) é de 6h55, então a espera de ~1h10 não atrasa nenhum deles.
   reagendar:
     needs: atualizar
     if: failure() && needs.atualizar.outputs.codigo == '75' && github.event.inputs.retry != 'true'

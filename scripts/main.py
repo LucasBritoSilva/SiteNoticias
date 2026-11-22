@@ -29,7 +29,7 @@ RAIZ = Path(__file__).resolve().parent.parent
 # Reexecutar o pipeline inteiro repetiria a chamada ao Gemini; quem tenta de novo é o próximo agendamento.
 TENTATIVAS = 1
 ESPERA_ENTRE_TENTATIVAS = 15 * 60  # segundos (só usada se alguém passar tentativas > 1)
-# Código de saída quando o Gemini segue indisponível (503/timeout) após as 2 tentativas internas.
+# Código de saída quando o Gemini segue indisponível (503/timeout) após as tentativas internas (até 5).
 # O workflow usa esse código para agendar UMA retentativa em 1 hora; qualquer outra falha sai com 1.
 CODIGO_GEMINI_INDISPONIVEL = 75  # EX_TEMPFAIL
 MIN_NOVOS_PARA_CHAMAR = 2  # com menos de 2 notícias novas não vale gastar uma chamada

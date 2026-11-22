@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import random
 import re
 import time
 from typing import Callable
@@ -20,9 +21,11 @@ log = logging.getLogger(__name__)
 
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent"
 MODELO_PADRAO = "gemini-flash-latest"
-STATUS_TRANSITORIOS = {429, 500, 502, 503, 504}
-MAX_TENTATIVAS = 2  # teto absoluto de requisições por chamada: a inicial + uma nova tentativa
-ESPERA_PADRAO = 10.0  # segundos, fixa, entre a primeira e a segunda tentativa
+STATUS_REPETIVEIS = {429, 503}  # 429 só quando é limite por minuto (o de cota diária não se repete)
+STATUS_INDISPONIVEL_SEM_REPETIR = {500, 502, 504}  # não repete aqui, mas o workflow tenta de novo em 1 h
+MAX_TENTATIVAS = 5  # teto absoluto de requisições por chamada: a inicial + até 4 novas tentativas
+ESPERAS_PADRAO = (2.0, 4.0, 8.0, 16.0)  # segundos, crescentes, entre as tentativas
+VARIACAO = 0.25  # cada espera varia ±25% ao acaso, para execuções simultâneas não baterem juntas
 PRAZO_TOTAL_PADRAO = 300.0  # segundos: teto de tempo para gerar(), somando esperas e requisições
 TIMEOUT_PADRAO = 60  # segundos por requisição (conexão e leitura); estourar conta como erro transitório
 
@@ -50,7 +53,7 @@ class GeminiClient:
         modelo: str | None = None,
         sessao: requests.Session | None = None,
         intervalo_minimo: float = 4.0,
-        esperas: tuple[float, ...] = (ESPERA_PADRAO,),
+        esperas: tuple[float, ...] = ESPERAS_PADRAO,
         timeout: int = TIMEOUT_PADRAO,
         prazo_total: float = PRAZO_TOTAL_PADRAO,
     ):
@@ -69,8 +72,9 @@ class GeminiClient:
     def gerar(self, prompt: str) -> str:
         """Envia o prompt e devolve o texto da resposta (esperado: JSON).
 
-        Única camada de retentativa do pipeline. No máximo MAX_TENTATIVAS requisições, só para erros
-        transitórios (503/5xx, 429 por minuto, rede e timeout), com espera fixa e dentro de `prazo_total`.
+        Única camada de retentativa do pipeline. No máximo MAX_TENTATIVAS requisições, só para 503,
+        429 por minuto, rede e timeout, com espera crescente (ESPERAS_PADRAO ± VARIACAO) e dentro de
+        `prazo_total`. 500/502/504 param na hora como indisponibilidade (o workflow tenta de novo em 1 h).
         400/401/403, 429 de cota e resposta sem texto falham na hora, sem nova tentativa.
         """
         corpo = {
@@ -112,14 +116,16 @@ class GeminiClient:
                     if tipo_de_429(resp) == "cota":
                         raise GeminiCotaErro(f"Cota do Gemini esgotada ({erro})")
                     erro += " [limite por minuto: temporário]"
-                if resp.status_code not in STATUS_TRANSITORIOS:
+                if resp.status_code in STATUS_INDISPONIVEL_SEM_REPETIR:
+                    raise GeminiIndisponivel(f"Gemini indisponível, sem nova tentativa ({erro})")
+                if resp.status_code not in STATUS_REPETIVEIS:
                     raise GeminiErro(f"Gemini recusou a requisição, erro não transitório ({erro})")
             if i < tentativas - 1:
-                espera = self.esperas[i]
+                espera = self.esperas[i] * random.uniform(1 - VARIACAO, 1 + VARIACAO)
                 if time.monotonic() - inicio + espera >= self.prazo_total:
                     log.warning("Gemini: %s; prazo total de %.0fs esgotado, sem nova tentativa", erro, self.prazo_total)
                     break
-                log.warning("Gemini: %s; nova tentativa (%d/%d) em %.0fs", erro, i + 2, tentativas, espera)
+                log.warning("Gemini: %s; nova tentativa (%d/%d) em %.1fs", erro, i + 2, tentativas, espera)
                 time.sleep(espera)
         raise GeminiIndisponivel(f"Gemini indisponível após {feitas} tentativa(s) ({erro})")
 
