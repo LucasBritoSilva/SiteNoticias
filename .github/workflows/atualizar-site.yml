@@ -2,20 +2,17 @@ name: Atualizar notícias
 
 on:
   schedule:
-    # Cuiabá é UTC-4 (sem horário de verão); o GitHub Actions usa UTC.
-    - cron: "0 7 * * *"    # 07:00 UTC = 03:00 em Cuiabá = 04:00 em Brasília
-    - cron: "5 0 * * *"    # 00:05 UTC = 20:05 em Cuiabá = 21:05 em Brasília (do dia anterior)
+    # Uma atualização por dia. O GitHub Actions usa UTC:
+    # 22:17 UTC = 18:17 em Mato Grosso do Sul (UTC-4) = 19:17 em Brasília (UTC-3).
+    # O horário é experimental: não garante que o Gemini esteja disponível.
+    - cron: '17 22 * * *'
   workflow_dispatch:
-    inputs:
-      retry:
-        description: "Execução de retentativa (não agenda outra)"
-        type: boolean
-        default: false
 
 permissions:
   contents: write
 
-# Uma execução por vez; a seguinte espera a atual terminar (nada é cancelado no meio).
+# Uma execução por vez, inclusive durante a espera de 1 hora; a seguinte (agendada ou manual)
+# fica na fila até a atual terminar. Nada é cancelado no meio.
 concurrency:
   group: atualizar-site
   cancel-in-progress: false
@@ -23,13 +20,15 @@ concurrency:
 jobs:
   atualizar:
     runs-on: ubuntu-latest
-    outputs:
-      codigo: ${{ steps.gerar.outputs.codigo }}
-    # Teto de segurança: o pipeline roda uma vez só (Gemini: no máximo 5 requisições em até 5 min).
-    timeout-minutes: 90
+    # 2 tentativas de até 15 min + 60 min de espera + folga para preparar e publicar.
+    timeout-minutes: 100
     steps:
       - name: Baixar o repositório
         uses: actions/checkout@v4
+        with:
+          # A ponta atual da branch, e não o commit de quando a execução foi disparada: quem
+          # ficou na fila precisa enxergar o que a execução anterior publicou.
+          ref: ${{ github.ref_name }}
 
       - name: Instalar o Python
         uses: actions/setup-python@v5
@@ -40,22 +39,88 @@ jobs:
       - name: Instalar dependências
         run: pip install -r requirements.txt
 
-      # O script roda o pipeline uma vez; só o Gemini tem uma nova tentativa curta (503/rede/timeout).
-      # Ele só altera docs/ se a execução terminar com sucesso; se falhar, o passo falha,
-      # o próximo passo não roda e a versão anterior do site continua no ar.
-      # Saída 75 = Gemini indisponível (503/timeout): o job "reagendar" tenta de novo em 1 hora.
-      - name: Gerar o site
-        id: gerar
-        run: |
-          set +e
-          python scripts/main.py
-          codigo=$?
-          echo "codigo=$codigo" >> "$GITHUB_OUTPUT"
-          exit $codigo
+      # ÚNICO lugar do projeto com política de nova tentativa: no máximo 2 execuções do script,
+      # a segunda só se a primeira falhar, 3600 s depois da falha. O script faz no máximo uma
+      # requisição ao Gemini por execução e não repete nada por conta própria.
+      # Se as duas falharem, o passo falha, o envio abaixo não roda e o site anterior continua no ar.
+      - name: Gerar o site (no máximo 2 tentativas)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+        run: |
+          set +e  # os códigos de saída são tratados abaixo, um a um
+          set -u
+          ESPERA_SEGUNDOS=3600
+          LIMITE_POR_TENTATIVA=15m
 
+          agora() { date -u +'%Y-%m-%d %H:%M:%S UTC'; }
+          registrar() { echo "[$(agora)] $*"; }
+
+          # Devolve docs/ e dados/ ao último commit e confere que não sobrou diferença.
+          restaurar() {
+            local pasta
+            for pasta in docs dados; do
+              if [ -n "$(git ls-files -- "$pasta")" ]; then
+                git checkout -q HEAD -- "$pasta" || return 1
+              fi
+            done
+            git clean -fdq -- docs dados || return 1
+            rm -rf .staging .staging-anterior || return 1
+            local sobras
+            sobras="$(git status --porcelain -- docs dados)" || return 1
+            [ -z "$sobras" ]
+          }
+
+          # Executa o script uma vez; devolve o código de saída dele.
+          tentar() {
+            registrar "Tentativa $1/2: iniciando a geração."
+            timeout --kill-after=30s "$LIMITE_POR_TENTATIVA" python -u scripts/main.py
+            local codigo=$?
+            if [ "$codigo" -eq 0 ]; then
+              registrar "Tentativa $1/2: geração concluída."
+            elif [ "$codigo" -eq 124 ] || [ "$codigo" -eq 137 ]; then
+              registrar "Tentativa $1/2: FALHOU por tempo esgotado ($LIMITE_POR_TENTATIVA; código $codigo)."
+            else
+              registrar "Tentativa $1/2: FALHOU (código $codigo); o motivo está nas linhas acima."
+            fi
+            return "$codigo"
+          }
+
+          registrar "Início da atualização."
+          if tentar 1; then
+            registrar "RESULTADO FINAL: sucesso na tentativa 1/2; o site será publicado."
+            exit 0
+          fi
+          falha_em=$(date -u +%s)
+
+          if ! restaurar; then
+            echo "::error::[$(agora)] RESULTADO FINAL: falha. Não foi possível restaurar docs/ e dados/; a segunda tentativa não será feita e nada será publicado."
+            exit 1
+          fi
+          registrar "docs/ e dados/ restaurados ao último commit."
+
+          registrar "Início da espera de $ESPERA_SEGUNDOS s; nenhuma chamada ao Gemini até lá."
+          registrar "Tentativa 2/2 prevista para $(date -u -d "@$((falha_em + ESPERA_SEGUNDOS))" +'%Y-%m-%d %H:%M:%S UTC')."
+          if ! sleep "$ESPERA_SEGUNDOS"; then
+            echo "::error::[$(agora)] RESULTADO FINAL: falha. A espera foi interrompida; nada será publicado."
+            exit 1
+          fi
+          registrar "Fim da espera: este é o horário efetivo da tentativa 2/2."
+
+          if tentar 2; then
+            registrar "RESULTADO FINAL: sucesso na tentativa 2/2; o site será publicado."
+            exit 0
+          fi
+
+          if restaurar; then
+            registrar "Dados anteriores preservados: docs/ e dados/ sem diferença do último commit."
+          else
+            echo "::warning::[$(agora)] Não foi possível restaurar docs/ e dados/ neste runner; nada será enviado."
+          fi
+          echo "::error::[$(agora)] RESULTADO FINAL: as 2 tentativas falharam. Nada será publicado, o site anterior continua no ar e a próxima atualização automática é a do próximo agendamento."
+          exit 1
+
+      # Só roda se o passo anterior terminar com sucesso.
       - name: Enviar alterações para a main
         run: |
           set -u
@@ -70,7 +135,8 @@ jobs:
           git commit -m "Atualiza notícias ($(date -u +'%Y-%m-%d %H:%M') UTC)"
           # A edição de nichos pela página também faz commits na main. Se a branch andou
           # enquanto rodávamos, reaplica o nosso commit por cima (sem sobrescrever nada)
-          # e tenta de novo. Um conflito de verdade faz o passo falhar.
+          # e envia de novo. Um conflito de verdade faz o passo falhar.
+          # Isto repete só o envio ao GitHub; não gera o site nem chama o Gemini.
           for tentativa in 1 2 3 4 5; do
             if git pull --rebase origin main && git push origin HEAD:main; then
               echo "Enviado na tentativa $tentativa."
@@ -82,23 +148,3 @@ jobs:
           done
           echo "Não foi possível enviar as alterações." >&2
           exit 1
-
-  # UMA retentativa em 1 hora, só quando o Gemini ficou indisponível (saída 75: 503/timeout).
-  # A execução disparada aqui leva retry=true e por isso nunca agenda outra: não há laço.
-  # Enquanto este job espera, o grupo de concorrência fica ocupado; o menor intervalo entre
-  # agendamentos (00:05 -> 07:00 UTC) é de 6h55, então a espera de ~1h10 não atrasa nenhum deles.
-  reagendar:
-    needs: atualizar
-    if: failure() && needs.atualizar.outputs.codigo == '75' && github.event.inputs.retry != 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 70
-    permissions:
-      actions: write
-    steps:
-      - name: Aguardar 1 hora e disparar a retentativa
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          sleep 3600
-          gh workflow run atualizar-site.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f retry=true
-          echo "Retentativa disparada (retry=true)."

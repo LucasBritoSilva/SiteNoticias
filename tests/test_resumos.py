@@ -4,6 +4,8 @@ NÃO há GEMINI_API_KEY neste ambiente de desenvolvimento: todas as respostas do
 são SIMULADAS (cliente falso e sessão HTTP falsa). Nenhuma chamada real à API foi testada.
 """
 import json
+import threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 import pytest
@@ -189,7 +191,7 @@ def ok(texto):
 
 
 def cliente(sessao, **kw):
-    return GeminiClient(chave="chave-de-teste", sessao=sessao, intervalo_minimo=0, esperas=(0, 0), **kw)
+    return GeminiClient(chave="chave-de-teste", sessao=sessao, intervalo_minimo=0, **kw)
 
 
 def test_cliente_envia_chave_no_cabecalho_e_nao_na_url():
@@ -199,15 +201,6 @@ def test_cliente_envia_chave_no_cabecalho_e_nao_na_url():
     assert "chave-de-teste" not in url and headers["x-goog-api-key"] == "chave-de-teste"
     assert corpo["generationConfig"]["responseMimeType"] == "application/json"
     assert "generateContent" in url
-
-
-def test_cliente_repete_em_erro_transitorio_mas_nao_em_erro_de_chave():
-    s = SessaoFalsa(RespostaHTTP(503, {}), ok("{}"))
-    assert cliente(s).gerar("x") == "{}"
-    with pytest.raises(GeminiErro):
-        cliente(SessaoFalsa(RespostaHTTP(403, {"error": "chave"}))).gerar("x")
-    with pytest.raises(GeminiErro):
-        cliente(SessaoFalsa(*[RespostaHTTP(429, {})] * 3)).gerar("x")
 
 
 def test_cliente_resposta_sem_texto_e_invalida():
@@ -222,177 +215,133 @@ def test_cliente_exige_chave(monkeypatch):
         GeminiClient()
 
 
-# ------------------------------------------------------------ erros de cota x erros temporários
+# ------------------------------------------------------------ uma requisição só, qualquer que seja o erro
 
-def corpo_429(quota_id=None, mensagem="You exceeded your current quota, please check your plan and billing details."):
+def corpo_429(quota_id=None, mensagem="You exceeded your current quota, please check your plan and billing details.",
+              metrica="generativelanguage.googleapis.com/generate_content_free_tier_requests", valor=None):
     erro = {"code": 429, "message": mensagem, "status": "RESOURCE_EXHAUSTED"}
     if quota_id:
-        erro["details"] = [{"@type": "type.googleapis.com/google.rpc.QuotaFailure",
-                            "violations": [{"quotaMetric": "generativelanguage.googleapis.com/generate_content_requests",
-                                            "quotaId": quota_id}]}]
+        violacao = {"quotaMetric": metrica, "quotaId": quota_id}
+        if valor:
+            violacao["quotaValue"] = valor
+        erro["details"] = [{"@type": "type.googleapis.com/google.rpc.QuotaFailure", "violations": [violacao]},
+                           {"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "7s"}]
     return {"error": erro}
 
 
-def test_429_de_cota_diaria_nao_e_repetido():
-    s = SessaoFalsa(RespostaHTTP(429, corpo_429("GenerateRequestsPerDayPerProjectPerModel-FreeTier")), ok("{}"))
-    with pytest.raises(gemini.GeminiCotaErro):
-        cliente(s).gerar("x")
-    assert len(s.chamadas) == 1                       # parou na primeira, sem retentativa
-
-
-@pytest.mark.parametrize("corpo", [
-    corpo_429(mensagem="Daily limit reached"),
-    corpo_429(mensagem="Billing is not enabled for this project"),
-    corpo_429(mensagem="You exceeded your current quota"),
-    corpo_429("GenerateContentInputTokensPerModelPerDay-FreeTier"),
+@pytest.mark.parametrize("status,classe", [
+    (429, gemini.GeminiCotaErro),
+    (500, gemini.GeminiIndisponivel), (502, gemini.GeminiIndisponivel),
+    (503, gemini.GeminiIndisponivel), (504, gemini.GeminiIndisponivel),
+    (400, GeminiErro), (401, GeminiErro), (403, GeminiErro), (404, GeminiErro),
 ])
-def test_429_com_mensagem_de_cota_nao_e_repetido(corpo):
-    s = SessaoFalsa(RespostaHTTP(429, corpo), ok("{}"))
-    with pytest.raises(gemini.GeminiCotaErro):
+def test_cada_erro_http_faz_uma_unica_requisicao_sem_esperar(monkeypatch, status, classe):
+    esperas = []
+    monkeypatch.setattr(gemini.time, "sleep", esperas.append)
+    s = SessaoFalsa(RespostaHTTP(status, {"error": {"message": "x"}}), ok("{}"))
+    c = cliente(s)
+    with pytest.raises(classe, match=f"HTTP {status}") as e:
+        c.gerar("x")
+    assert type(e.value) is classe
+    assert len(s.chamadas) == 1 and c.chamadas == 1 and esperas == []
+
+
+@pytest.mark.parametrize("excecao,texto", [
+    (requests.ReadTimeout("Read timed out."), "Timeout de 60s"),
+    (requests.ConnectTimeout("sem conexão"), "Timeout de 60s"),
+    (requests.ConnectionError("rede caiu"), "Falha de comunicação"),
+])
+def test_timeout_e_erro_de_rede_nao_sao_repetidos(excecao, texto):
+    class Cai:
+        n, timeouts = 0, []
+
+        def post(self, url, headers=None, json=None, timeout=None):
+            self.n += 1
+            self.timeouts.append(timeout)
+            raise excecao
+
+    s = Cai()
+    with pytest.raises(gemini.GeminiIndisponivel, match=texto):
         cliente(s).gerar("x")
-    assert len(s.chamadas) == 1
+    assert s.n == 1 and s.timeouts[-1] == gemini.TIMEOUT_PADRAO == 60
+
+
+@pytest.mark.parametrize("status", [429, 503])
+def test_requests_de_verdade_nao_repete_nem_com_retry_after(monkeypatch, status):
+    """Sessão real do requests contra um servidor local: a biblioteca não pode repetir sozinha."""
+    pedidos = []
+
+    class Servidor(BaseHTTPRequestHandler):
+        def do_POST(self):
+            self.rfile.read(int(self.headers["Content-Length"]))
+            pedidos.append(self.path)
+            self.send_response(status)
+            self.send_header("Retry-After", "0")
+            self.send_header("Content-Length", "2")
+            self.end_headers()
+            self.wfile.write(b"{}")
+
+        def log_message(self, *a):
+            pass
+
+    servidor = HTTPServer(("127.0.0.1", 0), Servidor)
+    threading.Thread(target=servidor.serve_forever, daemon=True).start()
+    try:
+        monkeypatch.setattr(gemini, "API_URL", f"http://127.0.0.1:{servidor.server_port}/{{modelo}}")
+        sessao = requests.Session()
+        sessao.trust_env = False  # sem proxy do ambiente
+        with pytest.raises(GeminiErro, match=f"HTTP {status}"):
+            GeminiClient(chave="chave-de-teste", modelo="m", sessao=sessao).gerar("x")
+    finally:
+        servidor.shutdown()
+        servidor.server_close()
+    assert pedidos == ["/m"]
+
+
+def test_chave_nao_aparece_nas_mensagens_de_erro():
+    s = SessaoFalsa(RespostaHTTP(400, {"error": {"message": "chave chave-de-teste inválida"}}))
+    with pytest.raises(GeminiErro) as e:
+        cliente(s).gerar("x")
+    assert "chave-de-teste" not in str(e.value) and "***" in str(e.value)
+    assert GeminiClient(chave="  chave-com-quebra\n").chave == "chave-com-quebra"
+
+
+# ------------------------------------------------------------ qual limite o 429 estourou
+
+TOKENS = "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count"
+
+
+@pytest.mark.parametrize("corpo,esperado", [
+    (corpo_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier"), "RPM (requisições por minuto)"),
+    (corpo_429("GenerateRequestsPerDayPerProjectPerModel-FreeTier", valor="20"), "RPD (requisições por dia)"),
+    (corpo_429("GenerateContentInputTokensPerModelPerMinute-FreeTier", metrica=TOKENS),
+     "TPM (tokens por minuto)"),
+    (corpo_429("GenerateContentInputTokensPerModelPerDay-FreeTier", metrica=TOKENS), "TPD (tokens por dia)"),
+    (corpo_429(mensagem="Too many requests per minute"), "RPM (requisições por minuto)"),
+    (corpo_429(mensagem="Daily limit reached"), "limite por dia (a API não disse"),
+    (corpo_429(), "não informada pela API"),                    # "quota" sozinho não vira cota diária
+    ({}, "não informada pela API"),
+])
+def test_429_registra_a_metrica_sem_presumir_cota_diaria(corpo, esperado):
+    metrica = gemini.metrica_do_429(RespostaHTTP(429, corpo))
+    assert esperado in metrica
+    if "dia" not in esperado:
+        assert "por dia" not in metrica and "RPD" not in metrica
+
+
+def test_429_com_varias_violacoes_lista_todas_com_o_limite():
+    corpo = corpo_429("GenerateRequestsPerDayPerProjectPerModel-FreeTier", valor="20")
+    corpo["error"]["details"][0]["violations"].append(
+        {"quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier", "quotaValue": "5"})
+    with pytest.raises(gemini.GeminiCotaErro) as e:
+        cliente(SessaoFalsa(RespostaHTTP(429, corpo))).gerar("x")
+    texto = str(e.value)
+    assert "RPD (requisições por dia)" in texto and "limite 20" in texto
+    assert "RPM (requisições por minuto)" in texto and "limite 5]" in texto
 
 
 def test_cota_e_um_tipo_de_erro_do_gemini():
     assert issubclass(gemini.GeminiCotaErro, GeminiErro)
-
-
-def test_429_por_minuto_e_repetido_ate_o_teto_e_depois_desiste(monkeypatch):
-    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
-    por_minuto = RespostaHTTP(429, corpo_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier"))
-    s = SessaoFalsa(*[por_minuto] * gemini.MAX_TENTATIVAS, ok('{"a":1}'))
-    with pytest.raises(gemini.GeminiIndisponivel):
-        GeminiClient(chave="k", sessao=s, intervalo_minimo=0).gerar("x")
-    assert len(s.chamadas) == gemini.MAX_TENTATIVAS == 5
-
-
-def test_429_generico_sem_pista_de_cota_e_tratado_como_temporario():
-    s = SessaoFalsa(RespostaHTTP(429, {"error": {"message": "Too many requests"}}), ok("{}"))
-    assert cliente(s).gerar("x") == "{}"
-    assert len(s.chamadas) == 2
-
-
-def test_erro_de_rede_e_repetido_uma_vez():
-    class Cai:
-        def __init__(self):
-            self.n = 0
-
-        def post(self, *a, **k):
-            self.n += 1
-            if self.n == 1:
-                raise requests.ConnectionError("rede caiu")
-            return ok("{}")
-
-    s = Cai()
-    c = cliente(s)
-    assert c.gerar("x") == "{}" and s.n == 2 and c.chamadas == 2
-
-
-# ------------------------------------------------------------ 503 persistente (sem gastar cota real)
-
-CORPO_503 = {"error": {"code": 503, "status": "UNAVAILABLE",
-                       "message": "This model is currently experiencing high demand. Please try again later."}}
-
-
-def test_503_persistente_faz_5_requisicoes_com_espera_crescente_e_variacao(monkeypatch):
-    esperas = []
-    monkeypatch.setattr(gemini.time, "sleep", esperas.append)
-    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 6)
-    c = GeminiClient(chave="chave-de-teste", sessao=s, intervalo_minimo=0)  # configuração padrão
-    with pytest.raises(gemini.GeminiIndisponivel, match="após 5 tentativa"):
-        c.gerar("x")
-    assert len(s.chamadas) == 5 and c.chamadas == 5
-    assert gemini.ESPERAS_PADRAO == (2.0, 4.0, 8.0, 16.0) and len(esperas) == 4
-    for feita, base in zip(esperas, gemini.ESPERAS_PADRAO):
-        assert base * 0.75 <= feita <= base * 1.25                  # ±25% de variação
-
-
-def test_503_seguido_de_sucesso_devolve_o_texto(monkeypatch):
-    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
-    s = SessaoFalsa(RespostaHTTP(503, CORPO_503), RespostaHTTP(503, CORPO_503), ok("{}"))
-    assert GeminiClient(chave="k", sessao=s, intervalo_minimo=0).gerar("x") == "{}"
-    assert len(s.chamadas) == 3
-
-
-@pytest.mark.parametrize("status", [500, 502, 504])
-def test_outros_5xx_nao_sao_repetidos_mas_contam_como_indisponivel(status):
-    s = SessaoFalsa(RespostaHTTP(status, {"error": {"message": "x"}}), ok("{}"))
-    with pytest.raises(gemini.GeminiIndisponivel, match="sem nova tentativa"):
-        cliente(s).gerar("x")
-    assert len(s.chamadas) == 1
-
-
-def test_esperas_extras_nao_aumentam_o_teto_de_tentativas(monkeypatch):
-    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
-    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 10)
-    with pytest.raises(gemini.GeminiIndisponivel):
-        GeminiClient(chave="k", sessao=s, intervalo_minimo=0, esperas=(0,) * 8).gerar("x")
-    assert len(s.chamadas) == gemini.MAX_TENTATIVAS == 5
-
-
-def test_prazo_total_esgotado_impede_a_segunda_tentativa(monkeypatch):
-    esperas = []
-    monkeypatch.setattr(gemini.time, "sleep", esperas.append)
-    s = SessaoFalsa(*[RespostaHTTP(503, CORPO_503)] * 2)
-    c = GeminiClient(chave="k", sessao=s, intervalo_minimo=0, esperas=(10.0,), prazo_total=5.0)
-    with pytest.raises(gemini.GeminiIndisponivel):
-        c.gerar("x")
-    assert len(s.chamadas) == 1 and esperas == []     # 10 s de espera não cabem em 5 s de prazo
-
-
-def test_timeout_padrao_e_60s_e_timeout_de_leitura_e_repetido_ate_o_teto(monkeypatch):
-    esperas, timeouts = [], []
-    monkeypatch.setattr(gemini.time, "sleep", esperas.append)
-
-    class Lenta:
-        def post(self, url, headers=None, json=None, timeout=None):
-            timeouts.append(timeout)
-            raise requests.ReadTimeout(f"Read timed out. (read timeout={timeout})")
-
-    c = GeminiClient(chave="k", sessao=Lenta(), intervalo_minimo=0)  # configuração padrão
-    with pytest.raises(gemini.GeminiIndisponivel, match="timeout"):
-        c.gerar("x")
-    assert timeouts == [60] * 5 and gemini.TIMEOUT_PADRAO == 60
-    assert c.chamadas == 5 and len(esperas) == 4
-
-
-def test_503_seguido_de_timeouts_para_no_teto(monkeypatch):
-    monkeypatch.setattr(gemini.time, "sleep", lambda s: None)
-
-    class S:
-        n = 0
-
-        def post(self, *a, **k):
-            S.n += 1
-            if S.n == 1:
-                return RespostaHTTP(503, CORPO_503)
-            raise requests.ReadTimeout("Read timed out.")
-
-    c = GeminiClient(chave="k", sessao=S(), intervalo_minimo=0)
-    with pytest.raises(gemini.GeminiIndisponivel):
-        c.gerar("x")
-    assert S.n == 5
-
-
-def test_timeout_da_requisicao_respeita_o_prazo_total():
-    timeouts = []
-
-    class S:
-        def post(self, url, headers=None, json=None, timeout=None):
-            timeouts.append(timeout)
-            return ok("{}")
-
-    GeminiClient(chave="k", sessao=S(), intervalo_minimo=0, timeout=120, prazo_total=30).gerar("x")
-    assert 0 < timeouts[0] <= 30
-
-
-@pytest.mark.parametrize("status", [400, 401, 403, 404])
-def test_erros_nao_transitorios_falham_na_hora(status):
-    s = SessaoFalsa(RespostaHTTP(status, {"error": {"message": "x"}}), ok("{}"))
-    with pytest.raises(GeminiErro, match="não transitório") as e:
-        cliente(s).gerar("x")
-    assert not isinstance(e.value, gemini.GeminiIndisponivel)
-    assert len(s.chamadas) == 1
 
 
 def test_corpo_200_que_nao_e_json_e_resposta_invalida_sem_retentativa():

@@ -17,9 +17,9 @@ from urllib.parse import urlsplit
 from resumos import Resumo
 
 BRASILIA = timezone(timedelta(hours=-3), "Brasília")  # UTC-3 o ano todo, sem horário de verão
-# Horários de Brasília das execuções agendadas (cron do workflow em UTC: 07:00 e 00:05).
+# Horário de Brasília da execução agendada (cron do workflow em UTC: 22:17).
 # tests/test_workflow.py confere que estes valores batem com o cron.
-HORARIOS_ATUALIZACAO = ("04:00", "21:05")
+HORARIOS_ATUALIZACAO = ("19:17",)
 TITULO_SITE = "Notícias por nicho"
 IMAGEM_GENERICA = "generica.svg"
 

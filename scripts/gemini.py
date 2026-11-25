@@ -7,7 +7,6 @@ from __future__ import annotations
 import json
 import logging
 import os
-import random
 import re
 import time
 from typing import Callable
@@ -21,13 +20,7 @@ log = logging.getLogger(__name__)
 
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent"
 MODELO_PADRAO = "gemini-flash-latest"
-STATUS_REPETIVEIS = {429, 503}  # 429 só quando é limite por minuto (o de cota diária não se repete)
-STATUS_INDISPONIVEL_SEM_REPETIR = {500, 502, 504}  # não repete aqui, mas o workflow tenta de novo em 1 h
-MAX_TENTATIVAS = 5  # teto absoluto de requisições por chamada: a inicial + até 4 novas tentativas
-ESPERAS_PADRAO = (2.0, 4.0, 8.0, 16.0)  # segundos, crescentes, entre as tentativas
-VARIACAO = 0.25  # cada espera varia ±25% ao acaso, para execuções simultâneas não baterem juntas
-PRAZO_TOTAL_PADRAO = 300.0  # segundos: teto de tempo para gerar(), somando esperas e requisições
-TIMEOUT_PADRAO = 60  # segundos por requisição (conexão e leitura); estourar conta como erro transitório
+TIMEOUT_PADRAO = 60  # segundos por requisição (conexão e leitura)
 
 
 class GeminiErro(RuntimeError):
@@ -35,11 +28,11 @@ class GeminiErro(RuntimeError):
 
 
 class GeminiCotaErro(GeminiErro):
-    """Cota/limite diário/faturamento esgotado (HTTP 429): repetir não adianta, então não se repete."""
+    """Limite de uso excedido (HTTP 429): pode ser RPM, TPM ou cota diária (a mensagem diz qual)."""
 
 
 class GeminiIndisponivel(GeminiErro):
-    """Erro transitório (503/5xx, 429 por minuto, rede, timeout) que persistiu após as tentativas permitidas."""
+    """Falha do lado do serviço ou do caminho até ele: HTTP 5xx, rede ou timeout."""
 
 
 class RespostaInvalida(ValueError):
@@ -53,29 +46,25 @@ class GeminiClient:
         modelo: str | None = None,
         sessao: requests.Session | None = None,
         intervalo_minimo: float = 4.0,
-        esperas: tuple[float, ...] = ESPERAS_PADRAO,
         timeout: int = TIMEOUT_PADRAO,
-        prazo_total: float = PRAZO_TOTAL_PADRAO,
     ):
-        self.chave = chave or os.environ.get("GEMINI_API_KEY", "")
+        # strip(): uma quebra de linha colada junto com a chave faria o requests citá-la no erro.
+        self.chave = (chave or os.environ.get("GEMINI_API_KEY", "")).strip()
         if not self.chave:
             raise GeminiErro("Variável de ambiente GEMINI_API_KEY não definida.")
         self.modelo = modelo or os.environ.get("GEMINI_MODEL") or MODELO_PADRAO
         self.http = sessao or requests.Session()
         self.intervalo_minimo = intervalo_minimo
-        self.esperas = esperas
         self.timeout = timeout
-        self.prazo_total = prazo_total
         self.chamadas = 0  # requisições HTTP feitas por este cliente (para o log final)
         self._ultima = 0.0
 
     def gerar(self, prompt: str) -> str:
-        """Envia o prompt e devolve o texto da resposta (esperado: JSON).
+        """Envia o prompt UMA vez e devolve o texto da resposta (esperado: JSON).
 
-        Única camada de retentativa do pipeline. No máximo MAX_TENTATIVAS requisições, só para 503,
-        429 por minuto, rede e timeout, com espera crescente (ESPERAS_PADRAO ± VARIACAO) e dentro de
-        `prazo_total`. 500/502/504 param na hora como indisponibilidade (o workflow tenta de novo em 1 h).
-        400/401/403, 429 de cota e resposta sem texto falham na hora, sem nova tentativa.
+        Não há nova tentativa aqui nem em outro ponto do Python: qualquer falha levanta erro na
+        hora. A única nova tentativa é a do workflow, que reexecuta o script 1 hora depois.
+        (A sessão do requests também não repete: o padrão dela é max_retries=0.)
         """
         corpo = {
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
@@ -87,47 +76,38 @@ class GeminiClient:
         }
         cabecalhos = {"x-goog-api-key": self.chave, "Content-Type": "application/json"}
         url = API_URL.format(modelo=self.modelo)
-        tentativas = min(len(self.esperas) + 1, MAX_TENTATIVAS)
-        inicio = time.monotonic()
-        feitas = 0
-        for i in range(tentativas):
-            self._respeitar_intervalo()
-            restante = self.prazo_total - (time.monotonic() - inicio)
-            if restante <= 0:
-                break
-            feitas += 1
-            self.chamadas += 1
+        self._respeitar_intervalo()
+        self.chamadas += 1
+        log.info("Requisição %d ao Gemini (modelo %s)", self.chamadas, self.modelo)
+        try:
+            resp = self.http.post(url, headers=cabecalhos, json=corpo, timeout=self.timeout)
+        except requests.Timeout as exc:
+            raise GeminiIndisponivel(
+                f"Timeout de {self.timeout}s, sem código HTTP: {self._ocultar_chave(exc)}"
+            ) from None
+        except requests.RequestException as exc:
+            raise GeminiIndisponivel(
+                f"Falha de comunicação com a API, sem código HTTP: {self._ocultar_chave(exc)}"
+            ) from None
+        finally:
+            self._ultima = time.monotonic()
+        log.info("Gemini respondeu HTTP %s", resp.status_code)
+        if resp.status_code == 200:
             try:
-                resp = self.http.post(url, headers=cabecalhos, json=corpo, timeout=min(self.timeout, restante))
-            except requests.Timeout as exc:  # mesmo tratamento do 503: transitório
-                erro = f"timeout após {min(self.timeout, restante):.0f}s: {exc}"
-            except requests.RequestException as exc:
-                erro = f"erro de rede: {exc}"
-            else:
-                self._ultima = time.monotonic()
-                if resp.status_code == 200:
-                    try:
-                        dados = resp.json()
-                    except ValueError as exc:
-                        raise RespostaInvalida(f"Corpo da resposta não é JSON: {exc}") from exc
-                    return extrair_texto(dados)
-                erro = f"HTTP {resp.status_code}: {resp.text[:300]}"
-                if resp.status_code == 429:
-                    if tipo_de_429(resp) == "cota":
-                        raise GeminiCotaErro(f"Cota do Gemini esgotada ({erro})")
-                    erro += " [limite por minuto: temporário]"
-                if resp.status_code in STATUS_INDISPONIVEL_SEM_REPETIR:
-                    raise GeminiIndisponivel(f"Gemini indisponível, sem nova tentativa ({erro})")
-                if resp.status_code not in STATUS_REPETIVEIS:
-                    raise GeminiErro(f"Gemini recusou a requisição, erro não transitório ({erro})")
-            if i < tentativas - 1:
-                espera = self.esperas[i] * random.uniform(1 - VARIACAO, 1 + VARIACAO)
-                if time.monotonic() - inicio + espera >= self.prazo_total:
-                    log.warning("Gemini: %s; prazo total de %.0fs esgotado, sem nova tentativa", erro, self.prazo_total)
-                    break
-                log.warning("Gemini: %s; nova tentativa (%d/%d) em %.1fs", erro, i + 2, tentativas, espera)
-                time.sleep(espera)
-        raise GeminiIndisponivel(f"Gemini indisponível após {feitas} tentativa(s) ({erro})")
+                dados = resp.json()
+            except ValueError as exc:
+                raise RespostaInvalida(f"HTTP 200, mas o corpo da resposta não é JSON: {exc}") from exc
+            return extrair_texto(dados)
+        detalhe = f"HTTP {resp.status_code}: {self._ocultar_chave(resp.text)[:300]}"
+        if resp.status_code == 429:
+            raise GeminiCotaErro(f"Limite de uso excedido. Métrica: {metrica_do_429(resp)}. ({detalhe})")
+        if resp.status_code >= 500:
+            raise GeminiIndisponivel(f"Gemini indisponível ({detalhe})")
+        raise GeminiErro(f"Gemini recusou a requisição ({detalhe})")
+
+    def _ocultar_chave(self, texto: object) -> str:
+        """Nenhuma mensagem de erro pode levar a chave para o log."""
+        return str(texto).replace(self.chave, "***")
 
     def _respeitar_intervalo(self) -> None:
         falta = self.intervalo_minimo - (time.monotonic() - self._ultima)
@@ -135,12 +115,28 @@ class GeminiClient:
             time.sleep(falta)
 
 
-def tipo_de_429(resp) -> str:
-    """Diferencia um 429 de cota ("cota": não repetir) de um de taxa por minuto ("taxa": repetir).
+def _classificar_limite(texto: str) -> str | None:
+    """Traduz o nome de uma cota (quotaId, métrica ou mensagem) em RPM, TPM, RPD ou TPD."""
+    t = re.sub(r"[ _-]", "", texto.lower())
+    if "perday" in t or "daily" in t:
+        periodo, de_tokens, de_requisicoes = "por dia", "TPD", "RPD"
+    elif "perminute" in t:
+        periodo, de_tokens, de_requisicoes = "por minuto", "TPM", "RPM"
+    else:
+        return None
+    if "token" in t:
+        return f"{de_tokens} (tokens {periodo})"
+    if "request" in t:
+        return f"{de_requisicoes} (requisições {periodo})"
+    return f"limite {periodo} (a API não disse se é de requisições ou de tokens)"
 
-    1) Os detalhes estruturados da API (`quotaId`) mandam: "PerDay" = cota; "PerMinute" = taxa.
-    2) Sem detalhes, vale a mensagem: "daily", "billing" ou "quota" = cota; "per minute" = taxa.
-    3) Sem pistas, é tratado como taxa (temporário): a repetição curta é inofensiva.
+
+def metrica_do_429(resp) -> str:
+    """Descreve, para o log, qual limite um HTTP 429 estourou. Não muda o comportamento.
+
+    1) Valem os detalhes estruturados da API (`quotaId` e `quotaMetric` de cada violação).
+    2) Sem eles, procura "per minute"/"per day"/"daily" na mensagem.
+    3) Sem pistas, diz que a API não informou. Um 429 NÃO é presumido como cota diária.
     """
     try:
         corpo = resp.json()
@@ -148,23 +144,20 @@ def tipo_de_429(resp) -> str:
         corpo = None
     erro = corpo.get("error") if isinstance(corpo, dict) else None
     erro = erro if isinstance(erro, dict) else {}
-    violacoes: list[str] = []
+    achados: list[str] = []
     for d in erro.get("details") or []:
-        if isinstance(d, dict):
-            for v in d.get("violations") or []:
-                if isinstance(v, dict):
-                    violacoes.append(f"{v.get('quotaId', '')} {v.get('quotaMetric', '')}".lower())
-    ids = " ".join(violacoes).replace("_", "")
-    if "perday" in ids or "daily" in ids:
-        return "cota"
-    if "perminute" in ids:
-        return "taxa"
-    mensagem = (str(erro.get("message") or "") or str(getattr(resp, "text", ""))).lower()
-    if "per minute" in mensagem or "perminute" in mensagem:
-        return "taxa"
-    if any(p in mensagem for p in ("daily", "billing", "per day", "quota")):
-        return "cota"
-    return "taxa"
+        violacoes = d.get("violations") if isinstance(d, dict) else None
+        for v in violacoes or []:
+            if not isinstance(v, dict):
+                continue
+            tipo = _classificar_limite(f"{v.get('quotaId') or ''} {v.get('quotaMetric') or ''}")
+            if tipo:
+                limite = f", limite {v['quotaValue']}" if v.get("quotaValue") else ""
+                achados.append(f"{tipo} [{v.get('quotaId') or v.get('quotaMetric')}{limite}]")
+    if achados:
+        return "; ".join(dict.fromkeys(achados))
+    mensagem = str(erro.get("message") or "") or str(getattr(resp, "text", ""))
+    return _classificar_limite(mensagem) or "não informada pela API"
 
 
 def extrair_texto(resposta: dict) -> str:

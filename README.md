@@ -12,7 +12,7 @@ O projeto possui um processo automatizado de atualização das notícias:
 2. **Processamento com IA:** a inteligência artificial **Google Gemini** analisa as notícias coletadas.
 3. **Organização do conteúdo:** notícias relacionadas ao mesmo acontecimento são agrupadas, evitando conteúdos repetidos.
 4. **Geração de resumos:** a IA produz resumos das notícias com base nas fontes encontradas.
-5. **Atualização automática:** o GitHub Actions executa o processo quatro vezes ao dia, mantendo o portal atualizado sem intervenção manual.
+5. **Atualização automática:** o GitHub Actions executa o processo uma vez ao dia, mantendo o portal atualizado sem intervenção manual.
 
 ## Tecnologias utilizadas
 
@@ -31,14 +31,28 @@ Além de disponibilizar notícias de forma organizada, o projeto demonstra como 
 
 - **Site:** https://lucasbritosilva.github.io/SiteNoticias/
 
-## Horários de execução
+## Horário de execução
 
-O site é atualizado duas vezes por dia. O GitHub Actions usa UTC; abaixo, o horário de Brasília (UTC-3).
-Também dá para rodar na hora pelo gatilho manual (`workflow_dispatch`).
+O site é atualizado automaticamente uma vez por dia. O GitHub Actions usa UTC.
 
-| Brasília | UTC | cron |
-|---|---|---|
-| 04:00 | 07:00 | `0 7 * * *` |
-| 21:05 | 00:05 (dia seguinte) | `5 0 * * *` |
+| UTC | Mato Grosso do Sul (UTC-4) | Brasília (UTC-3) | cron |
+|---|---|---|---|
+| 22:17 | 18:17 | 19:17 | `17 22 * * *` |
 
-O GitHub pode atrasar execuções agendadas em alguns minutos nos horários de pico.
+O horário foi escolhido de forma experimental e não garante que o Gemini esteja disponível.
+O GitHub pode atrasar (ou, sob muita carga, descartar) execuções agendadas.
+Também dá para rodar na hora pelo gatilho manual (`workflow_dispatch`); se já houver uma
+atualização em andamento, a manual espera na fila.
+
+## Quando a atualização falha
+
+- Cada tentativa faz **no máximo uma requisição** ao Gemini, sem nenhuma repetição interna
+  (nenhuma requisição, se o cache das últimas 24 horas já bastar).
+- Se a tentativa 1 falhar por qualquer motivo (HTTP 429, 503 ou outro, timeout, rede, resposta
+  inválida), o workflow espera **3600 segundos** e executa a tentativa 2. Não existe terceira.
+- Só uma geração bem-sucedida é publicada. Se as duas falharem, o site anterior continua no ar.
+- A regra está em um único lugar: o passo "Gerar o site" de
+  [`.github/workflows/atualizar-site.yml`](.github/workflows/atualizar-site.yml).
+- A espera mantém o runner ocupado: um ciclo com falha usa pouco mais de 1 hora de GitHub Actions.
+  Em repositório público, os runners padrão não são cobrados; em repositório privado, esses
+  minutos contam na franquia. Para desistir da segunda tentativa, cancele a execução.

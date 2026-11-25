@@ -11,7 +11,6 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable
 
 import requests
 
@@ -25,13 +24,8 @@ from resumos import Resumo
 from site_builder import Item
 
 RAIZ = Path(__file__).resolve().parent.parent
-# Uma única execução de `executar` por agendamento: a retentativa fica só em GeminiClient.gerar.
-# Reexecutar o pipeline inteiro repetiria a chamada ao Gemini; quem tenta de novo é o próximo agendamento.
-TENTATIVAS = 1
-ESPERA_ENTRE_TENTATIVAS = 15 * 60  # segundos (só usada se alguém passar tentativas > 1)
-# Código de saída quando o Gemini segue indisponível (503/timeout) após as tentativas internas (até 5).
-# O workflow usa esse código para agendar UMA retentativa em 1 hora; qualquer outra falha sai com 1.
-CODIGO_GEMINI_INDISPONIVEL = 75  # EX_TEMPFAIL
+# Este script faz UMA tentativa e sai com 0 (publicou) ou 1 (falhou). A nova tentativa, uma só e
+# 1 hora depois, é decidida apenas pelo workflow (.github/workflows/atualizar-site.yml).
 MIN_NOVOS_PARA_CHAMAR = 2  # com menos de 2 notícias novas não vale gastar uma chamada
 
 log = logging.getLogger("pipeline")
@@ -109,81 +103,54 @@ def executar(raiz: Path, resumidor: resumos.Resumidor, sessao=None, agora: datet
 def tipo_do_erro(exc: BaseException) -> str:
     """Rótulo usado no log para deixar claro o que parou a execução."""
     if isinstance(exc, GeminiCotaErro):
-        return "COTA ESGOTADA"
+        return "LIMITE DE USO EXCEDIDO (HTTP 429)"
     if isinstance(exc, GeminiIndisponivel):
-        return "GEMINI INDISPONÍVEL (503/5xx, limite por minuto ou rede, tentativas esgotadas)"
+        return "GEMINI INDISPONÍVEL (HTTP 5xx, rede ou timeout)"
     if isinstance(exc, RespostaInvalida):
         return "RESPOSTA INVÁLIDA"
     if isinstance(exc, GeminiErro):
-        return "REQUISIÇÃO RECUSADA PELO GEMINI (erro não transitório: 400/401/403...)"
+        return "ERRO DO GEMINI (configuração ou requisição recusada)"
     if isinstance(exc, requests.RequestException):
         return "REDE"
     return "OUTRO"
 
 
-def com_tentativas(
-    tarefa: Callable[[], object],
-    tentativas: int = TENTATIVAS,
-    espera: float = ESPERA_ENTRE_TENTATIVAS,
-    dormir: Callable[[float], None] = time.sleep,
-) -> bool:
-    """Executa `tarefa` até `tentativas` vezes, esperando `espera` s entre elas.
+def configurar_log() -> None:
+    """Todos os horários do log em UTC, com o fuso escrito em cada linha."""
+    formato = logging.Formatter("%(asctime)s %(levelname)s %(message)s", "%Y-%m-%d %H:%M:%S UTC")
+    formato.converter = time.gmtime
+    saida = logging.StreamHandler()
+    saida.setFormatter(formato)
+    logging.basicConfig(level=logging.INFO, handlers=[saida])
 
-    Qualquer erro do Gemini (cota, indisponível, recusa, resposta inválida) para na hora: as
-    retentativas dele já foram feitas em GeminiClient.gerar e não se multiplicam aqui.
-    """
-    for n in range(1, tentativas + 1):
-        try:
-            tarefa()
-            return True
-        except GeminiCotaErro as exc:
-            log.error("EXECUÇÃO INTERROMPIDA POR ERRO DE COTA (sem novas tentativas): %s", exc)
-            return False
-        except (GeminiErro, RespostaInvalida) as exc:
-            log.error("EXECUÇÃO INTERROMPIDA (sem novas tentativas). Tipo de erro: %s. %s", tipo_do_erro(exc), exc)
-            return False
-        except Exception as exc:  # noqa: BLE001 - falha fora do Gemini: repete só se tentativas > 1
-            log.exception("Tentativa %d/%d falhou. Tipo de erro: %s", n, tentativas, tipo_do_erro(exc))
-            if n < tentativas:
-                log.info("Aguardando %.0f min para tentar de novo...", espera / 60)
-                dormir(espera)
-    return False
+
+def registrar_falha(exc: BaseException, chamadas: object) -> None:
+    log.error(
+        "RESUMO DA TENTATIVA: FALHOU | requisições ao Gemini: %s | motivo: %s (%s) | nada a publicar.",
+        chamadas, tipo_do_erro(exc), exc,
+    )
 
 
 def main() -> int:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    # A chave é lida só da variável de ambiente GEMINI_API_KEY. Sem ela não há o que tentar.
+    """Faz uma tentativa de atualização. Devolve 0 se o site foi gerado e 1 em qualquer falha."""
+    configurar_log()
+    log.info("Início da geração.")
+    # A chave é lida só da variável de ambiente GEMINI_API_KEY.
     try:
         resumidor = GeminiResumidor()
     except Exception as exc:  # noqa: BLE001
-        log.error("%s", exc)
+        registrar_falha(exc, 0)
         return 1
-    falhas: list[BaseException] = []
-
-    def tarefa() -> None:
-        try:
-            executar(RAIZ, resumidor)
-        except Exception as exc:  # guarda o motivo para o resumo final e repassa
-            falhas.append(exc)
-            raise
-
-    ok = com_tentativas(tarefa)
-    chamadas = getattr(getattr(resumidor, "cliente", None), "chamadas", "?")
-    if not ok:
-        motivo = falhas[-1] if falhas else None
-        indisponivel = isinstance(motivo, GeminiIndisponivel)
-        proxima = (
-            "o workflow agenda uma retentativa em 1 hora (se esta já não for a retentativa); "
-            "senão, será reexecutada no próximo agendamento."
-            if indisponivel else "será reexecutada no próximo agendamento."
-        )
-        log.error(
-            "RESUMO DA EXECUÇÃO: FALHOU | requisições ao Gemini: %s | motivo da parada: %s (%s) | "
-            "docs/ e dados/ mantidos como estavam; %s",
-            chamadas, tipo_do_erro(motivo) if motivo else "desconhecido", motivo, proxima,
-        )
-        return CODIGO_GEMINI_INDISPONIVEL if indisponivel else 1
-    log.info("RESUMO DA EXECUÇÃO: OK | requisições ao Gemini: %s", chamadas)
+    cliente = getattr(resumidor, "cliente", None)
+    log.info("Modelo Gemini: %s", getattr(cliente, "modelo", "?"))
+    try:
+        executar(RAIZ, resumidor)
+    except Exception as exc:  # noqa: BLE001 - qualquer falha encerra a tentativa
+        if not isinstance(exc, (GeminiErro, RespostaInvalida)):
+            log.exception("Erro inesperado durante a geração.")
+        registrar_falha(exc, getattr(cliente, "chamadas", "?"))
+        return 1
+    log.info("RESUMO DA TENTATIVA: OK | requisições ao Gemini: %s", getattr(cliente, "chamadas", "?"))
     return 0
 
 
