@@ -2,234 +2,112 @@
   "versao": 1,
   "grupos": [
     {
-      "id": "301be8b9e17a",
-      "gerado_em": "2026-11-17T08:29:14.610055+00:00",
-      "nicho": "Inteligência Artificial",
-      "relevancia": 9.0,
-      "titulo": "EUA impõem restrições à exportação de chips avançados de inteligência artificial para o Brasil e outros países",
-      "resumo": "O governo dos Estados Unidos, sob a administração do presidente Donald Trump, anunciou novas restrições à exportação de chips avançados direcionados ao desenvolvimento de inteligência artificial e data centers. A determinação engloba o Brasil e nações do Sudeste Asiático, incluindo Cingapura, Tailândia, Malásia e Indonésia, cujas empresas passarão a depender da emissão de licenças norte-americanas para importar esses componentes tecnológicos.\n\nA medida visa conter desvios e impedir que companhias chinesas tenham acesso indireto a equipamentos sofisticados produzidos nos Estados Unidos, utilizando estruturas comerciais estabelecidas em terceiros países para contornar barreiras. Os dispositivos restringidos são considerados cruciais para a tecnologia de inteligência artificial, pois viabilizam o processamento de grandes massas de dados e o treinamento de modelos avançados em meio à disputa de poder global no setor.\n\nO anúncio das restrições coincide com as vésperas de uma viagem diplomática de Trump ao continente asiático, na qual está agendado um encontro com o líder chinês Xi Jinping. O endurecimento das regras ocorre ainda sob o contexto de contestações públicas ao secretário de Comércio norte-americano, Howard Lutnick, a respeito do controle exercido sobre o comércio de semicondutores de ponta destinados à China.",
-      "fontes": [
-        {
-          "nome": "JD1 Notícias",
-          "url": "https://www.jd1noticias.com/brasil/2026/11/16/eua-restringem-exportacao-de-chips-de-inteligencia-artificial-e-incluem-o-brasil-nas-novas-regras.html",
-          "link": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPZXRObElfQmFVSk41bUdPLWFGb2tlMXdmQ3ZqSnBic2ZWTTRaRzBBWFpyTTF4dElkdEZobVFXVEU5cDg1aHpERFlaNFNrX1MtUE5ENFZyZ2hzd0NUZXQzNzVCZDVwcFdqVW9oS2N1dEhOVDcyQy1OeWdoNXFiZnBfTTljQ3BnX3diQzV6NzJKUG1Jdk05S0c0ZXRPS0JTMzNaTXBHSGROOXc5WlIyX3F1bHBaOHpuWk14SktxT0o0WWhUX29TNmUzd1V6NW5zdkNrZ0pXd3ZnempVRFcteDQxSWpn?oc=5",
-          "imagem_url": "https://cdn1.jd1noticias.com/Folder/2026/11/3311c5aa-6990-422a-a6c5-8d96ebddb87f/conversions/chip-large.webp"
-        },
-        {
-          "nome": "REDE BRASIL DE TELEVISÃO",
-          "url": "https://rbtv.com.br/noticia/32365/eua-anunciam-restricoes-a-exportacao-de-chips-de-inteligencia-artificial-que-atingem-o-brasil",
-          "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPRWN2RzlOS2xSMkxhWlRtWDFBWm9GdXBZRVJTaHl5T0RCM1lBaUkzNVc0QlpkTExRbnhzN1YxSVVqengxcVNxT0xBR0F4Q3RmX3gyV0ZXX2xRZmVtT08tZkdLaERPVC1BbDdud1AxbTVyYTNqQTVEeXc3ZmUtR0tmeENOQy1rRVdETGhtOHo3eVNFVDdJd091RzlNMFgzVlZNcVpTWEpYQkE4ckd6aU9rNmRibkhWU1lWT1VJZkJZTENUME1BLVE?oc=5",
-          "imagem_url": "https://rbtv.com.br/images/noticias/32365/590282fdb31b5ca48e79344bffe6c11e.webp"
-        }
-      ]
-    },
-    {
-      "id": "fd77a236486b",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
-      "nicho": "Corinthians",
-      "relevancia": 10.0,
-      "titulo": "Corinthians aciona a Justiça com pedido de tutela cautelar para renegociar dívidas de R$ 2,8 bilhões",
-      "resumo": "O Sport Club Corinthians Paulista ingressou na Justiça de São Paulo com um pedido de tutela cautelar de urgência, fundamentado no artigo 20-B da Lei de Recuperação e Falências. O objetivo da medida é suspender cobranças judiciais, penhoras e bloqueios de contas por até 60 dias para viabilizar negociações prévias com credores antes de um eventual pedido de recuperação judicial. A instituição acumula um passivo estimado em cerca de R$ 2,8 bilhões.\n\nA representação jurídica foi protocolada pelo advogado Elias Mubarak, do escritório Mubarak Advogados. Segundo o clube, a decisão decorreu de uma avaliação técnica, financeira e jurídica após o agravamento do cenário fiscal e seus reflexos no funcionamento cotidiano. A iniciativa foi acelerada pelo risco iminente de colapso do Regime Centralizado de Execuções (RCE), que organiza R$ 200 milhões em débitos cíveis e trabalhistas, após expirar o prazo legal para regularizar o atraso de aproximadamente R$ 10 milhões em parcelas.\n\nAlém de salários do elenco profissional e comissão técnica em atraso e três meses pendentes de direitos de imagem, o clube lida com risco de intervenção judicial em meio a tratativas de Termo de Ajustamento de Conduta (TAC) com o Ministério Público estadual. A diretoria corinthiana também requereu a nomeação de um administrador judicial independente para acompanhar a mediação e dar transparência ao processo até a posse da nova administração em 2027.",
-      "fontes": [
-        {
-          "nome": "Agora RN",
-          "url": "https://agorarn.com.br/esporte/corinthians-pede-protecao-justica-renegociar-dividas-bilhoes/",
-          "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNNXZoUUNCYTR6bU5KMWd6djRXMGkxT2RjZE5kQVFYUm9YRksxY3ZIWkp6TlBwU21PS253S1hZc3FhcFU3aE1IXzR4cGtUMzlhUUc5Q2tBX1NTdWZCS0V4RktrU2gxWEFDRVd5S0xmTkxmUEc5SzQyNEZNVURkaDJvMENSOUQwS2RYZ3ppTk5oX3Y0dGVLQ280?oc=5",
-          "imagem_url": "https://agorarn.com.br/files/uploads/2026/11/neo-quimica-arena-portal.jpg"
-        },
-        {
-          "nome": "InfoMoney",
-          "url": "https://www.infomoney.com.br/esportes/corinthians-entra-com-pedido-de-tutela-cautelar-e-caminha-para-recuperacao-judicial/",
-          "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPNDZWVDJrWDh6VWFXZ2xWR3ZLNFc5Y19wNnVlN2ttWjAxUFduaWdUV1Z0QlBYZGV6RXFpVkdhaWNPb09KRnQ5YmNpOHpIQ2pmQUpqaDFSMi0wNnUwdUl1UTlLTWkwbjhjejc4bk5iRUU1ZmgzWjRRN1dzbGQxQmZ0Q09ud1V1c01JQVFKMUtYLU5kM3JHU3ZpaFpGaEVzYVQ2MVlRSnpGRjRTM1BVUTNNWGNWOC1iczJEdW1Bcjlyd9IBxAFBVV95cUxNYkFSbHlUYU9pLUZZV1hJTW50X09ZUGxXLWliaGU5YThSX3Y5Q3lQWFl5c3VxbkRaRm9CR1Qwb1drZW1yVXA4R3cyWjI0bDY1T2E4VC1ibzZhY0ZNUkVZSThkZ213OVl6bnN2RTJZa1FNOWktdE9MNWg3MkZMQkd3MkxyWWh4eXVZMEhncC1YRzZud3dMekxHOGd3VENzcGNZbWNVTWYwX2JIcUlZaVRNT25QeGU0Q05VNUR0MmpXWl9ueXlO?oc=5",
-          "imagem_url": "https://www.infomoney.com.br/wp-content/uploads/2025/05/corinthians-redes-sociais-e1747320028706.jpg"
-        },
-        {
-          "nome": "UOL",
-          "url": "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/11/17/corinthians-pede-tutela-cautelar-para-negociar-dividas-com-credores.ghtm",
-          "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxONHB2WDltM1g2YUF5b1pENlp1akFMY0g4TktzUGtyNzRVdm9QRGpNN1UyemhaWnZXeG44dXNKSmVMZGlfeW9ZY04ydC1jcjlXaFRyaVE1aWl0QndhZGM1S0xtZHlMWWZ5UndWN09WZ290Z3NIU1pQQU11OV9tRnBpY2tnQmZUS1FFQUJ3eFBfV1k3UUdyYmZ2WVVIYUNmTmZ3YUY0VXp6LUh0b25rWE45UnJuZHJHTzNfdDcxOFBLZ0RxT1lTWlI5NHQ3ZkEzUko2YXpuQnhn?oc=5",
-          "imagem_url": "https://conteudo.imguol.com.br/c/esporte/9b/2026/05/11/osmar-stabile-presidente-do-corinthians-1778548427538_v2_615x300.jpg"
-        }
-      ]
-    },
-    {
-      "id": "470eaf1cd057",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
-      "nicho": "Inteligência Artificial",
-      "relevancia": 8.0,
-      "titulo": "Brasil formaliza adesão ao Compromisso de Antália sobre Inteligência Artificial durante a COP31",
-      "resumo": "O governo brasileiro oficializou em Antália, na Turquia, sua adesão ao Compromisso de Antália sobre Inteligência Artificial durante a 31ª Conferência das Nações Unidas sobre Mudança do Clima (COP31). O pacto internacional foi lançado pela Presidência turca em parceria com a União Internacional de Telecomunicações (UIT) e a Unesco, visando orientar o avanço sustentável e responsável da inteligência artificial.\n\nO documento articula dois eixos principais de preocupação global: o alto consumo de recursos ambientais, especialmente a demanda intensiva de água e energia por centros de processamento de dados (data centers), e as transformações geradas pela automação nas relações de trabalho. O secretário de Telecomunicações do Ministério das Comunicações, Hermano Tercius, representou o país e defendeu políticas para mitigar a substituição de postos de trabalho e salvaguardar a estabilidade dos profissionais.\n\nDurante o evento, a delegação do Brasil destacou iniciativas domésticas do setor, como a plataforma Gov.br, o Plano Brasileiro de Inteligência Artificial e o programa Computadores para Inclusão, realizado em colaboração com o Serpro. Também houve participação em painel da Agência Nacional de Telecomunicações (Anatel) sobre o futuro Instituto de Inteligência Artificial para Mudanças Climáticas, que terá sede no território brasileiro voltado ao apoio a nações em desenvolvimento.",
-      "fontes": [
-        {
-          "nome": "Sinpro-DF",
-          "url": "https://www.sinprodf.org.br/cop31-brasil-adere-a-pacto-sobre-ia-e-defende-protecao-dos-empregos/",
-          "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQTjhJZE50R2xkT0RPeVVlS1BJQ0tQWFQ4ZklTZjl2cDZzdVpadGtiNzIwZm1uWmplRVVqQ0pyQ1lFSkpaUHJYSlFGbWJSOVdoblhoc3daNHNud1VOVnIwOFVkREI5THdZWWRXU1F2MGtOVmRLZmdpZ0VfZnN4ZFVIZFgxcGdNUERUQ2s2dzlHM2FKWEFlTS1zd1o0SHU?oc=5",
-          "imagem_url": "https://www.sinprodf.org.br/wp-content/uploads/2026/11/systemuploadsnews5380b9eac48828d0ab7-700x460xfit-f9d19.jpg"
-        },
-        {
-          "nome": "Pará Terra Boa",
-          "url": "https://www.paraterraboa.com/cop31/brasil-assina-acordo-global-para-frear-impactos-da-inteligencia-artificial/",
-          "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPbk1LWXNwZkJkTERsM2V4V2RGRjYzSHNpZ3pESjdINWtOdlVac3VvUzdHWXUxREUxb0FQSFNhWTdMRkNJcVphX3pxX0FLc0g3ZjhKbmxBQndrYzNMS0tJRklqV3h3WXFMcTdLZ1ZVeWpXUUNiMUE4RTVMZ3pvanc1eHd5b2FjWDV2WkZhNDFzVU9NcUtIVktVeElTTkFJR2JYdmQyX3I2T3B4V3lEbXR3?oc=5",
-          "imagem_url": "https://www.paraterraboa.com/wp-content/uploads/2026/11/COP31_8.webp"
-        },
-        {
-          "nome": "CartaCapital",
-          "url": "https://www.cartacapital.com.br/sustentabilidade/brasil-adere-a-pacto-global-por-inteligencia-artificial-sustentavel-na-cop31/",
-          "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQS3pVU1NxbHZ1d3FoX2l0T1hvSTdIT1p5NzN5T2QwTm16WjFucVA5OGp5Tk9rcGhjUGlIUksxVGc0bnAtVFpJQ282alp4OGt6cTg1ckdaRld0WFhvYm93NHl0Zk5qZTByaThjQ3A3dnZuVXpybzB4VEsxcF9ucFpoS0pma05aTHZDRHZYSEd5TGhQU0Jwa1RLMnl3WXVDbmxaakFWWktqZDdEdzRER0tmZWNQUXN2WXZkV1QzWm4za0Njazhi?oc=5",
-          "imagem_url": "https://www.cartacapital.com.br/wp-content/uploads/2026/11/55644741346_b0edd55418_o.jpg"
-        }
-      ]
-    },
-    {
-      "id": "b10a2c8b6550",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
+      "id": "710978baa006",
+      "gerado_em": "2026-11-26T04:12:30.914438+00:00",
       "nicho": "Movimento Brasil Livre",
-      "relevancia": 8.0,
-      "titulo": "Instituto fundado por ex-integrantes do MBL prepara jovens para embates políticos nas redes",
-      "resumo": "O Instituto União Conservadora, fundado por ex-membros do Movimento Brasil Livre (MBL), vem recrutando e oferecendo treinamento gratuito para jovens e adolescentes a fim de torná-los influenciadores e lideranças políticas de direita. A instituição tem como presidente de honra o ex-vereador paulistano Fernando Holiday e oferece mentoria focada em retórica, oratória, economia, história e técnicas de captação de audiência nas plataformas digitais.\n\nO modelo pedagógico incentiva abordagens provocativas em espaços públicos, atos políticos e universidades, incluindo formatos como o debate \"20 contra 1\". Relatos destacam gravações na Avenida Paulista e protestos de rua que terminaram em atritos e agressões físicas. Casos citados envolvem um jovem de 17 anos com mais de 1,5 milhão de seguidores que confrontou o deputado Otoni de Paula, e o influenciador Victor Ruiz (PP), filmado agredindo um eleitor de Luiz Inácio Lula da Silva durante a campanha eleitoral.\n\nAs ações têm gerado apreensão em ambientes acadêmicos como a Faculdade de Filosofia, Letras e Ciências Humanas da Universidade de São Paulo (FFLCH-USP), onde alunos articulam medidas preventivas e cursos de defesa pessoal. Em contraponto, o presidente do instituto, Mario Fortes Neto, nega incentivo à violência física e declara que os estudantes recebem diretrizes teóricas, cabendo individualmente a cada jovem a responsabilidade pelos atos praticados durante as filmagens.",
+      "relevancia": 9.0,
+      "titulo": "Cleitinho e Renan Santos se reúnem e debatem proposta para restringir gastos municipais com shows em Minas",
+      "resumo": "O governador eleito de Minas Gerais, Cleitinho Azevedo (Republicanos), reuniu-se na terça-feira (24) com o ex-candidato à Presidência Renan Santos (Missão) para debater medidas que limitem gastos públicos com shows e festividades em municípios mineiros. As matérias divergem quanto ao local do encontro: Brasil no Centro relata que a reunião ocorreu na sede do partido Missão em São Paulo, enquanto o portal Terra aponta que foi na sede da legenda em Belo Horizonte.\n\nDurante o encontro, Renan Santos apresentou a sugestão da Lei de Responsabilidade Gerencial, bandeira de sua campanha presidencial em 2026 contida no Livro Amarelo do Missão, partido ligado ao Movimento Brasil Livre (MBL). O modelo busca vincular a liberação de verbas e incentivos ao rendimento municipal em áreas como educação (incluindo índices do Ideb), saneamento e segurança básica, exigindo melhores serviços antes de contratações artísticas.\n\nCleitinho justificou a aproximação após polêmicas com emendas parlamentares voltadas a eventos, mencionando ser incoerente cidades pequenas destinarem montantes elevados a shows em detrimento de saneamento. O alinhamento ocorre após desavenças eleitorais, momento em que Renan chamou Cleitinho de \"câncer da política\" e Cleitinho defendeu o ex-presidenciável diante da suspensão de sua campanha pelo TSE.",
       "fontes": [
         {
-          "nome": "NOVO Notícias",
-          "url": "https://novonoticias.com.br/instituto-ligado-a-direita-prepara-adolescentes-para-videos-de-confronto-politico/",
-          "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQRDh6SjF0ZFhyUEFFYm9lMFdYUzIyRlNhbGhGSExOcmNlMnpKSEhnMlFhNHpTOE1lQndYbGFkX3ZHSkNUVTl1WmU3X0U0VlNRZ3VSOFZoUERCN0Q5S2EzLUdaclNhc3MyZUV3QmxSM0dlb2NrYVp4VmI3azNQVlgwOTdUelpWZjl3WnhRVVQ0VGZOVHFSYWUwTEF4dHhIRHpMamRKRHFoZFJEYllCajlj?oc=5",
-          "imagem_url": "https://assets.novonoticias.com.br/uploads/2026/11/Instituto-conservador-prepara-jovens-para-‘bombar-com-videos-de-confronto-politico.webp"
+          "nome": "Brasil no Centro",
+          "url": "https://brasilnocentro.com.br/cleitinho-e-renan-santos-se-unem-para-combater-gastos-publicos-com-shows-em-minas/",
+          "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOZGlaWTdoR1NwMFJuR1NFSmVUNnZreWd2OThhcUhrVi1Jbkk1N1M4M00tNHNYTG9lZ2JoR2tCUThJNUx6ZFZjLUdfUzVFQnBybmdEaW11LXpPMG5welFkbGlUeGdBQ3RBMENFTDBYZWRHeTI3WkZNdUtvZXhRazNSZUFwcmpZQzhDQ0lraFJuZ2hfQTVIcWVaOFhlVi1GTjJjT1VTaVNVel9kZ1N4RVBzdm9n?oc=5",
+          "imagem_url": "https://brasilnocentro.com.br/wp-content/uploads/2026/11/WhatsApp-Image-2026-11-25-at-17.48.14.jpeg"
         },
         {
-          "nome": "BNC Amazonas",
-          "url": "https://bncamazonas.com.br/rapidinhas/ex-mbl-agora-preparam-jovens-para-provocar-confronto-politico-e-filmar/",
-          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQQ1pQWFYydTJ1LW9KekxTMGVYOXJHWGZoRjUyNkRrNHM0bV9ZUU00eXR6VGFLOHJkVE5Cekx6OU1ESmdNcnhVUzY4QWx6ZWpkdk5QRGh0SkhlT2tmM2ZmNWtvUGxCOFdqcGRDVUcyNGNjWnVQZTV4Zi1sN09rdEpQazJIV1hIa3ppZFlzOG1fYXFlWk9ocmRESkFkdjBBSXRCbFF5ZEhRX3lkV0dZeHc?oc=5",
-          "imagem_url": "https://cdn.bncamazonas.com.br/wp-content/uploads/2026/11/fernando-holiday_foto-afonso-braga-cmsp.webp"
+          "nome": "Metrópoles",
+          "url": "https://www.metropoles.com/minas-gerais/cleitinho-quer-adotar-proposta-de-renan-para-limitar-gastos-com-shows",
+          "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOekhmTkc5S2FrWTF3UHhsVVVqWEt2ZjdYTVR3bTBWZ1NoZmZMOHNKX2RuTEttOWxkQUlHTXlBNmZrLXZlaU42MVViY2RvOGRQOVpNUDE2bFBYaC1DOVZ6TmhFLXNYc3BGUVZqWHNTWDZIVnVmbkZVS3htMEpVRVlWTEJlVVpyR2lPM2l1TVRtck04d08xNVBXcUxBVzlVYmFhRUo0TVlfdURyc0tZd2c?oc=5",
+          "imagem_url": "https://i.metroimg.com/gyJ01YCql4hBmvDT8ZJS-0uQrg2vyWhf_9En7h4LHnM/rs:fill:1200:800:1/g:no/q:85/f:webp/plain/https://images.metroimg.com/2026/11/renan-santos-e-cleitinho.jpg"
         },
-        {
-          "nome": "Plantão Brasil",
-          "url": "https://www.plantaobrasil.net/noticias/163949-a-fabrica-de-provocadores-instituto-ligado-a-ex-mbl-treina-jovens-para-confrontos-nas-redes",
-          "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxORjV0R2J1dHZDMjh3RTJTZmlxUDNEaHJWN0U5Q2FwQmNzWGFsS280YTJ3YmVKQ1NJTEhKel9wVHBvaFhyWVNKOUxVbDlFa09nZklNd3hoUG45ZjdHbkFFbmh1RG5FRlBKamJYemIzbmNzbjJtWmJhbWozUVZDeW9WZ0Jmd0pIWXJFclplMzN3WFp2ekthYjFoUWNDVmJqQk1iVWN0czVkMjV4Nm5uX0dYcVlCNGg0X29FLVI3SUdPVDJScmJJQ0VPX0pSOENjSlJmZGxZ?oc=5",
-          "imagem_url": "https://www.plantaobrasil.net/social-photo/163949/eee4c01f266a56fff82c5e3dc48e71f203c77bc59cfba22de6ecad42bf76e27e.jpg"
-        }
-      ]
-    },
-    {
-      "id": "1437a6794c3c",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
-      "nicho": "Corinthians",
-      "relevancia": 7.0,
-      "titulo": "Corinthians e Botafogo se enfrentam pela 35ª rodada do Brasileirão na Neo Química Arena",
-      "resumo": "Corinthians e Botafogo medem forças nesta quarta-feira, às 21h30 (de Brasília), na Neo Química Arena, em duelo válido pela 35ª rodada do Campeonato Brasileiro. A transmissão ao vivo do confronto será realizada de forma exclusiva pelo canal por assinatura Premiere, além de acompanhamento em tempo real pelas plataformas digitais.\n\nO Corinthians ocupa a 17ª posição na tabela com 37 pontos e joga pressionado pela necessidade de somar pontos para sair da zona de rebaixamento, estando a um ponto de Internacional e Vitória. A equipe comandada por Clarence Seedorf chega com retrospecto recente de apenas uma vitória nos últimos cinco compromissos no torneio nacional, incluindo empate sem gols frente ao São Paulo.\n\nPor sua vez, o Botafogo tenta manter o equilíbrio no campeonato após superar o Atlético-MG por 1 a 0 antes da paralisação da Data Fifa. O time carioca soma 42 pontos e busca assegurar distância das posições inferiores da tabela, visando consistência tática fora de seus domínios.",
-      "fontes": [
-        {
-          "nome": "CNN Brasil",
-          "url": "https://www.cnnbrasil.com.br/esportes/brasileirao/corinthians-x-botafogo-horario-e-onde-assistir-ao-jogo-do-brasileirao-2/",
-          "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOdWkyMkZIZ0J0ODUwTmhNZW5TQXIyeTNoYTFNYmRxTE5NNUlWS1pCWk44T1BRWTVmSWtScmNRZzh4LTlEcHNoeWhzM1Q0cC05YlVrUkhqTGZUcWNfeUN5a2FIdlFFWWtRdUV2OEZDVXk3dExvenZZSV9vMHIyT05aOFdSMFBCMm5BWmt2enpuWHVSTzkwRl9tNVgtdFo3VUxmeHQ2Vl9FLU0wcmZfakowWUtLN09uVmJlYkFqcEo2TQ?oc=5",
-          "imagem_url": "https://admin.cnnbrasil.com.br/wp-content/uploads/sites/12/2026/09/Neo-Quimica-Arena-e1789596568876.jpg?w=1200&h=630&crop=1"
-        },
-        {
-          "nome": "ge",
-          "url": "https://ge.globo.com/sp/futebol/brasileirao-serie-a/noticia/2026/11/18/corinthians-x-botafogo-onde-assistir-ao-vivo-horario-e-escalacoes.ghtml",
-          "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQeDltVm9jb185WXppOGVyeXJpeWpzX1VKMXZhaVlGb2dfWjFjeGxHeHRJOXBFcHhCYTVsUGpYZ21mTlpWRFhTeVM5T3psRDNFVDE1cmF6U0kySl9rZWFTaG04VnJFXzFYRmYwYWxsVm1UV3lrT2MxMTJXTUpCNFNFS2ppZVQ0cnNBbDRoSWJHVmRzWWFJMjBXdzdDV1J0MTc3aXhYb3pzemQzTmllNzRXZnJ5c1k4M0huaVo0aDEwWDlEalNSWEZjV2ZNa2toa3ctS1VpS1ozSENCQdIB6AFBVV95cUxPU01KV3VQeWlaeV9FSXEtU19NX0dyaUtHRXJpVVFzc2pLTWZIOE9ac1NtSFQyN3lqT0FsZnVncmw3YlNaRG40Z3d0dTRiRnZNTUpUejQyaC11MmlfcUxHRmpqQm5vSjZybnZXeUF5bXprbjFJdUkzTUpOR1hjVVNSSTBreE1OcHhWSzVWQ0REQ3MxdjJzME9faE92MFNjYTl3bWZZWEtiOXpLclRTQ0RCRXBib0doV0pCWjVJc3FXYzFJR0hVdV8xbzkxNWl5el9TaFJIem5mTnlmMk0zeVRhRnRJRjVlYnFx?oc=5",
-          "imagem_url": "https://s2-ge.glbimg.com/9d22RytaZPGnAv3aqSVmY5Km9Us=/3215x0/filters:format(jpeg)/https://i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2026/2/t/SxlG40T9enejbBoEu14Q/agif26032215315835.jpg"
-        },
-        {
-          "nome": "Goal.com",
-          "url": "https://www.goal.com/br/not%C3%ADcias/corinthians-x-botafogo-rj-ao-vivo-onde-assistir-na-tv-e-pela-internet/bltc36c158b3ba0550f",
-          "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxObkp6WHFFc1NvME1LU0lmNkxGZHAxeXRteTc3ak01NXlfVVpRblRSc2c4LXZQNnRsRVVqZ0JmbnhjMDZrMXlTMDBuLVNzNkFpRVQtTGhPYWRnME4wN3VWNUxYYUs4SUMxelVaX1JoTHhWbk1Bc3MwV3VhX3RHSERqcE9YTkFPY08wX0ZFLTNWVEFmUFl4OXNNcDdkUGxIZC1URmU4ekJ4OWxPYnE1RkhrRVQza2FWeDhCZDJXN3BJZm44YUxyTmc?oc=5",
-          "imagem_url": "https://assets.goal.com/images/v3/IY9n9f73MHYUhhJeWx_yJ_DESKTOP/image.jpg"
-        }
-      ]
-    },
-    {
-      "id": "dcce87c76ba1",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
-      "nicho": "Corinthians",
-      "relevancia": 7.0,
-      "titulo": "Corinthians finaliza treinos e tem quatro desfalques confirmados para encarar o Botafogo",
-      "resumo": "O técnico Clarence Seedorf concluiu na Neo Química Arena os preparativos do Corinthians para enfrentar o Botafogo pelo Campeonato Brasileiro. O treinamento contou com análise de vídeos no vestiário, atividades de posse de bola com pressão pós-perda, treino tático em campo reduzido e ensaios de bolas paradas.\n\nPara o confronto, o Timão terá ausências relevantes. Rodrigo Garro foi vetado pelo departamento médico devido a uma lesão ligamentar colateral medial no joelho direito sofrida contra o São Paulo, permanecendo no CT Dr. Joaquim Grava em transição física. O clube também não poderá contar com Yuri Alberto e André Ramalho, suspensos por cartões, além de André Santos, que esteve com a seleção brasileira na Data Fifa sem intervalo hábil para retorno.\n\nPor outro lado, o setor defensivo e o meio-campo ganham alternativas com o término da suspensão do lateral-direito Matheuzinho e a recuperação física do volante Raniele e do zagueiro Gabriel Paulista, além de Jesse Lingard. O time alvinegro busca a vitória para deixar a 17ª colocação da Série A e ultrapassar adversários diretos na briga contra o descenso.",
-      "fontes": [
         {
           "nome": "Terra",
-          "url": "https://www.terra.com.br/esportes/corinthians/corinthians-tera-quatro-baixas-contra-o-botafogo-pelo-brasileirao-veja-escalacao,7602657f638411a384d0db100b548c7dk1lr5kja.html",
-          "link": "https://news.google.com/rss/articles/CBMiggJBVV95cUxNbWF0UWZncU1lN0VyMUlZTDJCbDVjZzlFT3FuOXhzT3pxeVhlNjI3M1ZKNG4tUEtGbU51LU9YbEdWWEJSRVo1T3NULVZHaU9vcEEyT013eFJkX2w0UzVqeFMydmMwZG9pS3pIcGJRTTZFR1RCUzNsbW1mcEVGVk9sZVdYcWlJSy1UTFhoR3FCSlJGdDdqaEdVMEN0allSVGVEUF9qM3p2MUlwYmRiWVJrams4c0EzV3RLa1BEV3ZILWNSSWtHcUNoemJyaE1jQU9SLTE5ZlJuUGlmZTFOWWFPYjVHUGlkMlBYNU9GRnJzQ2FCN2NNLVJodC1NM0RicHV1OEE?oc=5",
-          "imagem_url": "https://p2.trrsf.com/image/fget/cf/1200/630/middle/images.terra.com/2026/11/18/1602169670-2026-corinthians-tecnico-clarence-seedorf.jpg"
-        },
-        {
-          "nome": "Portal ABC do ABC",
-          "url": "https://www.abcdoabc.com.br/corinthians-confirma-baixa-de-garro/",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE0wN1djQ052bmtrOF9PNGJSalBkalRQaTFXV3BXbFM2eXFwZDdMMWJadW1EQkZoV2tIa2pqbnR0cnJlVEc1UG9xNGZOcHZCdUpnanlnMFd0bjdjdTY3ZkVJTmEwWTJxT2JkSkd0VDR3SGFJdw?oc=5",
-          "imagem_url": "https://cdn-imgs.s3.sa-east-1.amazonaws.com/wp-content/uploads/2026/11/image_1794599952791-scaled.webp"
-        },
-        {
-          "nome": "Gazeta Esportiva",
-          "url": "https://www.gazetaesportiva.com/times/corinthians/sem-garro-corinthians-treina-na-neo-quimica-e-fecha-preparacao-para-enfrentar-o-botafogo/",
-          "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPdXpRQkZPWG5tUk81dGVUZjhuRGVMVTRsN3RYeHd5Y0s3eUlHbV9QRXdqaVhOT0hWOV9MUTd1NzJ6dHBWWXBpanc5SFc0UkZtak5LbHAwOUtxZFdoUHhOSnFrN2pfZU9kWjZzLVYyUzZvektWWi01RC1PTXM0ajhxRFktRXA4QWFsVm92N3lsZ0JMdG5DZkx4M3JQeGdDeWc5OTBMSWRpSXAwdDRSWDdreTBnWHBDS1QyQzNyRW1QOXM1ZFZkYktXQ3NUZDhhaDFSX2pLNDJR0gHbAUFVX3lxTE9lQmQwN1ZnT2xIUkh5c1hxMVhIajJIMDI5UFM4TzlfY1RFZXJMQ0ZQaEFJdzhqSWZrcndJSVNPaEwyYzNjNE8tb2RCUzBNLWthZXYyZU1lT0dwTzZkYVBLbWhSYmxadnF5aTR0WFJqRVdqLVlzYVFFTUtGNVdzNUdnSmRORW1lQUpZRTNBNG5hSzdoV3ROZDg4REhuMGNTOXZTaGU0WHNJOWlCSWdod1YwUmFpbXdiLUhlTlF4MFh1S3BmdDBySVNtampfSFRpbTBkQ3lRb0hFbFBWTQ?oc=5",
-          "imagem_url": "https://static.gazetaesportiva.com/uploads/2026/11/226A6767.webp"
+          "url": "https://www.terra.com.br/noticias/brasil/politica/videos/renan-santos-recebe-cleitinho-na-sede-do-missao-apos-desavencas-durante-as-eleicoes,c57d0fe70abd0ec3f93611e15f9408e81fvvc5wq.html",
+          "link": "https://news.google.com/rss/articles/CBMilAJBVV95cUxOdGNZcEtBY2Q3anNodFpiVm5LZkpzaGtFMVNUbndCTTJGa1l5Mk9zU0lLak9Rd0tnc2d0bHdmT1U1a1Vjd29TYjZ4RWlEU25jZ1JDemZ1b3B5dkNnTHhUbnk2ZWQ1WklTdHEwbnlRN3plQTNOYVQ3aG1NZHZmalZ3QmJUcDYyUHQ2em56emVjdXpiMDluRkpLZjhIb3pudWNQRlZRb2kwcXViWkF6ZVFZMnREazhiR2pGeWVFR0I4RnVzQVNfWmYzRHZTT0RjSDFONUpfZ3dvdnN2UWNOTzVJeXVUdzZ2V2U1dFVNWXprcE5pdnp3NnVZbVR2Vi1ucnBwQ2otWnYxQmNxZlg3eDRCbUZGZnM?oc=5",
+          "imagem_url": "https://p2.trrsf.com/image/fget/cf/950/534/images.terra.com/2026/11/25/cleitinho-sem-txt-to2bson2kndu.jpg"
         }
       ]
     },
     {
-      "id": "6fea2669b373",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
-      "nicho": "Inteligência Artificial",
-      "relevancia": 6.0,
-      "titulo": "Banco Central alerta para uso de inteligência artificial por organizações criminosas no sistema financeiro",
-      "resumo": "A diretora de Relacionamento, Cidadania e Supervisão de Conduta do Banco Central, Izabela Corrêa, emitiu um alerta sobre o uso crescente de inteligência artificial por organizações criminosas para lavar dinheiro e driblar mecanismos de conformidade. A exposição foi realizada em São Paulo durante o 16º Congresso de Prevenção à Lavagem de Dinheiro e Financiamento ao Terrorismo, promovido pela Febraban.\n\nDe acordo com dados de investigações da Polícia Federal, as facções têm recorrido a deepfakes e adulteração de arquivos digitais para fraudar rotinas de autenticação biométrica, criar empresas fictícias e abrir contas em nome de intermediários (contas-laranja). Foram citadas infiltrações em negócios formais como postos de combustível e serviços públicos, além de movimentações do Primeiro Comando da Capital (PCC) envolvendo criptoativos como bitcoin e a stablecoin USDT, apuradas na Operação Carbono Oculto.\n\nDiante dessas ameaças, o Banco Central e o Coaf estão desenvolvendo novas ferramentas e modelos automatizados de detecção de fraudes. As instituições bancárias, fintechs e corretoras de ativos virtuais terão prazos estipulados de adequação regulatória para aprimorar o monitoramento tecnológico e a troca de informações com os órgãos fiscalizadores.",
+      "id": "edf779c225c2",
+      "gerado_em": "2026-11-26T04:12:30.914438+00:00",
+      "nicho": "Política Brasileira",
+      "relevancia": 8.0,
+      "titulo": "EUA propõem tarifas sobre aeronaves e açúcar brasileiros, e governo Lula reage contra pressão sobre o Pix",
+      "resumo": "O Escritório do Representante Comercial dos Estados Unidos (USTR) propôs a ampliação de tarifas sobre itens brasileiros, incluindo uma sobretaxa de 10% sobre aeronaves comerciais prontas e cobranças adicionais sobre o açúcar. As medidas, inseridas no âmbito da Seção 301 da legislação comercial norte-americana sob a gestão de Donald Trump, visam pressionar o Brasil alegando falta de avanços em pautas como comércio digital, propriedade intelectual e sustentabilidade ambiental, atingindo diretamente exportações da Embraer e do setor sucroalcooleiro.\n\nEm resposta divulgada pela Secretaria de Comunicação Social (Secom), o governo do presidente Luiz Inácio Lula da Silva classificou a postura unilateral norte-americana como inaceitável e declarou que não cederá a ameaças. O Planalto afirmou que Washington tenta intervir em regulações nacionais, destacando a pressão sobre as regras do sistema de pagamentos instantâneos Pix. Além disso, informou que buscará saídas negociadas, sem afastar acionamento da Organização Mundial do Comércio (OMC) ou medidas de reciprocidade.\n\nPor sua vez, a Câmara Americana de Comércio para o Brasil (Amcham Brasil) comunicou que participará da consulta pública do USTR e defendeu a intensificação do diálogo entre os dois países para evitar novos entraves ao comércio bilateral. A entidade apontou que tarifas sobre bens como aeronaves afetam a competitividade das empresas brasileiras e aumentam custos nos próprios Estados Unidos, sugerindo a plena atuação dos respectivos embaixadores para destravar as negociações.",
+      "fontes": [
+        {
+          "nome": "CartaCapital",
+          "url": "https://www.cartacapital.com.br/politica/amcham-participara-de-consulta-dos-eua-sobre-tarifas-ao-brasil/",
+          "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPYUhiOHV3RXk5cUZYVFQ4dVBpTVdBdGNXZlU5clRaXzFDLW55QzdVZll1QTZKUmdLM0p0d3hfdm82RW93blhvZmVPNzhWQktXd3dZWVhHSU5RN3B3b2N2SmRwTFVQM2pIbzdPNmJEQ1hEbHFHQzhlNlV3WGlQQkI1SkJoUHJZcDlHU21JTFRJRVBmbmVDNHI5U2hidHA1dnpPWGdxLVZnbw?oc=5",
+          "imagem_url": "https://www.cartacapital.com.br/wp-content/uploads/2026/02/porto_de_santos.jpg"
+        },
+        {
+          "nome": "brazileconomy.com.br",
+          "url": "https://brazileconomy.com.br/internacional/2026/11/donald-trump-prepara-novo-tarifaco-contra-o-brasil-e-coloca-embraer-na-mira/",
+          "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxObkw3cDUtSWI0ZGdvZ04wQjk2cmlxRi01RWdqUDJZNE1yXzJZWUdrU3p2aWRGT0JQR0pBOUdkZVFQcHJyZ2VmWl9ZOXg1RXRUcUFyYkRkRGtjSXc1dThabHBqUWo2OWh4bXpRbmpOOTRSZUhfcVJZX2JkRHI5T0NOUVllbmI2MDRBemd3UVRfV3ByMEVJUHNDNl83WU8xUmgtNlpia1o4OFZLRnlZYU4xd291QklTaW1QYVNTNTJucWdkZkt5THc?oc=5",
+          "imagem_url": "https://brazileconomy.com.br/wp-content/uploads/2026/11/Embraer.jpg"
+        },
+        {
+          "nome": "Agência Brasil",
+          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/brasil-critica-possivel-novo-tarifaco-dos-eua-e-diz-que-nao-cedera",
+          "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNV1NkSTNWVDVFY0s2Z1RDRnhrZUVmdzlOMjhkVXdNWWtCRXU0MWZuM3BSRmRDTjFldWk3Q2QwcnpoQ1BOOExJYTZQbWp5S0t4UXVud01ha0NZSHRBbzVjTUZPbW5BR25NZXpONl9TdmF5bHpxakxBS3BBcTVZN2twMDExb1MzdXZXNl85eTBxREVyMEo4eTRDXzdWUWhsSDVldmdBbFNPRHlwLXZUekFxOEpuN3BxSXZ5dkZoQ1VIS1R2dw?oc=5",
+          "imagem_url": "https://imagens.ebc.com.br/QaIwF0LC9wzQCAJsbSIz1F9oVv4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/07/30/52135407906_56bdd43e2d_o.jpg?itok=B3rOceP5"
+        }
+      ]
+    },
+    {
+      "id": "b16100c0027b",
+      "gerado_em": "2026-11-26T04:12:30.914438+00:00",
+      "nicho": "Movimento Brasil Livre",
+      "relevancia": 8.0,
+      "titulo": "MBL promove segundo festival em São Paulo com sabatina de Renan Santos e debate sobre psicoativos",
+      "resumo": "O Movimento Brasil Livre (MBL) retoma suas atividades com a militância neste sábado (28) durante a segunda edição do Festival MBL, sediado no espaço Komplexo Tempo, no bairro da Mooca, na zona leste de São Paulo. O encontro marca o retorno da mobilização das bases do movimento um mês após a disputa eleitoral.\n\nO principal destaque da programação é o ex-candidato à Presidência pelo partido Missão, Renan Santos. Ele participará de uma sabatina intitulada \"O futuro é glorioso?\", baseada em seu mote de campanha. Além disso, a programação trará uma apresentação de rock da banda de Renan, chamada Limão Rosa, e uma dinâmica em formato de corte inspirada em universidades internacionais para interação do público.\n\nO evento abordará pautas recentes agregadas ao ideário do grupo, com ênfase no debate a respeito da regulamentação do uso de substâncias psicoativas. O encontro contará com a presença confirmada de nomes políticos ligados ao grupo, entre eles o deputado federal Kim Kataguiri (Missão-SP), o deputado estadual eleito Rafael Minatogawa (Missão-SP) e a vereadora da capital paulista Amanda Vettorazzo (União Brasil).",
       "fontes": [
         {
           "nome": "Vero Notícias",
-          "url": "https://veronoticias.com/economia/bc-alerta-para-uso-de-inteligencia-artificial-por-faccoes-em-esquemas-de-lavagem-de-dinheiro/",
-          "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOOVl5NTVBOExDWmFqcHZ5SXJzekZaSVFidGpwdkNjdGVLZEVaVnVoX00tSDRTaGRjUlFTLVdyc0Y5Rml0R05Qa3J6bFRrX3dsbzBvbDZNaG5KMHhrelUyM2lQdklOLXZrV0VMRkhfMzZaZWxRY3R2S2JNaDI5OWpjNXdyV2luQ2N6LUcyNnJvWV94YjVHbGVIdVQyeEJYMFhsTmZSV3o3RFkyclV5ZkItdlpoSVJ3VXF6RWJYdDJHbGw2ZGhRVVE?oc=5",
-          "imagem_url": "https://veronoticias.com/wp-content/uploads/2026/11/image-2026-11-17T121038.867.jpg"
+          "url": "https://veronoticias.com/politica/festival-do-mbl-tera-sabatina-de-renan-santos-e-debate-sobre-regulamentacao-de-psicoativos/",
+          "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPRjVaamhIRlRGS1VzSjYyaGxHRlJSRWZhcGxWamcwcmpWSmJDaENmQjZUZkZIMzZ5SUdaQTB1Zzl1SXNSMDB3UWRvdEVJNEx1a1FsQkZUelRhLWNVZEk2Wmt0czFuUzdaZXFGNHBaQnRpNXdCYzVXX2lpVnJsVnEya1RtRTExV0tmMXN2MnhYY1Bocm9Rci1lVTI5eFJjMVhKaERNamlHYXpERUtzbDEtX0VfaEFTSzF1ODNicHV1aFM1bTg?oc=5",
+          "imagem_url": "https://veronoticias.com/wp-content/uploads/2026/06/4-8-1200x630-1.jpg"
         },
         {
-          "nome": "Agora RN",
-          "url": "https://agorarn.com.br/economia/inteligencia-artificial-crime-organizado-lavar-dinheiro-bc/",
-          "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQTFhnbXg3SmJhS3l5ZjlHQXZwYmRLZDZfUUJmYW82WjV4MEI3REJoWG5McV9zbTJJNTgxXzJxOW14ZDJrVEJoNndaeWhTQjFqRlNFYWpTeW1jWGR2Tlg5ZTQwQnVEQmw1Z09rbWRZLW5TZUFiWmJhQlgtZ2dwZGRYT3I1Q1R5M2ZKd2J2YTFYbDhscThtNmc?oc=5",
-          "imagem_url": "https://agorarn.com.br/files/uploads/2026/11/izabela-correa-banco-central.jpg"
+          "nome": "Folha de S.Paulo",
+          "url": "https://www1.folha.uol.com.br/colunas/painel/2026/11/mbl-promove-festival-com-sabatina-de-renan-santos-e-debate-sobre-psicoativos.shtml",
+          "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQMTRmVmdGQUhESnlWam1zVVVCYkxqNTB3c3IxODFfbnJYMU5TVklURU1jNllGNVJ3a0JSTE9KRy16d09KRkZ2emh3RjB5bE9WRWF2UUM5Y2lFYWNoaXMyYmVvZF9fQkg0YzVJbkpKNGJCaU9qQVY3UmFFdmp5d1p6Z2NLa0NHTnFtNzhVN1FOdWJCS2Etc3hEQ2ZhMy1US0RIbEViRkdjMW5qSWx1eGthMXJIYU9jX3VLRW9hRUJGRU1nR25qNENEYkZnVmJuV2F0?oc=5",
+          "imagem_url": "https://f.i.uol.com.br/fotografia/2026/11/25/17956037256b06bd0d81d04_1795603725_3x2_rt.jpg"
         }
       ]
     },
     {
-      "id": "5098cbbf1df5",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
-      "nicho": "Paleontologia",
+      "id": "7c4815c1f793",
+      "gerado_em": "2026-11-26T04:12:30.914438+00:00",
+      "nicho": "Política Brasileira",
       "relevancia": 6.0,
-      "titulo": "Museu de Paleontologia em Santana do Cariri recebe concerto da Orquestra Contemporânea Brasileira",
-      "resumo": "O Museu de Paleontologia Plácido Cidade Nuvens, sediado em Santana do Cariri, no interior do Ceará, sediará uma apresentação musical inédita da Orquestra Contemporânea Brasileira. O evento está agendado para o dia 22 de novembro, às 18h, sob a regência do maestro Arley França.\n\nA realização do espetáculo no equipamento cultural aproveita o conjunto acústico e arquitetônico interno do espaço, conectando o patrimônio fóssil da Chapada do Araripe com performances orquestrais ao vivo diante do público.\n\nO programa sinfônico abrangerá composições clássicas de Johann Sebastian Bach e Antonio Vivaldi, intercaladas com adaptações de obras representativas de nomes latino-americanos e nordestinos, tais como Luiz Gonzaga, Sivuca, Astor Piazzolla e Guerra-Peixe.",
+      "titulo": "Câmara aprova protocolo nacional obrigatório de combate ao racismo em escolas públicas e privadas",
+      "resumo": "A Câmara dos Deputados aprovou na quarta-feira (25) o Projeto de Lei 4887/2023, que institui um protocolo nacional mandatório para identificação, acolhimento de vítimas e resposta a episódios de racismo, discriminação e injúria racial em instituições públicas e privadas de ensino. O texto aprovado, relatado pela deputada Benedita da Silva (PT-RJ) em substitutivo de plenário ao projeto original da deputada Carol Dartora (PT-PR), recebeu 320 votos a favor e 102 contrários, seguindo para deliberação no Senado.\n\nA legislação determina que cada unidade educacional indique um profissional responsável pelo cumprimento dos procedimentos, que incluem atendimento psicológico sem custos aos alunos, medidas de proteção institucional contra retaliações e atividades voltadas à reeducação e conscientização dos agressores, abrangendo também ofensas cometidas em ambientes virtuais da comunidade escolar.\n\nAlém do acolhimento interno, as escolas terão a obrigação de comunicar casos graves a autoridades policiais, Ministério Público e Conselho Tutelar. O texto também prevê a abertura de processo administrativo disciplinar caso a conduta discriminatória envolva servidores públicos das redes de ensino, assegurando atuação da instituição mesmo se o episódio ocorrer além dos limites físicos das salas de aula.",
       "fontes": [
         {
-          "nome": "istoae.com.br",
-          "url": "https://istoae.com.br/noticia/6212/museu-de-paleontologia-de-santana-do-cariri-recebe-apresentacao-inedita-da-orquestra-contemporanea-brasileira",
-          "link": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQUGViTnRPeTg0Yl9MR0JseHR4WDZGdVRFM1g2MEhSUkFkRWdjM0xaYXR6T3N2ejRpTTlQUEhrRXVBeC1pNTgzdmdtamdOa282TVpQREYycWZXR0w4Rmh3RGRRV25TaF9XUXB2RlBzWHNKZVMxelRTVFRGTXRHdmxIa0VNanE0b2tfQzJCa2cxd011cGg5YTlLYUdNb2puamc4d0tmVDB0c205eUdRWEtMWURXT0UtbmRQb3BuUmlfMVc5Ti1PT0drUmRpc2RhRG1GWmJ3bFFyZWdnNkM5?oc=5",
-          "imagem_url": "https://istoae.com.br/images/noticias/6212/d5d9229904ce9b6b9b620f74b8969126.webp"
+          "nome": "Agência Brasil",
+          "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/camara-aprova-protocolo-nacional-para-combater-racismo-nas-escolas",
+          "link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNbWpvTUVSV29mdzIxeTR4S3BsTkRydmoxVENDS1k0ZURGN2syWUJNNXRRU3JuX3d3NTZOWE9jQjBrLW50UEFBUXl0UnN4U0ZSWm9rM0lsWm9yVHFvaVJxQ19QeDFVRzQwUWJaVjE4UzlCQ3k1ejctTllYVHNBQlN5ZGU0VVFsdzJLTklTVFVzVjl1MzhwZHhxZmZaaTNvMk5pYVpLN1JCR003Q1lKbkZiemV3Y2tNM3NlX2hsZGR6LU5nYlFwN29kUkZsZGY?oc=5",
+          "imagem_url": "https://imagens.ebc.com.br/D3xMcnRv35Upk02ztOUTcHvDRdk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mcamg_abr_10052019_9651.jpg?itok=89_USuKd"
         }
       ]
     },
     {
-      "id": "4141a5eb69b3",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
-      "nicho": "Paleontologia",
-      "relevancia": 6.0,
-      "titulo": "Fósseis da Bacia Bauru impulsionam a paleontologia e revelam novas espécies em Monte Alto",
-      "resumo": "Trabalhos de campo contínuos em sedimentos da Bacia Bauru tornaram a cidade de Monte Alto, no interior de São Paulo, um centro de referência da paleontologia brasileira. Desde as primeiras coletas na década de 1980 no sítio Campo Campestre, conduzidas inicialmente após descobertas de Elvira Aparecida Franciosi, a região revelou ossadas de grandes dinossauros herbívoros e predadores inéditos.\n\nAs rochas das formações Adamantina e Marília, pertencentes ao período Cretáceo, preservam evidências paleoambientais de rios, áreas alagadas e ciclos de seca de cerca de 66 milhões de anos atrás. O material resgatado ao longo dos anos estruturou o acervo do Museu de Paleontologia Professor Antonio Celso de Arruda Campos, inaugurado em 1992.\n\nAtualmente, a administração municipal mapeia mais de 30 pontos fossilíferos, majoritariamente em áreas rurais privadas, reunindo achados de tetrápodes pré-históricos como dinossauros, crocodiliformes, tartarugas e peixes fósseis fundamentais para a reconstituição da paleoecologia paulista.",
+      "id": "c2b8db902be8",
+      "gerado_em": "2026-11-26T04:12:30.914438+00:00",
+      "nicho": "Concursos t.i",
+      "relevancia": 5.0,
+      "titulo": "Cebraspe divulga gabaritos preliminares das provas do concurso do TCDF para analista administrativo",
+      "resumo": "O Cebraspe disponibilizou a consulta aos gabaritos preliminares das provas objetivas do concurso público do Tribunal de Contas do Distrito Federal (TCDF), realizadas em 22 de novembro. Para acessar as respostas, os inscritos devem usar login e senha na página da banca organizadora, com prazo para envio de recursos estipulado das 10 horas do dia 25 de novembro até as 18 horas do dia 26 de novembro.\n\nA seleção registrou 7.921 candidatos concorrendo a 10 vagas imediatas e à formação de cadastro de reserva para o cargo de Analista Administrativo de Controle Externo (ANACE), cuja remuneração inicial é de R$ 14.990,41, exigindo formação de nível superior em qualquer área. A avaliação compreendeu 150 itens no modelo certo ou errado com duração de quatro horas durante o turno matutino, além de prova discursiva eliminatória com pontuação mínima de 30 pontos.\n\nO certame sucede a seleção realizada pelo tribunal em 2024, também organizada pelo Cebraspe, destinada a Auditores de Controle Externo. Naquela ocasião, as vagas especializadas contemplaram postos para a área de tecnologia da informação em Orientação Microinformática e Infraestrutura de TI, além de Psicologia e Arquivologia, edital que permanece vigente até abril de 2027 com possibilidade de prorrogação.",
       "fontes": [
         {
-          "nome": "O Imparcial Monte Alto",
-          "url": "https://www.oimparcialmontealto.com.br/noticias/rochas-da-bacia-bauru-em-monte-alto-revelam-ossadas-e-novas-especies-de-dinossauros-gigantes-que-habitaram-sao-paulo/",
-          "link": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxQVXctbmVhemdmNzY3M3R5dlZBM0NaUW91Zm9XQjUxZ2l0VnVKLWtfeEJwSVZqRm5Za3FLX01oenRReWtPVXZJNkhCU2NYcHRDZTJWMmZ3TjV6WnF2aFdDRXdzSkxLMXdRc09rbnZnSUc2d0FtT2NVNzJwbl93clhFLU5iMXRaOUVZTTFOanoyS2NLeTdTVzJtT3ZMVE12WGhHU0FEOVI5TWYyQUlwWEZfblVqYkJNczY1WXQ5cE9qOVQ5bVNYOHFUWEJzOUZrU2R1MkdMNVpyZFBya3BybFRpdVltdXhkdWxjMUNfZmNQV3VuMno2TEhFcQ?oc=5",
-          "imagem_url": "https://www.oimparcialmontealto.com.br/wp-content/uploads/2026/11/novas-especies-de-dinossauros-gigantes.jpg"
-        }
-      ]
-    },
-    {
-      "id": "f1c0a50a4ee0",
-      "gerado_em": "2026-11-18T07:56:35.615108+00:00",
-      "nicho": "Paleontologia",
-      "relevancia": 6.0,
-      "titulo": "Fósseis de lobos-terríveis em poços de asfalto na Califórnia fornecem acervo histórico para a paleontologia",
-      "resumo": "Depósitos naturais de asfalto em Rancho La Brea, localizado na região de Los Angeles, acumularam a maior concentração fóssil conhecida de lobos-terríveis (Aenocyon dirus). Os registros datam do Pleistoceno Superior e contam com cerca de 4 mil indivíduos preservados, compondo a fauna mais abundante do sítio da Era do Gelo.\n\nO fenômeno de aprisionamento ocorria quando lâminas de asfalto pegajoso, camufladas por detritos e poças de água, capturavam herbívoros desavisados. Em resposta, grupos sucessivos de predadores carnívoros eram atraídos pelas presas e acabavam presos no material viscoso ao longo de milhares de anos.\n\nA ação química e a impermeabilização das camadas betuminosas barraram a ação de decompositores e intempéries, resultando em fósseis articulados que viabilizam investigações sobre patologias, maturidade e relações anatômicas da fauna extinta, expostos historicamente no museu local em uma parede com 400 crânios.",
-      "fontes": [
-        {
-          "nome": "Brasil 247",
-          "url": "https://www.brasil247.com/tendencias/2026/11/17/o-lobo-terrivel-que-ficou-preso-em-pocos-naturais-de-asfalto-na-california-ha-milhares-de-anos-e-deixou-fosseis-tao-numerosos-que-virou-referencia-para-a-paleontologia/",
-          "link": "https://news.google.com/rss/articles/CBMivAJBVV95cUxQTFl3YjM3aW5Gd29ManFQYnZuU3d0TFNYbzItOEpXMkttM3BKMmszcG1QQ2hzbFZEQi1GVFRPbW1qWTJxNElkQkxGQm5TS2FaTGlERklBRlVWTFluVUlsamFMNDhSZGx1ekNMa3lOdUdKRi05eWxUaFh0RFRQVlJRZTY0R0VFaWV1VTM4c09FVS02TGZRTXZpc1pzdy1VdGxqMW1scml0ejA4VFZmN0NxSW9DYXo4VURmdklHNnFiQVM3amNtS29udEtESW1pSC1GbGZYUnlxMmkxZnlkT0xYVmlRaUI1SUhuVVozdjloUEswUGF3Z1FUcnMtR3F1Q2ttOEUwR3NFdlFqMHFoc2Z2ekZlckQ3RkUycGZTdkQwd1EzQ2NqSmVpaUpTY2hhRXFIeWN4bGRiTkFDajN0?oc=5",
-          "imagem_url": "https://www.brasil247.com/tendencias/wp-content/uploads/2026/11/dire_wolf_skull_on_mount_e917afb.jpg"
+          "nome": "Estratégia Concursos",
+          "url": "https://concursos.estrategia.com/portal/concurso-tcdf/",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBDYjA1R0oyNURTLUkzdXZNdE1EdWt0VDdBOVN1bVNLT2QzZXdpYThFSTlobWJobzMtTnY2RnlDT09uQzV6dkdjRFNiUW4xc0t2Yy0tcUtERzJkU1Y5Z3ktUjhNc0PSAWpBVV95cUxNVVJLeUZlV1JCV0I3ZmVRQzdSSENzblBNRUVrekRmUGcyOG9Gb01pMVplTS1ocWlCbGhkSHE5SnUyc28wZ1M3S0R1NEFDaG5Jam9pcUgyMDZkNDgyRUtDVjZFV0NHRDNtQlZB?oc=5",
+          "imagem_url": "https://dhg1h5j42swfq.cloudfront.net/2021/04/23155112/tcdf.jpg"
         }
       ]
     }
